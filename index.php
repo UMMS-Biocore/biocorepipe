@@ -67,7 +67,7 @@
         </div>
         <div class="pull-left info">
           <p>Alper Kucukural</p>
-          <a href="index.php"><i class="fa fa-circle text-success"></i> Online</a>
+          <a href="index.php"><i class="fa fa-circle text-success"></i> Online 2</a>
         </div>
       </div>
 

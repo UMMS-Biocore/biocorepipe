@@ -108,7 +108,9 @@ INSERT INTO `parameter` (`id`, `name`, `channel_name`, `file_type`, `file_path`,
 (11, 'read_pairs', 'read_pairs', 'fq', '"$baseDir/data/ggal/*_{1,2}.fq"', '1', 'set', '', '2017-04-23 22:13:42', '2017-04-23 22:13:42', 'docker'),
 (13, 'mapped_read_pairs', 'bam_files', 'bam', '', '1', 'set', '', '2017-04-23 22:31:59', '2017-04-23 22:31:59', 'docker'),
 (14, 'transcripts', 'transcripts', 'gtf', '', '1', 'set', '', '2017-04-23 22:34:26', '2017-04-23 22:34:26', 'root'),
-(15, 'RSeQC', 'RSeQC', 'tsv', '', '1.0.0', 'file', '', '2017-07-12 03:36:42', '2017-07-12 03:36:42', 'root');
+(15, 'RSeQC', 'RSeQC', 'tsv', '', '1.0.0', 'file', '', '2017-07-12 03:36:42', '2017-07-12 03:36:42', 'root'),
+(16, 'inputparam', '', 'NA', '', '', '', '', '2017-07-12 03:36:42', '2017-07-12 03:36:42', 'root');
+(17, 'outputparam', '', 'NA', '', '', '', '', '2017-07-12 03:36:42', '2017-07-12 03:36:42', 'root');
 
 -- --------------------------------------------------------
 
@@ -247,13 +249,13 @@ CREATE TABLE IF NOT EXISTS `process` (
 --
 
 INSERT INTO `process` (`id`, `process_group_id`, `name`, `version`, `summary`, `script`, `date_created`, `date_modified`, `last_modified_user`) VALUES
-(10, 1, 'Build_Index', '1', '', 'bowtie2-build ${genome} genome.index', '2017-04-23 22:36:16', '2017-04-23 22:36:16', 'root'),
-(11, 2, 'Map', '1', '', 'bowtie2 -x ${genome.index} -1 $forward -2 $reverse -S ${dataset_id}_alignment.sam', '2017-04-23 22:37:23', '2017-04-23 22:37:23', 'docker'),
-(12, 3, 'Make_Transcript', '1', 'Cufflinks assembles transcripts, estimates their abundances, and tests for differential expression and regulation in RNA-Seq samples. It accepts aligned RNA-Seq reads and assembles the alignments into a parsimonious set of transcripts.', 'cufflinks ${bam_file}', '2017-04-23 22:38:04', '2017-04-23 22:38:04', 'root'),
-(16, 4, 'samtools_sort', '0.1.19', 'Samtools sort functionality.', 'samtools sort ${initial_alignment} ${sorted_bam}\r\n', '2017-04-28 18:40:07', '2017-04-28 18:40:07', 'root'),
-(17, 5, 'splitSequences', '0.0.1', 'Module to split your fastq files. \nYou can specify the number of reads per file.', '', '2017-05-04 19:26:30', '2017-05-04 19:26:30', 'docker'),
-(18, 2, 'tophat_align', '0.0.1', 'TopHat is a program that aligns RNA-Seq reads to a genome in order to identify exon-exon splice junctions. It is built on the ultrafast short read mapping program Bowtie. TopHat runs on Linux and OS X.', 'tophat2 ${read_pairs}', '2017-05-08 15:08:51', '2017-05-08 15:08:51', 'root'),
-(19, 6, 'RSeQC', '1.0.0', '', 'rseqc ${bam_file}', '2017-07-12 03:35:23', '2017-07-12 03:35:23', 'root');
+(10, 2, 'Build_Index', '1', '', 'bowtie2-build ${genome} genome.index', '2017-04-23 22:36:16', '2017-04-23 22:36:16', 'root'),
+(11, 3, 'Map_Tophat2', '0.0.1', 'TopHat is a program that aligns RNA-Seq reads to a genome in order to identify exon-exon splice junctions. It is built on the ultrafast short read mapping program Bowtie. TopHat runs on Linux and OS X.', 'tophat2 genome.index $reads', '2017-04-23 22:37:23', '2017-04-23 22:37:23', 'docker'),
+(12, 4, 'Make_Transcript', '1', 'Cufflinks assembles transcripts, estimates their abundances, and tests for differential expression and regulation in RNA-Seq samples. It accepts aligned RNA-Seq reads and assembles the alignments into a parsimonious set of transcripts.', 'cufflinks ${bam_file}', '2017-04-23 22:38:04', '2017-04-23 22:38:04', 'root'),
+(16, 5, 'samtools_sort', '0.1.19', 'Samtools sort functionality.', 'samtools sort ${initial_alignment} ${sorted_bam}\r\n', '2017-04-28 18:40:07', '2017-04-28 18:40:07', 'root'),
+(17, 6, 'splitSequences', '0.0.1', 'Module to split your fastq files. \nYou can specify the number of reads per file.', '', '2017-05-04 19:26:30', '2017-05-04 19:26:30', 'docker'),
+(18, 3, 'Map_Bowtie', '0.0.1', '', 'bowtie2 -x ${genome.index} -1 $forward -2 $reverse -S ${dataset_id}_alignment.sam', '2017-05-08 15:08:51', '2017-05-08 15:08:51', 'root'),
+(19, 7, 'RSeQC', '1.0.0', '', 'rseqc ${bam_file}', '2017-07-12 03:35:23', '2017-07-12 03:35:23', 'root');
 
 -- --------------------------------------------------------
 
@@ -272,12 +274,13 @@ CREATE TABLE IF NOT EXISTS `process_group` (
 --
 
 INSERT INTO `process_group` (`id`, `group_name`) VALUES
-(1, 'Index'),
-(2, 'Alignment'),
-(3, 'Transcript'),
-(4, 'Samtools'),
-(5, 'Misc.'),
-(6, 'QC');
+(1, 'NF_pipelines'),
+(2, 'Index'),
+(3, 'Alignment'),
+(4, 'Transcript'),
+(5, 'Samtools'),
+(6, 'Misc.'),
+(7, 'QC');
 
 -- --------------------------------------------------------
 
@@ -316,7 +319,6 @@ INSERT INTO `process_parameter` (`id`, `process_id`, `parameter_id`, `type`, `na
 (35, 18, 11, 'input', 'dd', '2017-05-08 15:09:16', '2017-05-08 15:09:16', 'root'),
 (36, 17, 11, 'input', 'initial_seq', '2017-05-08 15:10:33', '2017-05-08 15:10:33', 'root'),
 (37, 17, 11, 'output', 'splited_seq', '2017-05-08 15:10:50', '2017-05-08 15:10:50', 'root'),
-(38, 11, 11, 'output', 'unaligned(reads)', '2017-05-08 21:00:19', '2017-05-08 21:00:19', 'root'),
 (40, 16, 13, 'output', 'sorted_bam', '2017-07-11 00:50:05', '2017-07-11 00:50:05', 'root'),
 (41, 18, 13, 'output', 'tophat_bam', '2017-07-11 00:51:50', '2017-07-11 00:51:50', 'root'),
 (42, 19, 13, 'input', 'bam', '2017-07-12 03:35:46', '2017-07-12 03:35:46', 'root'),
