@@ -206,7 +206,7 @@
 
 <!-- Add Process Modal -->
 <div id="addProcessModal" style="overflow-y:scroll;" class="modal fade " tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" style="width:1200px;" role="document">
+    <div class="modal-dialog modal-lg" style="width:1300px;" role="document">
         <div class="modal-content">
             <span id="addHeader"></span>
             <div id="revModalHeader" class="modal-header">
@@ -296,9 +296,9 @@
                         <div id="mInOptBut" class="col-sm-1" style="width:45px; padding-left:5px; padding-right:0;">
                             <button type="submit" style="display:none;" class="btn btn-default form-control" id="mInOptBut-0" name="mInOptBut-0"><i class="fa fa-wrench"></i></button>
                         </div>
-                        <div id="mInOpt" class="col-sm-3" style="width:200px; padding-left:5px; padding-right:0;">
-                            <select id="mInOpt-0" name="mInOpt-0" style="display:none;" class="form-control">
-                                   <option value="Select Operator" disabled>Select Operator</option>
+                        <div id="mInOpt" class="col-sm-2" style="width:100px; padding-left:5px; padding-right:0;">
+                            <select id="mInOpt-0" name="mInOpt-0" style=" display:none;" class="form-control">
+                                   <option value="Operators" disabled>Operators</option>
                                     <option value="buffer">buffer</option>
                                     <option value="choice">choice</option>
                                     <option value="close">close</option>
@@ -352,8 +352,8 @@
                                     <option value="view">view</option>
                                     </select>
                         </div>
-                        <div id="mInClosure" class="col-sm-2 " style="width:200px; padding-left:5px; padding-right:0;">
-                            <input type="text" style="display:none; " placeholder="Enter operator content" class="form-control" ppID="" id="mInClosure-0" name="mInClosure-0">
+                        <div id="mInClosure" class="col-sm-2 " style="width:140px; padding-left:5px; padding-right:0;">
+                            <input type="text" style="display:none; " placeholder="Operator content" class="form-control" ppID="" id="mInClosure-0" name="mInClosure-0">
                         </div>
                         <div id="mInOptdel" class="col-sm-1" style="width:40px; padding-left:0;padding-right:0;">
                             <button type="submit" style="display:none;" class="btn btn-default form-control" id="mInOptdel-0" name="mInOptdel-0"><i class="glyphicon glyphicon-remove"></i></button>
@@ -374,9 +374,9 @@
                         <div id="mOutOptBut" class="col-sm-1" style="width:45px; padding-left:5px; padding-right:0;">
                             <button type="submit" style="display:none;" class="btn btn-default form-control" id="mOutOptBut-0" name="mOutOptBut-0"><i class="fa fa-wrench"></i></button>
                         </div>
-                        <div id="mOutOpt" class="col-sm-3" style="width:200px; padding-left:5px; padding-right:0;">
+                        <div id="mOutOpt" class="col-sm-3" style="width:100px; padding-left:5px; padding-right:0;">
                             <select id="mOutOpt-0" name="mOutOpt-0" style="display:none;" class="form-control">
-                                   <option value="Select Operator" disabled>Select Operator</option>
+                                   <option value="Operators" disabled>Operators</option>
                                     <option value="buffer">buffer</option>
                                     <option value="choice">choice</option>
                                     <option value="close">close</option>
@@ -430,12 +430,24 @@
                                     <option value="view">view</option>
                                     </select>
                         </div>
-                        <div id="mOutClosure" class="col-sm-2 " style="width:200px; padding-left:5px; padding-right:0;">
-                            <input type="text" style="display:none; " placeholder="Enter operator content" class="form-control" ppID="" id="mOutClosure-0" name="mOutClosure-0">
+                        <div id="mOutClosure" class="col-sm-2 " style="width:140px; padding-left:5px; padding-right:0;">
+                            <input type="text" style="display:none; " placeholder="Operator content" class="form-control" ppID="" id="mOutClosure-0" name="mOutClosure-0">
                         </div>
-                        <div id="mOutOptdel" class="col-sm-1" style="width:40px; padding-left:0;padding-right:0;">
+                        <div id="mOutOptdel" class="col-sm-1" style="width:45px; padding-left:0;padding-right:5px;">
                             <button type="submit" style="display:none;" class="btn btn-default form-control" id="mOutOptdel-0" name="mOutOptdel-0"><i class="glyphicon glyphicon-remove"></i></button>
                         </div>
+                        <div id="mOutRegdel" class="col-sm-1" style="width:40px; padding-left:0; padding-right:0;">
+                            <button type="submit" style="display:none;" class="btn btn-default form-control" id="mOutRegdel-0" name="mOutRegdel-0"><i class="glyphicon glyphicon-remove"></i></button>
+                        </div>
+                        <div id="mOutReg" class="col-sm-2 " style="width:140px; padding-left:0px; padding-right:0;">
+                            <input type="text" style="display:none; " placeholder="Operator content" class="form-control" ppID="" id="mOutReg-0" name="mOutReg-0">
+                        </div>
+                        <div id="mOutRegBut" class="col-sm-1" style="width:45px; padding-left:0px; padding-right:0;">
+                            <button type="submit" style="display:none;" class="btn btn-default form-control" id="mOutRegBut-0" name="mOutRegBut-0"><i class="fa fa-code"></i></button>
+                        </div>
+                        
+                        
+
                     </div>
                     <hr>
                     <div class="form-group">

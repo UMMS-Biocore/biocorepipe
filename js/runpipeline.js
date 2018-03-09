@@ -1670,7 +1670,7 @@
 	      }
 	  }
 
-	  //Autocheck the output directory for checkreadytorun
+	  //Autocheck the output,publish_dir,publish_dir_check for checkreadytorun
 	  $("#rOut_dir").keyup(function () { 
 	      autoCheck();
 	  });

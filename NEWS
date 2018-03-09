@@ -1,3 +1,6 @@
+09.03.2018 Version 0.0.89
+config.php and .sec file updated.
+
 08.03.2018 Version 0.0.88
 fix docker and singularity (checkbox collapse) error in run pipeline page.
 publish directory feature added to run pipeline page.

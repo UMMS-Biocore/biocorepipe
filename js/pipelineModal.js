@@ -770,7 +770,7 @@ function disableProModal(selProcessId) {
         var numFormIn = i + 1;
         $('#mInputs-' + numFormIn)[0].selectize.disable();
         $('#mInName-' + numFormIn).attr('disabled', "disabled");
-        $('#mInNamedel-' + numFormIn).remove();
+        $('#mInNamedel').remove();
         $('#mInClosure-' + numFormIn).attr('disabled', "disabled");
         $('#mInOpt-' + numFormIn).attr('disabled', "disabled");
         $('#mInOptBut-' + numFormIn).css("pointer-events", "none");
@@ -784,7 +784,7 @@ function disableProModal(selProcessId) {
         var numFormOut = i + 1;
         $('#mOutputs-' + numFormOut)[0].selectize.disable();
         $('#mOutName-' + numFormOut).attr('disabled', "disabled");
-        $('#mOutNamedel-' + numFormOut).remove();
+        $('#mOutNamedel').remove();
         $('#mOutClosure-' + numFormOut).attr('disabled', "disabled");
         $('#mOutOpt-' + numFormOut).attr('disabled', "disabled");
         $('#mOutOptBut-' + numFormOut).css("pointer-events", "none");
@@ -1749,6 +1749,9 @@ $(document).ready(function () {
             var col5init = "m" + type + "Opt";
             var col6init = "m" + type + "Closure";
             var col7init = "m" + type + "Optdel";
+            var col8init = "m" + type + "RegBut";
+            var col9init = "m" + type + "Reg";
+            var col10init = "m" + type + "Regdel";
 
             var num = id.replace(Patt, '$2');
             var prevParId = $("#" + id).attr("prev");
@@ -1768,8 +1771,11 @@ $(document).ready(function () {
                 $("#" + col3init).append('<button  type="submit" class="btn btn-default form-control delRow" style ="margin-bottom: 5px;" id="' + col3init + '-' + String(idRows - 1) + '" name="' + col3init + '-' + String(idRows - 1) + '"><i class="glyphicon glyphicon-remove"></i></button>');
                 $("#" + col4init).append('<a href="#" data-toggle="tooltip" data-placement="bottom" data-original-title="Add/Remove operator" class="btn btn-default addOpt" style ="margin-bottom: 5px;" id="' + col4init + '-' + String(idRows - 1) + '" name="' + col4init + '-' + String(idRows - 1) + '"> <span><i class="fa fa-wrench"></i></span></a>');
                 $("#" + col5init).append('<select class="form-control" style ="visibility:hidden; margin-bottom: 5px;" id="' + col5init + '-' + String(idRows - 1) + '" name="' + col5init + '-' + String(idRows - 1) + '"></button>');
-                $("#" + col6init).append('<input type="text" ppID="" placeholder="Enter operator content" class="form-control " style ="visibility:hidden; margin-bottom: 5px;" id="' + col6init + '-' + String(idRows - 1) + '" name="' + col6init + '-' + String(idRows - 1) + '">');
+                $("#" + col6init).append('<input type="text" ppID="" placeholder="Operator content" class="form-control " style ="visibility:hidden; margin-bottom: 5px;" id="' + col6init + '-' + String(idRows - 1) + '" name="' + col6init + '-' + String(idRows - 1) + '">');
                 $("#" + col7init).append('<button type="submit" class="btn btn-default form-control delOpt" style ="visibility:hidden; margin-bottom: 5px;" id="' + col7init + '-' + String(idRows - 1) + '" name="' + col7init + '-' + String(idRows - 1) + '"><i class="glyphicon glyphicon-remove"></i></button>');
+                $("#" + col8init).append('<a href="#" data-toggle="tooltip" data-placement="bottom" data-original-title="Add/Remove output regular expression" class="btn btn-default addRegEx" style ="margin-bottom: 5px;" id="' + col8init + '-' + String(idRows - 1) + '" name="' + col8init + '-' + String(idRows - 1) + '"> <span><i class="fa fa-code"></i></span></a>');
+                $("#" + col9init).append('<input type="text" ppID="" placeholder="Enter RegEx" class="form-control " style ="visibility:hidden; margin-bottom: 5px;" id="' + col9init + '-' + String(idRows - 1) + '" name="' + col9init + '-' + String(idRows - 1) + '">');
+                $("#" + col10init).append('<button type="submit" class="btn btn-default form-control delRegEx" style ="visibility:hidden; margin-bottom: 5px;" id="' + col10init + '-' + String(idRows - 1) + '" name="' + col10init + '-' + String(idRows - 1) + '"><i class="glyphicon glyphicon-remove"></i></button>');
                 //load closure options
                 var closureOpt = $('#mOutOpt-0 option').each(function () {
                     var val = $(this).val()
@@ -1836,6 +1842,41 @@ $(document).ready(function () {
         $("#" + col6init + "-" + String(num)).css('visibility', 'hidden');
         $("#" + col7init + "-" + String(num)).css('visibility', 'hidden');
     });
+    //toggle regEx section in addprocessmodal when click on Regex
+    $(document).on("click", ".addRegEx", function (event) {
+        event.preventDefault();
+        var id = $(this).attr("id");
+        var Patt = /m(.*)RegBut-(.*)/;
+        var type = id.replace(Patt, '$1'); //In or Out
+        var num = id.replace(Patt, '$2');
+        var col4init = "m" + type + "RegBut";
+        var col5init = "m" + type + "Reg";
+        var col7init = "m" + type + "Regdel";
+        if ($("#" + col5init + "-" + String(num)).css('visibility') === 'visible') {
+            $("#" + col4init + "-" + String(num)).css('background', '#E7E7E7');
+            $("#" + col5init + "-" + String(num)).css('visibility', 'hidden');
+            $("#" + col7init + "-" + String(num)).css('visibility', 'hidden');
+
+        } else if ($("#" + col5init + "-" + String(num)).css('visibility') === 'hidden') {
+            $("#" + col4init + "-" + String(num)).css('background', '#FFF');
+            $("#" + col5init + "-" + String(num)).css('visibility', 'visible');
+            $("#" + col7init + "-" + String(num)).css('visibility', 'visible');
+        }
+    });
+    //remove operators section in addprocessmodal when click on wrench
+    $(document).on("click", ".delRegEx", function (event) {
+        event.preventDefault();
+        var id = $(this).attr("id");
+        var Patt = /m(.*)Regdel-(.*)/;
+        var type = id.replace(Patt, '$1'); //In or Out
+        var num = id.replace(Patt, '$2');
+        var col4init = "m" + type + "RegBut";
+        var col5init = "m" + type + "Reg";
+        var col7init = "m" + type + "Regdel";
+        $("#" + col4init + "-" + String(num)).css('background', '#E7E7E7');
+        $("#" + col5init + "-" + String(num)).css('visibility', 'hidden');
+        $("#" + col7init + "-" + String(num)).css('visibility', 'hidden');
+    });
 
 
 
@@ -1853,6 +1894,9 @@ $(document).ready(function () {
         var col5init = "m" + type + "Opt";
         var col6init = "m" + type + "Closure";
         var col7init = "m" + type + "Optdel";
+        var col8init = "m" + type + "RegBut";
+        var col9init = "m" + type + "Reg";
+        var col10init = "m" + type + "Regdel";
         $("#" + col1init + "-" + String(num)).next().remove();
         $("#" + col1init + "-" + String(num)).remove();
         $("#" + col2init + "-" + String(num)).remove();
@@ -1861,6 +1905,9 @@ $(document).ready(function () {
         $("#" + col5init + "-" + String(num)).remove();
         $("#" + col6init + "-" + String(num)).remove();
         $("#" + col7init + "-" + String(num)).remove();
+        $("#" + col8init + "-" + String(num)).remove();
+        $("#" + col9init + "-" + String(num)).remove();
+        $("#" + col10init + "-" + String(num)).remove();
     });
 
     //parameter modal file type change:(save file type as identifier for val)
