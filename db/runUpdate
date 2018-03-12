@@ -1,5 +1,2 @@
 db=$1
-mysql -u root $db < updateVersion0.0.87.sql
-mysql -u root $db < updateVersion0.0.88.sql
-mysql -u root $db < updateVersion0.0.89.sql
-mysql -u root $db < updateVersion0.0.92.sql
+#mysql -u root $db < updateVersion0.0.92.sql
