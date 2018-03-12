@@ -11,7 +11,7 @@ env:
 services:
   - mysql
 
-before_install:
+install:
   - sudo apt-get update
   - sudo apt-get -y install aptitude
   - sudo apt-get -y install apache2 php-pear curl lynx-cur libreadline-dev libsqlite3-dev libbz2-dev libssl-dev python python-dev libmysqlclient-dev python-pip git expect default-jre libxml2-dev software-properties-common gdebi-core wget tree vim libv8-dev subversion g++ gcc gfortran zlib1g-dev libx11-dev xorg-dev libbz2-dev liblzma-dev libpcre3-dev libcurl4-openssl-dev
@@ -30,10 +30,10 @@ before_install:
 #  - sudo sed -i '$ a\export JAVA_OPTS="-Djava.util.prefs.systemRoot=/var/www/.java Djava.util.prefs.userRoot=/var/www/.java/.userPrefs\"' /etc/apache2/envvars
 #  - sudo cat /etc/apache2/envvars
   
-#  before_script:
+  before_script:
 #  - sudo a2enmod actions
 #  - sudo a2enmod rewrite
-#  - sudo service apache2 restart
+  - sudo service apache2 restart
 #  - mysql -u root -e "CREATE USER 'myproject'@'localhost' IDENTIFIED BY 'mypass'"
 #  - mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'myproject'@'localhost' WITH GRANT OPTION;"
   # update database
