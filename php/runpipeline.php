@@ -42,7 +42,6 @@
             </ul>
         </div>
         <div id="pipeRunDiv" style="float:right; margin-right:5px;">
-            <!--            <button class="btn btn-danger" type="submit" id="errorProPipe" style="display:none; vertical-align:middle;">Run Error</button>-->
             <div id="errorProPipe" style="display:none; float:right; " class="btn-group">
                 <button class="btn btn-danger" type="button" id="errorProPipeBut">Run Error</button>
                 <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="true">

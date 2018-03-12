@@ -316,24 +316,48 @@ function publishDir(id, currgid) {
                     var parId = fNode.split("-")[4]
                     var userEntryId = "text-" + fNode.split("-")[4]
                     outParUserEntry = document.getElementById(userEntryId).getAttribute('name');
+                    reg_ex = document.getElementById(oId).getAttribute("reg_ex");
+                    console.log(reg_ex)
+                    if (reg_ex !== "" && reg_ex !== null) {
+                            reg_ex = decodeHtml(reg_ex);
+                        if (reg_ex.length > 0) {
+                            var lastLetter = reg_ex.length - 1;
+                            if (reg_ex[0] === "\/" && reg_ex[lastLetter] === "\/") {
+                                outputName = reg_ex;
+                            } else {
+                                outputName = "\/" + reg_ex + "\/";
+                            }
+                        }
+
+                    } else {
+                        outputName = document.getElementById(oId).getAttribute("name")
+                        outputName = "/" + getPublishDirRegex(outputName) + "/";
+                    }
                     oText = "publishDir params.outdir, mode: 'copy',\n\tsaveAs: {filename ->\n"
-                    outputName = document.getElementById(oId).getAttribute("name")
-                    outputName = getPublishDirRegex(outputName);
-
-
-                    //                    parFile = parametersData.filter(function (el) {
-                    //                        return el.id == fNode.split("-")[3]
-                    //                    })[0].file_type
-                    tempText = "\tif \(filename =~ /" + outputName + "/\) " + getParamOutdir(outParUserEntry) + "\n"
+                    tempText = "\tif \(filename =~ " + outputName + "\) " + getParamOutdir(outParUserEntry) + "\n"
                     // if (filename =~ /^path.8.fastq$/) filename 
                     oText = oText + tempText
                 } else if (fNode.split("-")[1] === "outPro" && closePar === true) {
-                    outputName = document.getElementById(oId).getAttribute("name");
-                    outputName = getPublishDirRegex(outputName);
+                    reg_ex = document.getElementById(oId).getAttribute("reg_ex");
+                    console.log(reg_ex)
+                    if (reg_ex !== "" && reg_ex !== null) {
+                            reg_ex = decodeHtml(reg_ex);
+                        if (reg_ex.length > 0) {
+                            var lastLetter = reg_ex.length - 1;
+                            if (reg_ex[0] === "\/" && reg_ex[lastLetter] === "\/") {
+                                outputName = reg_ex;
+                            } else {
+                                outputName = "\/" + reg_ex + "\/";
+                            }
+                        }
+                    } else {
+                        outputName = document.getElementById(oId).getAttribute("name")
+                        outputName = "/" + getPublishDirRegex(outputName) + "/";
+                    }
                     var parId = fNode.split("-")[4]
                     var userEntryId = "text-" + fNode.split("-")[4]
                     outParUserEntry = document.getElementById(userEntryId).getAttribute('name');
-                    tempText = "\telse if \(filename =~ /" + outputName + "/\) " + getParamOutdir(outParUserEntry) + "\n"
+                    tempText = "\telse if \(filename =~ " + outputName + "\) " + getParamOutdir(outParUserEntry) + "\n"
                     oText = oText + tempText
 
                 }
@@ -342,7 +366,7 @@ function publishDir(id, currgid) {
     }
     if (closePar === true) {
         oText = oText + "}\n\n";
-        if (outputName === '') {
+        if (outputName === '' && reg_ex === "") {
             oText = "publishDir \"${params.outdir}/" + outParUserEntry + "\", mode: 'copy'\n\n";
         }
         closePar = false
@@ -358,7 +382,7 @@ function IOandScriptForNf(id, currgid) {
         p: "getProcessData",
         "process_id": id
     })
-    script = processData[0].script
+    script = decodeHtml(processData[0].script);
     var lastLetter = script.length - 1;
     if (script[0] === '"' && script[lastLetter] === '"') {
         script = script.substring(1, script.length - 1); //remove first and last duble quote
@@ -426,16 +450,13 @@ function IOandScriptForNf(id, currgid) {
                         var channelName = gFormat(document.getElementById(sNode).getAttribute("parentG")) + "_" + genParName + "_" + gFormat(document.getElementById(fNode).getAttribute("parentG"));
                     } else {
                         var channelName = gFormat(document.getElementById(sNode).getAttribute("parentG")) + "_" + genParName;
-
                     }
                 }
-
                 bodyInput = bodyInput + " " + qual + " " + inputName + " from " + channelName + inputOperatorText + "\n";
             }
         }
         if (find == false) {
             bodyInput = bodyInput + " " + qual + " " + inputName + " from " + "param" + "\n"
-
         }
     }
 
@@ -500,10 +521,7 @@ function IOandScriptForNf(id, currgid) {
             }
         } else if (qual !== "set") {
             channelNameAll = channelName;
-
         }
-
-
         bodyOutput = bodyOutput + " " + qual + " " + outputName + " into " + channelNameAll + outputOperatorText + "\n"
 
     }

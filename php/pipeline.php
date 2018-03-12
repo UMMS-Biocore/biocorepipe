@@ -1,9 +1,14 @@
+<!--
 <style type="text/css" media="screen">
     #editor {
         height: 300px;
     }
+    #editorProHeader {
+        height: 150px;
+    }
 
 </style>
+-->
 <style>
     .nodisp {
         display: block
@@ -81,19 +86,19 @@
     <div style="height:500px; " id="container" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
 </div>
 <div id="warnSection" class="col-md-12" style=" display:none;">
-    <p   style=" float:left;  font-size:17px; padding-left:0px; color:#ff4444;">Warning: </p>
+    <p style=" float:left;  font-size:17px; padding-left:0px; color:#ff4444;">Warning: </p>
     <div class="col-md-11">
         <p style="float:left; font-size:16px;" id="warnArea"></p>
     </div>
-</br>
-</br>
+    </br>
+    </br>
 </div>
 </br>
 
 
 <div class="col-md-12" id="workDetails">
-        <h4>Pipeline Details</h4>
-        </br>
+    <h4>Pipeline Details</h4>
+    </br>
     <ul id="inOutNav" class="nav nav-tabs nav-justified">
         <li class="active"><a class="nav-item" data-toggle="tab" href="#processTab">Processes</a></li>
         <li><a class="nav-item" data-toggle="tab" href="#inputsTab">Inputs</a></li>
@@ -266,8 +271,7 @@
                             <button type="button" class="btn btn-default form-control" id="groupDel" data-toggle="modal" data-target="#delprocessGrmodal" data-backdrop="false"><i class="fa fa-trash-o"></i></button>
                         </div>
                     </div>
-                    <hr id="hrDiv">
-                    <div id="mParameters" class="form-group">
+                    <div id="mParameters" class="form-group" style=" padding-top:15px; border-top:0.094em solid lightgrey;">
                         <label for="mParamAll" style="width:150px;" class="col-sm-2 control-label">Parameters</label>
                         <div id="mParamAll" class="col-sm-5">
                             <select id="mParamAllIn" class="fbtn btn-default form-control mParChange" name="ParamAll" style="display:none;"></select>
@@ -280,6 +284,27 @@
                         </div>
                         <div id="mParamsDel" class="col-sm-1" style=" width: auto; padding-left: 0; padding-right: 0;">
                             <button type="button" class="btn btn-default form-control" id="mParDel" data-toggle="modal" data-target="#delparametermodal" data-backdrop="false"><i class="fa fa-trash-o"></i></button>
+                        </div>
+                    </div>
+                    <div id="inputTitle" class="form-group" style="   margin-bottom:15px; padding-top:15px;">
+                        <p style="width:150px;" class="col-sm-2 control-label"></p>
+                        <div id="mInputsT" class="col-sm-3" style="width:270px; border-bottom:1px solid lightgrey;">
+                            <p style="padding-left:50px;">Input Parameters <span><a data-toggle="tooltip" data-placement="bottom" title="Input parameters that are defined in parameters section"><i class='glyphicon glyphicon-info-sign' style="font-size:13px;"></i></a></span></p>
+                        </div>
+                        <div id="mInNameT" class="col-sm-2" style="width:200px; padding-left:0; padding-right:0; border-bottom:1px solid lightgrey;">
+                            <p style="padding-left:50px;">Input Name <span><a data-toggle="tooltip" data-placement="bottom" title="Name to define input groups according to their qualifier"><i class='glyphicon glyphicon-info-sign' style="font-size:13px;"></i></a></span></p>
+                        </div>
+                        <div id="mInNamedelT" class="col-sm-1" style="width:40px; padding-left:0;padding-right:0; padding-bottom:22px; border-bottom:1px solid lightgrey;">
+                        <p> </p>
+                        </div>
+                        <div id="mInOptButT" class="col-sm-1" style="width:45px; padding-left:5px; padding-right:0; padding-bottom:22px; border-bottom:1px solid lightgrey;">
+                            <p> </p>
+                        </div>
+                        <div id="mInOptT" class="col-sm-3" style="width:100px; padding-left:5px; padding-right:0; border-bottom:1px solid lightgrey;">
+                            <p style="padding-left:10px;">Operators <span><a data-toggle="tooltip" data-placement="bottom"  title="Optional operator section to transform values emitted by a channel."><i class='glyphicon glyphicon-info-sign' style="font-size:13px;"></i></a></span></p>
+                        </div>
+                        <div id="mInClosureT" class="col-sm-2 " style="width:160px; padding-left:5px; padding-right:0; border-bottom:1px solid lightgrey;">
+                            <p style="padding-left:20px;">Operator Content <span><a data-toggle="tooltip" data-placement="bottom" title="Optional operator content to specify how operators will act. Multiple operators can be added by starting paranthesis. i.e. (size:6).buffer(size:3)"><i class='glyphicon glyphicon-info-sign' style="font-size:13px;"></i></a></span></p>
                         </div>
                     </div>
                     <div id="inputGroup" class="form-group">
@@ -359,7 +384,33 @@
                             <button type="submit" style="display:none;" class="btn btn-default form-control" id="mInOptdel-0" name="mInOptdel-0"><i class="glyphicon glyphicon-remove"></i></button>
                         </div>
                     </div>
-
+                    <div id="outputTitle" class="form-group" style="  margin-bottom:15px; padding-top:15px;">
+                        <p style="width:150px;" class="col-sm-2 control-label"></p>
+                        <div id="mOutputsT" class="col-sm-3" style="width:270px; border-bottom:1px solid lightgrey;">
+                            <p style="padding-left:50px;">Output Parameters <span><a data-toggle="tooltip" data-placement="bottom" title="Output parameters that are defined in parameters section"><i class='glyphicon glyphicon-info-sign' style="font-size:13px;"></i></a></span></p>
+                        </div>
+                        <div id="mOutNameT" class="col-sm-2" style="width:200px; padding-left:0; padding-right:0; border-bottom:1px solid lightgrey;">
+                            <p style="padding-left:50px;">Output Name <span><a data-toggle="tooltip" data-placement="bottom" title="Name to define output groups according to their qualifier"><i class='glyphicon glyphicon-info-sign' style="font-size:13px;"></i></a></span></p>
+                        </div>
+                        <div id="mOutNamedelT" class="col-sm-1" style="width:40px; padding-left:0;padding-right:0; padding-bottom:22px; border-bottom:1px solid lightgrey;">
+                        <p> </p>
+                        </div>
+                        <div id="mOutOptButT" class="col-sm-1" style="width:45px; padding-left:5px; padding-right:0; padding-bottom:22px; border-bottom:1px solid lightgrey;">
+                            <p> </p>
+                        </div>
+                        <div id="mOutOptT" class="col-sm-3" style="width:100px; padding-left:5px; padding-right:0; border-bottom:1px solid lightgrey;">
+                            <p style="padding-left:10px;">Operators <span><a data-toggle="tooltip" data-placement="bottom" title="Optional operator section to transform values emitted by a channel."><i class='glyphicon glyphicon-info-sign' style="font-size:13px;"></i></a></span></p>
+                        </div>
+                        <div id="mOutClosureT" class="col-sm-2 " style="width:160px; padding-left:5px; padding-right:0; border-bottom:1px solid lightgrey;">
+                            <p style="padding-left:20px;">Operator Content <span><a data-toggle="tooltip" data-placement="bottom" title="Optional operator content to specify how operators will work. Multiple operators can be added by starting paranthesis. i.e. (size:6).buffer(size:3)"><i class='glyphicon glyphicon-info-sign' style="font-size:13px;"></i></a></span></p>
+                        </div>
+                        <div id="mOutOptdelT" class="col-sm-1" style="width:45px; padding-left:0;padding-right:5px; padding-bottom:22px; border-bottom:1px solid lightgrey;">
+                            <p> </p>
+                        </div>
+                        <div id="mOutRegT" class="col-sm-2 " style="width:180px; padding-left:0px; padding-right:0; border-bottom:1px solid lightgrey;">
+                            <p style="padding-left:30px;">Regular Expression <span><a data-toggle="tooltip" data-placement="bottom" title="Optional regular expresion to filter output files, which are going to be transferred to output directory. (Default: output name pattern is used)"><i class='glyphicon glyphicon-info-sign' style="font-size:13px;"></i></a></span></p>
+                        </div>
+                    </div>
                     <div id="outputGroup" class="form-group">
                         <label for="mOutput-1" style="width:150px;" class="col-sm-2 control-label">Outputs</label>
                         <div id="mOutputs" class="col-sm-3" style="width:270px;">
@@ -436,31 +487,28 @@
                         <div id="mOutOptdel" class="col-sm-1" style="width:45px; padding-left:0;padding-right:5px;">
                             <button type="submit" style="display:none;" class="btn btn-default form-control" id="mOutOptdel-0" name="mOutOptdel-0"><i class="glyphicon glyphicon-remove"></i></button>
                         </div>
-                        <div id="mOutRegdel" class="col-sm-1" style="width:40px; padding-left:0; padding-right:0;">
-                            <button type="submit" style="display:none;" class="btn btn-default form-control" id="mOutRegdel-0" name="mOutRegdel-0"><i class="glyphicon glyphicon-remove"></i></button>
+                        <div id="mOutRegBut" class="col-sm-1" style="width:45px; padding-left:0px; padding-right:0;">
+                            <button type="submit" style="display:none;" class="btn btn-default form-control" id="mOutRegBut-0" name="mOutRegBut-0"><i class="fa fa-code"></i></button>
                         </div>
                         <div id="mOutReg" class="col-sm-2 " style="width:140px; padding-left:0px; padding-right:0;">
                             <input type="text" style="display:none; " placeholder="Operator content" class="form-control" ppID="" id="mOutReg-0" name="mOutReg-0">
                         </div>
-                        <div id="mOutRegBut" class="col-sm-1" style="width:45px; padding-left:0px; padding-right:0;">
-                            <button type="submit" style="display:none;" class="btn btn-default form-control" id="mOutRegBut-0" name="mOutRegBut-0"><i class="fa fa-code"></i></button>
+                        <div id="mOutRegdel" class="col-sm-1" style="width:40px; padding-left:0; padding-right:0;">
+                            <button type="submit" style="display:none;" class="btn btn-default form-control" id="mOutRegdel-0" name="mOutRegdel-0"><i class="glyphicon glyphicon-remove"></i></button>
                         </div>
-                        
-                        
-
                     </div>
-                    <hr>
-                    <div class="form-group">
+                    <div class="form-group" style=" padding-top:15px; border-top:0.094em solid lightgrey;">
                         <label for="mScript" style="width:150px;" class="col-sm-2 control-label">Script</label>
                         <div id="editordiv" class="col-sm-10">
-                            <div id="editor"></div>
+                            <div id="editor" style="height: 300px;"></div>
                             <div class="row">
                                 <p class="col-sm-3" style="padding-top:6px; padding-right:0;">Language Mode:</p>
                                 <div class="col-sm-3" style="padding-left:0;">
-                                    <select id="modeAce" class="form-control">
-                                    <option>groovy</option>
-                                    <option>perl</option>
-                                    <option>python</option>
+                                    <select id="script_mode" name="script_mode" class="form-control">
+                                    <option value="groovy" >groovy</option>
+                                    <option value="perl" >perl</option>
+                                    <option value="python" >python</option>
+                                    <option value="sh" >shell</option>
                                     </select>
                                 </div>
                             </div>
@@ -477,6 +525,23 @@
                     </div>
                     <!-- collapsed settings-->
                     <div id="advOptPro" class="row collapse">
+                        <div class="form-horizontal" >
+                        <label  style="width:150px;" class="col-sm-2 control-label">Header Script </label>
+                        <div id="editorHeaderdiv" class="col-sm-10" style="margin-top:20px; margin-bottom:25px;">
+                            <div id="editorProHeader" style = "height: 150px;"></div>
+                            <div class="row">
+                                <p class="col-sm-3" style="padding-top:6px; padding-right:0;">Language Mode:</p>
+                                <div class="col-sm-3" style="padding-left:0;">
+                                    <select id="script_mode_header" name="script_mode_header" class="form-control">
+                                    <option value="groovy" >groovy</option>
+                                    <option value="perl" >perl</option>
+                                    <option value="python" >python</option>
+                                    <option value="sh" >shell</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="proPermGroPubDiv">
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="col-sm-6 control-label">Permissions to View</label>
@@ -510,8 +575,10 @@
                                 </div>
                             </div>
                         </div>
+                        </div>
                     </div>
 
+                    </div>
 
                 </form>
             </div>

@@ -565,6 +565,7 @@
 	                  .attr("name", outputs[k].sname)
 	                  .attr("operator", outputs[k].operator)
 	                  .attr("closure", outputs[k].closure)
+	                  .attr("reg_ex", outputs[k].reg_ex)
 	                  .attr("status", "standard")
 	                  .attr("connect", "single")
 	                  .attr("class", findType(outputs[k].parameter_id) + " output")
@@ -1264,7 +1265,8 @@
 	  }
 
 	  function changeName() {
-	      newName = document.getElementById("mRenName").value
+	      newName = document.getElementById("mRenName").value;
+          newName = cleanProcessName(newName);
 	      d3.select("#" + renameTextID).attr('name', newName)
 	      newNameShow = truncateName(newName, d3.select("#" + renameTextID).attr('class'));
 	      d3.select("#" + renameTextID).text(newNameShow)
@@ -1537,7 +1539,8 @@
 	              var warnUserPipe = false;
 	              var warnPipeText = '';
 	              var numOfProject = '';
-              [warnUserPipe, warnPipeText, numOfProject] = checkRevisionPipe(id);
+                  var numOfProjectPublic = '';
+              [warnUserPipe, warnPipeText, numOfProject, numOfProjectPublic] = checkRevisionPipe(id);
 	              //B.1 allow updating on existing pipeline
 	              if (warnUserPipe === false || saveOnExist === true) {
 	                  sl = JSON.stringify(savedList);
@@ -1562,7 +1565,7 @@
 	                  $('#confirmRevision').on('show.bs.modal', function (event) {
 	                      $(this).find('form').trigger('reset');
 	                      $('#confirmYesNoText').html(warnPipeText);
-	                      if (numOfProject === 1) {
+	                      if (numOfProjectPublic === 0) {
 	                          $('#saveOnExist').css('display', 'inline');
 	                      }
 	                  });
@@ -1832,6 +1835,7 @@
 	                  .attr("name", outputs[k].sname)
 	                  .attr("operator", outputs[k].operator)
 	                  .attr("closure", outputs[k].closure)
+	                  .attr("reg_ex", outputs[k].reg_ex)
 	                  .attr("status", "standard")
 	                  .attr("connect", "single")
 	                  .attr("class", findType(outputs[k].parameter_id) + " output")

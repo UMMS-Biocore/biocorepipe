@@ -54,9 +54,11 @@ class dbfuncs {
      {
         while(($row=$res->fetch_assoc()))
         {
-            if (isset($row['script'])){
-            $row['script'] = htmlspecialchars_decode($row['script'], ENT_QUOTES);
-            } else if (isset($row['sname'])){
+//            if (isset($row['script'])){
+//            $row['script'] = htmlspecialchars_decode($row['script'], ENT_QUOTES);
+//            } else if (isset($row['script_header'])){
+//            $row['script_header'] = htmlspecialchars_decode($row['script_header'], ENT_QUOTES);
+            if (isset($row['sname'])){
             $row['sname'] = htmlspecialchars_decode($row['sname'], ENT_QUOTES);
             } else if (isset($row['process_parameter_name'])){
             $row['process_parameter_name'] = htmlspecialchars_decode($row['process_parameter_name'], ENT_QUOTES);
@@ -1099,10 +1101,10 @@ class dbfuncs {
 
     // --------- Process -----------
 
-    public function getAllProcesses() {
-        $sql = "SELECT id, name, script FROM process";
-        return self::queryTable($sql);
-    }
+//    public function getAllProcesses() {
+//        $sql = "SELECT id, name, script FROM process";
+//        return self::queryTable($sql);
+//    }
 
     public function getAllProcessGroups($ownerID) {
         $userRole = json_decode($this->getUserRole($ownerID))[0]->{'role'};
@@ -1122,13 +1124,13 @@ class dbfuncs {
         return self::queryTable($sql);
     }
     
-    public function insertProcess($name, $process_gid, $summary, $process_group_id, $script, $rev_id, $rev_comment, $group, $perms, $publish, $ownerID) {
-        $sql = "INSERT INTO process(name, process_gid, summary, process_group_id, script, rev_id, rev_comment, owner_id, date_created, date_modified, last_modified_user, perms, group_id, publish) VALUES ('$name', '$process_gid', '$summary', '$process_group_id', '$script', '$rev_id','$rev_comment', '$ownerID', now(), now(), '$ownerID', '$perms', '$group', '$publish')";
+    public function insertProcess($name, $process_gid, $summary, $process_group_id, $script, $script_header, $rev_id, $rev_comment, $group, $perms, $publish, $script_mode, $script_mode_header, $ownerID) {
+        $sql = "INSERT INTO process(name, process_gid, summary, process_group_id, script, script_header, rev_id, rev_comment, owner_id, date_created, date_modified, last_modified_user, perms, group_id, publish, script_mode, script_mode_header) VALUES ('$name', '$process_gid', '$summary', '$process_group_id', '$script', '$script_header', '$rev_id','$rev_comment', '$ownerID', now(), now(), '$ownerID', '$perms', '$group', '$publish','$script_mode', '$script_mode_header')";
         return self::insTable($sql);
     }
 
-    public function updateProcess($id, $name, $process_gid, $summary, $process_group_id, $script, $group, $perms, $publish, $ownerID) {
-        $sql = "UPDATE process SET name= '$name', process_gid='$process_gid', summary='$summary', process_group_id='$process_group_id', script='$script',  last_modified_user='$ownerID', group_id='$group', perms='$perms', publish='$publish' WHERE id = '$id'";
+    public function updateProcess($id, $name, $process_gid, $summary, $process_group_id, $script, $script_header, $group, $perms, $publish, $script_mode, $script_mode_header, $ownerID) {
+        $sql = "UPDATE process SET name= '$name', process_gid='$process_gid', summary='$summary', process_group_id='$process_group_id', script='$script', script_header='$script_header',  last_modified_user='$ownerID', group_id='$group', perms='$perms', publish='$publish', script_mode='$script_mode', script_mode_header='$script_mode_header' WHERE id = '$id'";
         return self::runSQL($sql);
     }
 
@@ -1540,22 +1542,22 @@ class dbfuncs {
     }
     
     public function duplicateProcess($new_process_gid, $new_name, $old_id, $ownerID) {
-        $sql = "INSERT INTO process(process_group_id, name, summary, script, owner_id, perms, date_created, date_modified, last_modified_user, rev_id, process_gid) 
-                SELECT process_group_id, '$new_name', summary, script, '$ownerID', '3', now(), now(),'$ownerID', '0', '$new_process_gid'
+        $sql = "INSERT INTO process(process_group_id, name, summary, script, script_header, script_mode, script_mode_header, owner_id, perms, date_created, date_modified, last_modified_user, rev_id, process_gid) 
+                SELECT process_group_id, '$new_name', summary, script, script_header, script_mode, script_mode_header, '$ownerID', '3', now(), now(),'$ownerID', '0', '$new_process_gid'
                 FROM process
                 WHERE id='$old_id'";
         return self::insTable($sql);
     }
     public function createProcessRev($new_process_gid, $rev_comment, $rev_id, $old_id, $ownerID) {
-        $sql = "INSERT INTO process(process_group_id, name, summary, script, owner_id, perms, date_created, date_modified, last_modified_user, rev_id, process_gid, rev_comment) 
-                SELECT process_group_id, name, summary, script, '$ownerID', '3', now(), now(),'$ownerID', '$rev_id', '$new_process_gid', '$rev_comment'
+        $sql = "INSERT INTO process(process_group_id, name, summary, script, script_header, script_mode, script_mode_header, owner_id, perms, date_created, date_modified, last_modified_user, rev_id, process_gid, rev_comment) 
+                SELECT process_group_id, name, summary, script, script_header, script_mode, script_mode_header, '$ownerID', '3', now(), now(),'$ownerID', '$rev_id', '$new_process_gid', '$rev_comment'
                 FROM process
                 WHERE id='$old_id'";
         return self::insTable($sql);
     }
     public function duplicateProcessParameter($new_pro_id, $old_id, $ownerID){
-        $sql = "INSERT INTO process_parameter(process_id, parameter_id, type, sname, operator, closure, owner_id, perms, date_created, date_modified, last_modified_user) 
-                SELECT '$new_pro_id', parameter_id, type, sname, operator, closure, '$ownerID', '3', now(), now(),'$ownerID'
+        $sql = "INSERT INTO process_parameter(process_id, parameter_id, type, sname, operator, closure, reg_ex, owner_id, perms, date_created, date_modified, last_modified_user) 
+                SELECT '$new_pro_id', parameter_id, type, sname, operator, closure, reg_ex, '$ownerID', '3', now(), now(),'$ownerID'
                 FROM process_parameter
                 WHERE process_id='$old_id'";
         return self::insTable($sql);
@@ -1583,14 +1585,14 @@ class dbfuncs {
 		return self::queryTable($sql);
     }
 
-    public function insertProcessParameter($sname, $process_id, $parameter_id, $type, $closure, $operator, $perms, $group_id, $ownerID) {
-        $sql = "INSERT INTO process_parameter(sname, process_id, parameter_id, type, closure, operator, owner_id, date_created, date_modified, last_modified_user, perms, group_id) 
-                VALUES ('$sname', '$process_id', '$parameter_id', '$type', '$closure', '$operator', '$ownerID', now(), now(), '$ownerID', '$perms', '$group_id')";
+    public function insertProcessParameter($sname, $process_id, $parameter_id, $type, $closure, $operator, $reg_ex, $perms, $group_id, $ownerID) {
+        $sql = "INSERT INTO process_parameter(sname, process_id, parameter_id, type, closure, operator, reg_ex, owner_id, date_created, date_modified, last_modified_user, perms, group_id) 
+                VALUES ('$sname', '$process_id', '$parameter_id', '$type', '$closure', '$operator', '$reg_ex', '$ownerID', now(), now(), '$ownerID', '$perms', '$group_id')";
         return self::insTable($sql);
     }
     
-    public function updateProcessParameter($id, $sname, $process_id, $parameter_id, $type, $closure, $operator, $perms, $group_id, $ownerID) {
-        $sql = "UPDATE process_parameter SET sname='$sname', process_id='$process_id', parameter_id='$parameter_id', type='$type', closure='$closure', operator='$operator', last_modified_user ='$ownerID', perms='$perms', group_id='$group_id'  WHERE id = '$id'";
+    public function updateProcessParameter($id, $sname, $process_id, $parameter_id, $type, $closure, $operator, $reg_ex, $perms, $group_id, $ownerID) {
+        $sql = "UPDATE process_parameter SET sname='$sname', process_id='$process_id', parameter_id='$parameter_id', type='$type', closure='$closure', operator='$operator', reg_ex='$reg_ex', last_modified_user ='$ownerID', perms='$perms', group_id='$group_id'  WHERE id = '$id'";
         return self::runSQL($sql);
     }
 
@@ -1626,6 +1628,7 @@ class dbfuncs {
                 pro.id as process_id,
                 pro.name as process_name,
                 pro.script as process_script,
+                pro.script_header as process_script_header,
                 propara.sname as process_parameter_name,
                 propara.type as process_parameter_type,
                 para.id as parameter_id,	
@@ -1678,11 +1681,11 @@ public function getPublicPipelines() {
         } else {
             $userRole = json_decode($this->getUserRole($ownerID))[0]->{'role'};
             if ($userRole == "admin"){
-                $sql = "SELECT DISTINCT p.id, p.process_group_id, p.name, p.summary, p.script, p.rev_id, p.perms, p.group_id, p.publish, IF(p.owner_id='$ownerID',1,0) as own FROM process p ";
+                $sql = "SELECT DISTINCT p.id, p.process_group_id, p.name, p.summary, p.script, p.script_header, p.script_mode, p.script_mode_header, p.rev_id, p.perms, p.group_id, p.publish, IF(p.owner_id='$ownerID',1,0) as own FROM process p ";
                 return self::queryTable($sql);
             }
 		}
-		$sql = "SELECT DISTINCT p.id, p.process_group_id, p.name, p.summary, p.script, p.rev_id, p.perms, p.group_id, p.publish, IF(p.owner_id='$ownerID',1,0) as own  
+		$sql = "SELECT DISTINCT p.id, p.process_group_id, p.name, p.summary, p.script, p.script_header, p.script_mode, p.script_mode_header, p.rev_id, p.perms, p.group_id, p.publish, IF(p.owner_id='$ownerID',1,0) as own  
         FROM process p
         LEFT JOIN user_group ug ON p.group_id=ug.g_id
         WHERE p.owner_id = '$ownerID' OR p.perms = 63 OR (ug.u_id ='$ownerID' and p.perms = 15)";
@@ -1695,11 +1698,11 @@ public function getPublicPipelines() {
         }else {
             $userRole = json_decode($this->getUserRole($ownerID))[0]->{'role'};
             if ($userRole == "admin"){
-                $sql = "SELECT DISTINCT p.id, p.process_group_id, p.name, p.summary, p.script, p.rev_id, p.perms, p.group_id, p.publish, IF(p.owner_id='$ownerID',1,0) as own FROM process p where p.id = '$id'";
+                $sql = "SELECT DISTINCT p.id, p.process_group_id, p.name, p.summary, p.script, p.script_header, p.script_mode, p.script_mode_header, p.rev_id, p.perms, p.group_id, p.publish, IF(p.owner_id='$ownerID',1,0) as own FROM process p where p.id = '$id'";
                 return self::queryTable($sql);
             }
 		}
-		$sql = "SELECT DISTINCT p.id, p.process_group_id, p.name, p.summary, p.script, p.rev_id, p.perms, p.group_id, p.publish, IF(p.owner_id='$ownerID',1,0) as own  
+		$sql = "SELECT DISTINCT p.id, p.process_group_id, p.name, p.summary, p.script, p.script_header, p.script_mode, p.script_mode_header, p.rev_id, p.perms, p.group_id, p.publish, IF(p.owner_id='$ownerID',1,0) as own  
         FROM process p
         LEFT JOIN user_group ug ON p.group_id=ug.g_id
         where p.id = '$id' AND (p.owner_id = '$ownerID' OR p.perms = 63 OR (ug.u_id ='$ownerID' and p.perms = 15))";
@@ -1746,11 +1749,15 @@ public function getPublicPipelines() {
 		return self::queryTable($sql);
 	}
 	public function getInputsPP($id) {
-		$sql = "SELECT parameter_id, sname, id, operator, closure FROM process_parameter where process_id = '$id' and type = 'input'";
+		$sql = "SELECT parameter_id, sname, id, operator, closure, reg_ex FROM process_parameter where process_id = '$id' and type = 'input'";
 		return self::queryTable($sql);
 	}
 	public function checkPipeline($process_id, $ownerID) {
 		$sql = "SELECT id, name FROM biocorepipe_save WHERE (owner_id = '$ownerID') AND nodes LIKE '%\"$process_id\",\"%'";
+		return self::queryTable($sql);
+	}
+    public function checkPipelinePublic($process_id, $ownerID) {
+		$sql = "SELECT id, name FROM biocorepipe_save WHERE (owner_id != '$ownerID') AND nodes LIKE '%\"$process_id\",\"%'";
 		return self::queryTable($sql);
 	}
     public function checkPipelinePerm($process_id, $ownerID) {
@@ -1782,6 +1789,13 @@ public function getPublicPipelines() {
         WHERE (pp.owner_id = '$ownerID') AND pp.pipeline_id = '$pipeline_id'";
 		return self::queryTable($sql);
 	}
+    public function checkProjectPublic($pipeline_id, $ownerID) {
+		$sql = "SELECT DISTINCT pp.id, p.name 
+        FROM project_pipeline pp
+        INNER JOIN project p ON pp.project_id = p.id
+        WHERE (pp.owner_id != '$ownerID') AND pp.pipeline_id = '$pipeline_id'";
+		return self::queryTable($sql);
+	}
     public function getMaxProcess_gid() {
 		$sql = "SELECT MAX(process_gid) process_gid FROM process";
 		return self::queryTable($sql);
@@ -1807,7 +1821,7 @@ public function getPublicPipelines() {
 		return self::queryTable($sql);
 	}
 	public function getOutputsPP($id) {
-		$sql = "SELECT parameter_id, sname, id,operator, closure FROM process_parameter where process_id = '$id' and type = 'output'";
+		$sql = "SELECT parameter_id, sname, id, operator, closure, reg_ex FROM process_parameter where process_id = '$id' and type = 'output'";
 		return self::queryTable($sql);
 	}
 	//update if user owns the project

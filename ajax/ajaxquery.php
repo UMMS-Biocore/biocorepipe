@@ -154,9 +154,9 @@ else if ($p=="savefeedback"){
     $data = $db -> savefeedback($email,$message,$url);
 }
 
-else if ($p=="getAllProcesses"){
-    $data = $db -> getAllProcesses();
-}
+//else if ($p=="getAllProcesses"){
+//    $data = $db -> getAllProcesses();
+//}
 else if ($p=="getAllGroups"){
     $data = $db -> getAllGroups();
 }
@@ -551,7 +551,10 @@ else if ($p=="saveProcess"){
     $process_gid = $_REQUEST['process_gid'];
     $summary = $_REQUEST['summary'];
     $process_group_id = $_REQUEST['process_group_id'];
-    $script = htmlspecialchars($_REQUEST['script'], ENT_QUOTES);
+    $script = htmlspecialchars(urldecode($_REQUEST['script']), ENT_QUOTES);
+    $script_header = htmlspecialchars(urldecode($_REQUEST['script_header']), ENT_QUOTES);
+    $script_mode = $_REQUEST['script_mode'];
+    $script_mode_header = $_REQUEST['script_mode_header'];
     $rev_id = $_REQUEST['rev_id']; 
     $rev_comment = $_REQUEST['rev_comment']; 
     $group_id = $_REQUEST['group']; 
@@ -560,12 +563,12 @@ else if ($p=="saveProcess"){
     settype($rev_id, 'integer');
     settype($group_id, 'integer');
     if (!empty($id)) {
-        $data = $db->updateProcess($id, $name, $process_gid, $summary, $process_group_id, $script, $group_id, $perms, $publish, $ownerID);
+        $data = $db->updateProcess($id, $name, $process_gid, $summary, $process_group_id, $script, $script_header, $group_id, $perms, $publish, $script_mode, $script_mode_header, $ownerID);
         if ($perms !== "3"){
             $db->updateProcessGroupGroupPerm($id, $group_id, $perms, $ownerID);
         }
     } else {
-        $data = $db->insertProcess($name, $process_gid, $summary, $process_group_id, $script, $rev_id, $rev_comment, $group_id, $perms, $publish, $ownerID);
+        $data = $db->insertProcess($name, $process_gid, $summary, $process_group_id, $script, $script_header, $rev_id, $rev_comment, $group_id, $perms, $publish, $script_mode, $script_mode_header, $ownerID);
         if ($perms !== "3"){
             $obj = json_decode($data,true);
             $id = $obj["id"];
@@ -666,6 +669,7 @@ else if ($p=="saveProjectPipeline"){
 else if ($p=="saveProcessParameter"){
     $sname = htmlspecialchars(urldecode($_REQUEST['sname']), ENT_QUOTES);
     $closure = htmlspecialchars(urldecode($_REQUEST['closure']), ENT_QUOTES);
+    $reg_ex = htmlspecialchars(urldecode($_REQUEST['reg_ex']), ENT_QUOTES);
     $operator = $_REQUEST['operator'];
     $process_id = $_REQUEST['process_id'];
     $parameter_id = $_REQUEST['parameter_id'];
@@ -674,12 +678,12 @@ else if ($p=="saveProcessParameter"){
     $group_id= $_REQUEST['group'];
     settype($group_id, 'integer');
     if (!empty($id)) {
-        $data = $db->updateProcessParameter($id, $sname, $process_id, $parameter_id, $type, $closure, $operator, $perms, $group_id, $ownerID);
+        $data = $db->updateProcessParameter($id, $sname, $process_id, $parameter_id, $type, $closure, $operator, $reg_ex, $perms, $group_id, $ownerID);
         if ($perms !== "3"){
             $db->updateParameterGroupPermById($parameter_id, $group_id, $perms, $ownerID);
         }
     } else {
-        $data = $db->insertProcessParameter($sname, $process_id, $parameter_id, $type, $closure, $operator, $perms, $group_id, $ownerID);
+        $data = $db->insertProcessParameter($sname, $process_id, $parameter_id, $type, $closure, $operator, $reg_ex, $perms, $group_id, $ownerID);
         if ($perms !== "3"){
             $db->updateParameterGroupPermById($parameter_id, $group_id, $perms, $ownerID);
         }
@@ -721,6 +725,11 @@ else if ($p=="checkPipeline")
 	$process_id = $_REQUEST['process_id'];
     $data = $db->checkPipeline($process_id, $ownerID);
 }
+else if ($p=="checkPipelinePublic")
+{
+	$process_id = $_REQUEST['process_id'];
+    $data = $db->checkPipelinePublic($process_id, $ownerID);
+}
 else if ($p=="checkPipelinePerm")
 {
 	$process_id = $_REQUEST['process_id'];
@@ -735,6 +744,11 @@ else if ($p=="checkProject")
 {
 	$pipeline_id = $_REQUEST['pipeline_id'];
     $data = $db->checkProject($pipeline_id, $ownerID);
+}
+else if ($p=="checkProjectPublic")
+{
+	$pipeline_id = $_REQUEST['pipeline_id'];
+    $data = $db->checkProjectPublic($pipeline_id, $ownerID);
 }
 else if ($p=="checkParameter")
 {
