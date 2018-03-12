@@ -30,12 +30,12 @@ before_install:
 #  - sudo sed -i '$ a\export JAVA_OPTS="-Djava.util.prefs.systemRoot=/var/www/.java Djava.util.prefs.userRoot=/var/www/.java/.userPrefs\"' /etc/apache2/envvars
 #  - sudo cat /etc/apache2/envvars
   
-  before_script:
+#  before_script:
 #  - sudo a2enmod actions
 #  - sudo a2enmod rewrite
-  - sudo service apache2 restart
-  - mysql -u root -e "CREATE USER 'myproject'@'localhost' IDENTIFIED BY 'mypass'"
-  - mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'myproject'@'localhost' WITH GRANT OPTION;"
+#  - sudo service apache2 restart
+#  - mysql -u root -e "CREATE USER 'myproject'@'localhost' IDENTIFIED BY 'mypass'"
+#  - mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'myproject'@'localhost' WITH GRANT OPTION;"
   # update database
 #  - sudo mysql -e "CREATE DATABASE biocore;" -uroot
 #  - sudo mysql -e "CREATE USER 'bioinfo'@'localhost' IDENTIFIED BY 'bioinfo2013'; GRANT ALL ON *.* TO 'bioinfo'@'localhost';" -uroot
