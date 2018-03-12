@@ -24,20 +24,20 @@ $(function () {
 });
 
 function cleanProcessName(proName) {
-        proName = proName.replace(/ /g, "_");
-        proName = proName.replace(/-/g, "_");
-        proName = proName.replace(/,/g, "_");
-        proName = proName.replace(/\$/g, "_");
-        proName = proName.replace(/\!/g, "_");
-        proName = proName.replace(/\</g, "_");
-        proName = proName.replace(/\>/g, "_");
-        proName = proName.replace(/\?/g, "_");
-        proName = proName.replace(/\(/g, "_");
-        proName = proName.replace(/\"/g, "_");
-        proName = proName.replace(/\'/g, "_");
-        proName = proName.replace(/\./g, "_");
-        return proName;
-    }
+    proName = proName.replace(/ /g, "_");
+    proName = proName.replace(/-/g, "_");
+    proName = proName.replace(/,/g, "_");
+    proName = proName.replace(/\$/g, "_");
+    proName = proName.replace(/\!/g, "_");
+    proName = proName.replace(/\</g, "_");
+    proName = proName.replace(/\>/g, "_");
+    proName = proName.replace(/\?/g, "_");
+    proName = proName.replace(/\(/g, "_");
+    proName = proName.replace(/\"/g, "_");
+    proName = proName.replace(/\'/g, "_");
+    proName = proName.replace(/\./g, "_");
+    return proName;
+}
 
 //ace process header editor
 var editorProHeader = ace.edit("editorProHeader");
@@ -100,7 +100,7 @@ function cleanProcessModal() {
     if (advOptProClass !== "row collapse") {
         $('#mAdvProCollap').trigger("click");
     }
-$('#createRevisionBut').css('display', "none");
+    $('#createRevisionBut').css('display', "none");
     $('#saveprocess').css('display', "inline");
 
 }
@@ -1519,8 +1519,8 @@ $(document).ready(function () {
             loadSelectedProcess(selProcessId);
             var pName = $('#mName').val();
             $('#selectProcess').attr("pName", pName);
-                setTimeout(function () { disableProModal(selProcessId); }, 1);
-            
+            setTimeout(function () { disableProModal(selProcessId); }, 1);
+
 
         }
 
@@ -1637,7 +1637,7 @@ $(document).ready(function () {
         $('#mParamList').css('display', "inline");
     });
 
-    
+
     // Add process modal to database
     $('#addProcessModal').on('click', '#saveprocess', function (event) {
         event.preventDefault();
@@ -1666,8 +1666,16 @@ $(document).ready(function () {
             for (var i = 0; i < 5; i++) {
                 dataToProcess.push(data[i]);
             }
-            var scripteditor = encodeURIComponent(editor.getValue());
-            var scripteditorProHeader = encodeURIComponent(editorProHeader.getValue());
+            var scripteditor = editor.getValue();
+            var scripteditorProHeader = editorProHeader.getValue();
+            if (scripteditor === templategroovy || scripteditor === templateperl || scripteditor === templatepython || scripteditor === templatesh) {
+                scripteditor = "";
+            }
+            if (scripteditorProHeader === templategroovy || scripteditorProHeader === templateperl || scripteditorProHeader === templatepython || scripteditorProHeader === templatesh) {
+                scripteditorProHeader = "";
+            }
+            var scripteditor = encodeURIComponent(scripteditor);
+            var scripteditorProHeader = encodeURIComponent(scripteditorProHeader);
             var maxProcess_gid = getValues({ p: "getMaxProcess_gid" })[0].process_gid;
             var newProcess_gid = parseInt(maxProcess_gid) + 1;
             var script_mode = $('#script_mode').val();
@@ -1731,8 +1739,16 @@ $(document).ready(function () {
                 for (var i = 1; i < 6; i++) {
                     dataToProcess.push(data[i]);
                 }
-                var scripteditor = encodeURIComponent(editor.getValue());
-                var scripteditorProHeader = encodeURIComponent(editorProHeader.getValue());
+                var scripteditor = editor.getValue();
+                var scripteditorProHeader = editorProHeader.getValue();
+                if (scripteditor === templategroovy || scripteditor === templateperl || scripteditor === templatepython || scripteditor === templatesh) {
+                    scripteditor = "";
+                }
+                if (scripteditorProHeader === templategroovy || scripteditorProHeader === templateperl || scripteditorProHeader === templatepython || scripteditorProHeader === templatesh) {
+                    scripteditorProHeader = "";
+                }
+                var scripteditor = encodeURIComponent(scripteditor);
+                var scripteditorProHeader = encodeURIComponent(scripteditorProHeader);
                 var process_gid = getValues({ p: "getProcess_gid", "process_id": proID })[0].process_gid;
                 var script_mode = $('#script_mode').val();
                 var script_mode_header = $('#script_mode_header').val();
@@ -1794,8 +1810,16 @@ $(document).ready(function () {
                     for (var i = 1; i < 6; i++) {
                         dataToProcess.push(data[i]);
                     }
-                    var scripteditor = encodeURIComponent(editor.getValue());
-                    var scripteditorProHeader = encodeURIComponent(editorProHeader.getValue());
+                    var scripteditor = editor.getValue();
+                    var scripteditorProHeader = editorProHeader.getValue();
+                    if (scripteditor === templategroovy || scripteditor === templateperl || scripteditor === templatepython || scripteditor === templatesh) {
+                        scripteditor = "";
+                    }
+                    if (scripteditorProHeader === templategroovy || scripteditorProHeader === templateperl || scripteditorProHeader === templatepython || scripteditorProHeader === templatesh) {
+                        scripteditorProHeader = "";
+                    }
+                    var scripteditor = encodeURIComponent(scripteditor);
+                    var scripteditorProHeader = encodeURIComponent(scripteditorProHeader);
                     var process_gid = getValues({ p: "getProcess_gid", "process_id": proID })[0].process_gid;
                     var script_mode = $('#script_mode').val();
                     var script_mode_header = $('#script_mode_header').val();
@@ -1851,8 +1875,16 @@ $(document).ready(function () {
                         for (var i = 2; i < 6; i++) { //not included by process id i=1
                             dataToProcess.push(data[i]);
                         }
-                        var scripteditor = encodeURIComponent(editor.getValue());
-                        var scripteditorProHeader = encodeURIComponent(editorProHeader.getValue());
+                        var scripteditor = editor.getValue();
+                        var scripteditorProHeader = editorProHeader.getValue();
+                        if (scripteditor === templategroovy || scripteditor === templateperl || scripteditor === templatepython || scripteditor === templatesh) {
+                            scripteditor = "";
+                        }
+                        if (scripteditorProHeader === templategroovy || scripteditorProHeader === templateperl || scripteditorProHeader === templatepython || scripteditorProHeader === templatesh) {
+                            scripteditorProHeader = "";
+                        }
+                        var scripteditor = encodeURIComponent(scripteditor);
+                        var scripteditorProHeader = encodeURIComponent(scripteditorProHeader);
                         var process_gid = getValues({ p: "getProcess_gid", "process_id": proID })[0].process_gid;
                         var maxRev_id = getValues({ p: "getMaxRev_id", "process_gid": process_gid })[0].rev_id;
                         var newRev_id = parseInt(maxRev_id) + 1;

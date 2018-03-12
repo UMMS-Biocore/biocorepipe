@@ -1,3 +1,6 @@
+12.03.2018 Version 0.0.93
+header process script added to nextflow text.
+
 11.03.2018 Version 0.0.92
 input/output parameter name automaticaly cleaned from special characters and spaces
 Save on existing process/pipeline now available if nobody else is using than owner

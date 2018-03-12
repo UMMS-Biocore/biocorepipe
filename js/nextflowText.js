@@ -125,7 +125,10 @@ function createNextflowFile(nxf_runmode) {
         className = document.getElementById(key).getAttribute("class");
         mainProcessId = className.split("-")[1]
         if (mainProcessId !== "inPro" && mainProcessId !== "outPro") { //if it is not input parameter print process data
-            proText = "process " + processList[key] + " {\n\n" + publishDir(mainProcessId, key) + IOandScriptForNf(mainProcessId, key) + "\n\n}\n" + outputFileName(mainProcessId, key) + "\n\n"
+            var body = "";
+            var script_header = "";
+            [body, script_header] = IOandScriptForNf(mainProcessId, key);
+            proText = script_header + "\nprocess " + processList[key] + " {\n\n" + publishDir(mainProcessId, key) + body + "\n\n}\n" + outputFileName(mainProcessId, key) + "\n\n"
             nextText = nextText + proText
         }
     });
@@ -383,6 +386,11 @@ function IOandScriptForNf(id, currgid) {
         "process_id": id
     })
     script = decodeHtml(processData[0].script);
+    if (processData[0].script_header !== null){
+    var script_header = decodeHtml(processData[0].script_header);
+    } else {
+        script_header = "";
+    }
     var lastLetter = script.length - 1;
     if (script[0] === '"' && script[lastLetter] === '"') {
         script = script.substring(1, script.length - 1); //remove first and last duble quote
@@ -526,5 +534,5 @@ function IOandScriptForNf(id, currgid) {
 
     }
     body = bodyInput + "\n" + bodyOutput + "\n" + script
-    return body
+    return [body, script_header]
 }
