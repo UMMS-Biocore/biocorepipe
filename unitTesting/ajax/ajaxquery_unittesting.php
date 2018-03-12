@@ -1,13 +1,13 @@
 <?php
-use PHPUnit\Framework\TestCase;
 if (!isset($_SESSION) || !is_array($_SESSION)) session_start();
 $_SESSION['ownerID'] = '1';
 $_SESSION['username'] = 'nephantes';
 $_SESSION['google_id'] = '107923577997088216371';
 chdir('ajax/');
+use PHPUnit\Framework\TestCase;
 class ajaxqueryTest extends TestCase
 {
-	public function testGetProjects() {
+	public function testgetProjects() {
 		ob_start();
 		$_GET['p'] = 'getProjects';
 		$_GET['id'] = 62;
