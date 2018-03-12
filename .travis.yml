@@ -61,7 +61,7 @@ script:
   #	api
 #  - phpunit unitTesting/api/funcs_unittest.php
 
-after_script:
+#after_script:
 #  - mysql -e "show databases;" -uroot
 
   
