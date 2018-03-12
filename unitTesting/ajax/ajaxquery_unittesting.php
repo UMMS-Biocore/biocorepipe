@@ -1,10 +1,11 @@
 <?php
+use PHPUnit\Framework\TestCase;
 if (!isset($_SESSION) || !is_array($_SESSION)) session_start();
 $_SESSION['ownerID'] = '1';
 $_SESSION['username'] = 'nephantes';
 $_SESSION['google_id'] = '107923577997088216371';
 chdir('ajax/');
-class ajaxquery_unittest 
+class ajaxquery_unittest extends PHPUnit_Framework_TestCase
 {
 	public function getProjects() {
 		ob_start();
