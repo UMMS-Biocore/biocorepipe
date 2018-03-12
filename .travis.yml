@@ -29,6 +29,10 @@ before_install:
 #  - sudo chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www
 #  - sudo sed -i '$ a\export JAVA_OPTS="-Djava.util.prefs.systemRoot=/var/www/.java Djava.util.prefs.userRoot=/var/www/.java/.userPrefs\"' /etc/apache2/envvars
 #  - sudo cat /etc/apache2/envvars
+  - sudo wget https://phar.phpunit.de/phpunit-7.0.2.phar
+  - sudo chmod +x phpunit-7.0.2.phar
+  - sudo mv phpunit-7.0.2.phar /usr/local/bin/phpunit
+  - phpunit --version
   
 before_script:
 #  - sudo a2enmod actions
