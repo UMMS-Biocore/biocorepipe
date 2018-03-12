@@ -4,7 +4,7 @@ $_SESSION['ownerID'] = '1';
 $_SESSION['username'] = 'nephantes';
 $_SESSION['google_id'] = '107923577997088216371';
 chdir('ajax/');
-class ajaxquery_unittest extends PHPUnit_Framework_TestCase
+class ajaxquery_unittest 
 {
 	public function getProjects() {
 		ob_start();
