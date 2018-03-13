@@ -1,5 +1,5 @@
 <?php
-session_start(); 
+if (!isset($_SESSION) || !is_array($_SESSION)) session_start();
 $ownerID = isset($_SESSION['ownerID']) ? $_SESSION['ownerID'] : "";
 if ($ownerID != ''){$login = 1;} 
 else { $login = 0;}

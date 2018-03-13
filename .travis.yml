@@ -1,0 +1,51 @@
+# see http://about.travis-ci.org/docs/user/languages/php/ for more hints
+language: php
+
+# list any PHP version you want to test against
+php:
+  - 7.2.3
+
+env:
+  - mysql
+
+services:
+  - mysql
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get -y install aptitude
+  - sudo apt-get -y install apache2 php-pear curl lynx-cur libreadline-dev libsqlite3-dev libbz2-dev libssl-dev python python-dev libmysqlclient-dev python-pip git expect default-jre libxml2-dev software-properties-common gdebi-core wget tree vim libv8-dev subversion g++ gcc gfortran zlib1g-dev libx11-dev xorg-dev libbz2-dev liblzma-dev libpcre3-dev libcurl4-openssl-dev
+  - sudo apt-get -y install python-software-properties
+  - sudo apt-get update
+  - git clone https://github.com/UMMS-Biocore/biocorepipe.git /home/travis/build/dolphinnext
+#  - sudo wget https://phar.phpunit.de/phpunit-6.5.phar
+#  - sudo chmod +x phpunit-6.5.phar
+#  - sudo mv phpunit-6.5.phar /usr/local/bin/phpunit
+#  - phpunit --version
+  
+before_script:
+  - sudo service apache2 restart
+  - sudo mysql -e "CREATE DATABASE biocorepipe;" -uroot
+  - cd db
+  - sudo mysql -u root biocorepipe < biocorepipe.sql
+  - sudo ./runUpdate biocorepipe
+  - cd ..
+  
+#  - sudo mysql -e "use biocore; INSERT INTO amazon_credentials ( aws_access_key_id, aws_secret_access_key, bucket ) VALUES ( 'test_access', 'test_secret', 'test_bucket' );" -uroot
+#  - sudo mkdir -p /home/travis/build/pub /home/travis/build/logs tmp/files tmp/logs tmp/logs/run4 tmp/logs/run5 tmp/logs/run6 tmp/logs/run7 tmp/logs/run8
+  - printf "[Dolphinnext]\nDB=biocorepipe\nDBUSER=root\nDBPASS=\nDBHOST=localhost\nDBPORT=3306\nSSHPATH=/export/.dolphinnext/.ssh\nAMAZON=z76fg0iua298gh4\nAMZPATH=/export/.dolphinnext/.amz\n[CONFIG]\nTIMEZONE=America/New_York\nRUNPATH=tmp/logs" > config/.sec
+ 
+script:
+  #	ajax
+  - phpunit unitTesting/ajax/ajaxquery_unittesting.php
+
+after_script:
+  - mysql -e "show databases;" -uroot
+  - mysql -e "use biocorepipe; show tables;" -uroot
+  - mysql -e "use biocorepipe; SELECT * FROM biocorepipe_save;" -uroot
+
+  
+  
+  
+  
+  

@@ -6,7 +6,7 @@ ini_set('report_errors','on');
 require_once("../ajax/dbfuncs.php");
 $db = new dbfuncs();
 $p = isset($_REQUEST["p"]) ? $_REQUEST["p"] : "";
-session_start();
+if (!isset($_SESSION) || !is_array($_SESSION)) session_start();
 if ($p=="saveUser"){
     $google_id = $_REQUEST['google_id'];
     $name = $_REQUEST['name'];

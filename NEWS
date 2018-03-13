@@ -1,3 +1,9 @@
+13.03.2018 Version 0.0.95
+pipelineModal.js update for empty process columns.
+
+12.03.2018 Version 0.0.94
+Commented out local run option in php.
+
 12.03.2018 Version 0.0.93
 header process script added to nextflow text.
 
