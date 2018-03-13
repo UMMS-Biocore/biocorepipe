@@ -7,7 +7,7 @@ require_once("../ajax/dbfuncs.php");
 
 $db = new dbfuncs();
 
-session_start();
+if (!isset($_SESSION) || !is_array($_SESSION)) session_start();
 $ownerID = isset($_SESSION['ownerID']) ? $_SESSION['ownerID'] : "";
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : "";
 $google_id = isset($_SESSION['google_id']) ? $_SESSION['google_id'] : "";
@@ -15,24 +15,21 @@ $google_id = isset($_SESSION['google_id']) ? $_SESSION['google_id'] : "";
 
 $id = isset($_REQUEST["id"]) ? $_REQUEST["id"] : "";
 $p = isset($_REQUEST["p"]) ? $_REQUEST["p"] : "";
-$start = NULL;
-$end = NULL;
-if (isset($_REQUEST["start"])) {
-	$start = $_REQUEST["start"];
-	$end = $_REQUEST["end"];
-}
-if (isset($_REQUEST["type"])) {
-    $type = $_REQUEST["type"];
-}
+//$start = NULL;
+//$end = NULL;
+//if (isset($_REQUEST["start"])) {
+//	$start = $_REQUEST["start"];
+//	$end = $_REQUEST["end"];
+//}
+//if (isset($_REQUEST["type"])) {
+//    $type = $_REQUEST["type"];
+//}
 if (isset($_REQUEST['id'])) {
     $id = $_REQUEST['id'];
 }
 
 
-//if ($p=="createNextflow"){
-//	$data = $db -> getNextflow($id);
-//}
-else if ($p=="saveRun"){
+ if ($p=="saveRun"){
 	$project_pipeline_id = $_REQUEST['project_pipeline_id'];
 	$profileType = $_REQUEST['profileType'];
 	$profileId = $_REQUEST['profileId'];
@@ -835,9 +832,12 @@ else if ($p=="loadPipeline")
 	$id = $_REQUEST['id'];
     $data = $db->loadPipeline($id,$ownerID);
 }
-
+if (!headers_sent()) {
 header('Cache-Control: no-cache, must-revalidate');
 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 header('Content-type: application/json');
 echo $data;
 exit;
+}else{
+   echo $data;
+}

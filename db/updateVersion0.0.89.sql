@@ -1,3 +1,4 @@
+use biocorepipe;
 ALTER TABLE biocorepipe_save MODIFY rev_id int(11);
 ALTER TABLE biocorepipe_save MODIFY rev_comment varchar(20);
 ALTER TABLE biocorepipe_save MODIFY pipeline_gid int(11);

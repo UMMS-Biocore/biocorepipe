@@ -3,14 +3,16 @@ if (!isset($_SESSION) || !is_array($_SESSION)) session_start();
 $_SESSION['ownerID'] = '1';
 $_SESSION['username'] = 'nephantes';
 $_SESSION['google_id'] = '107923577997088216371';
+$ownerID = isset($_SESSION['ownerID']) ? $_SESSION['ownerID'] : "";
+
 chdir('ajax/');
 use PHPUnit\Framework\TestCase;
-class ajaxqueryTest extends TestCase
+class denemeTest extends TestCase
 {
 	public function testgetProjects() {
 		ob_start();
-		$_GET['p'] = 'getProjects';
-		$_GET['id'] = 62;
+		$_REQUEST['p'] = 'getProjects';
+		$_REQUEST['id'] = 62;
 		include('ajaxquery.php');
 		$this->assertEquals(json_decode($data)[0]->id,'62');
 		$this->assertEquals(json_decode($data)[0]->name,'testRuns');

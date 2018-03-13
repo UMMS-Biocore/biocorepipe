@@ -70,6 +70,8 @@ script:
 
 after_script:
   - mysql -e "show databases;" -uroot
+  - mysql -e "use biocorepipe; show tables;" -uroot
+  - mysql -e "use biocorepipe; SELECT * FROM biocorepipe_save;" -uroot
 
   
   
