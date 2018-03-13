@@ -18,13 +18,9 @@ before_install:
   - sudo apt-get -y install python-software-properties
   - sudo apt-get update
   - git clone https://github.com/UMMS-Biocore/biocorepipe.git /home/travis/build/dolphinnext
-#  - sudo wget https://phar.phpunit.de/phpunit-7.0.2.phar
-#  - sudo chmod +x phpunit-7.0.2.phar
-#  - sudo mv phpunit-7.0.2.phar /usr/local/bin/phpunit
-#  - phpunit --version
-  - sudo wget https://phar.phpunit.de/phpunit-5.7.phar
-  - sudo chmod +x phpunit-5.7.phar
-  - sudo mv phpunit-5.7.phar /usr/local/bin/phpunit
+  - sudo wget https://phar.phpunit.de/phpunit-7.0.2.phar
+  - sudo chmod +x phpunit-7.0.2.phar
+  - sudo mv phpunit-7.0.2.phar /usr/local/bin/phpunit
   - phpunit --version
   
 before_script:

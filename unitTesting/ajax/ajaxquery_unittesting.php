@@ -9,6 +9,10 @@ chdir('ajax/');
 use PHPUnit\Framework\TestCase;
 class ajaxQueryTest extends TestCase
 {
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
         public function testInsertProject() {
 		ob_start();
 		$_REQUEST['p'] = 'saveProject';
@@ -18,7 +22,10 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)->id,'67');
 		ob_end_clean();
 	}
-    
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
 	public function testGetProjects() {
 		ob_start();
 		$_REQUEST['p'] = 'getProjects';
