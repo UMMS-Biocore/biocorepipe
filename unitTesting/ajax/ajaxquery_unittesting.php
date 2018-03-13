@@ -9,10 +9,10 @@ chdir('ajax/');
 use PHPUnit\Framework\TestCase;
 class ajaxQueryTest extends TestCase
 {
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
+        /**
+     * @backupGlobals disabled
      */
+
         public function testInsertProject() {
 		ob_start();
 		$_REQUEST['p'] = 'saveProject';
@@ -23,8 +23,7 @@ class ajaxQueryTest extends TestCase
 		ob_end_clean();
 	}
     /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
+     * @backupGlobals disabled
      */
 	public function testGetProjects() {
 		ob_start();
