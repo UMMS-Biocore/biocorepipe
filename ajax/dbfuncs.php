@@ -54,10 +54,6 @@ class dbfuncs {
      {
         while(($row=$res->fetch_assoc()))
         {
-//            if (isset($row['script'])){
-//            $row['script'] = htmlspecialchars_decode($row['script'], ENT_QUOTES);
-//            } else if (isset($row['script_header'])){
-//            $row['script_header'] = htmlspecialchars_decode($row['script_header'], ENT_QUOTES);
             if (isset($row['sname'])){
             $row['sname'] = htmlspecialchars_decode($row['sname'], ENT_QUOTES);
             } else if (isset($row['process_parameter_name'])){
@@ -330,7 +326,6 @@ class dbfuncs {
             // get outputdir
             $proPipeAll = json_decode($this->getProjectPipelines($project_pipeline_id,"",$ownerID));
             $outdir = $proPipeAll[0]->{'output_dir'};
-            
             $run_path_real = "$outdir/run{$project_pipeline_id}";
             //check nextflow file
             $log_path_server = "../{$this->run_path}/run{$project_pipeline_id}";
@@ -396,7 +391,6 @@ class dbfuncs {
             return $log_array;
         }
     }
-    
     
     function runCmd($project_pipeline_id, $profileType, $profileId, $log_array, $ownerID)
     {
@@ -585,7 +579,6 @@ class dbfuncs {
              $log_array['create_key_status'] = "error";
         }
         return json_encode($log_array);
-        
     }
      public function readGenerateKeys($ownerID) {
         $keyPubPath ="{$this->ssh_path}/.tmp$ownerID/tkey.pub";
@@ -598,10 +591,7 @@ class dbfuncs {
         $cmd = "rm -rf {$this->ssh_path}/.tmp$ownerID 2>&1 & echo $! &";
         $log_remove = $this->runCommand ($cmd, 'remove_key', '');
     return json_encode($log_array);
-        
     }
-    
-    
     function insertKey($id, $key, $type, $ownerID){
             mkdir("{$this->ssh_path}", 0700, true);
         if ($type == 'clu'){
@@ -630,10 +620,9 @@ class dbfuncs {
             fclose($file);
             chmod("{$this->ssh_path}/{$ownerID}_{$id}_{$type}.pky", 0600); 
         }
-
     }
-    function readKey($id, $type, $ownerID){
-        
+    function readKey($id, $type, $ownerID)
+    {
         if ($type == 'clu'){
         $filename = "{$this->ssh_path}/{$ownerID}_{$id}.pky";
         } else if ($type == 'amz_pub' || $type == 'amz_pri'){
@@ -644,7 +633,6 @@ class dbfuncs {
         $handle = fopen($filename, 'r');//creates new file
         $content = fread($handle, filesize($filename));
         fclose($handle);
-        
         return $content;
     }
     function delKey($id, $type, $ownerID){
@@ -680,7 +668,6 @@ class dbfuncs {
         $access_key = $amz_data[0]->{'amz_acc_key'};
         $secret_key = $amz_data[0]->{'amz_suc_key'};
         $default_region = $amz_data[0]->{'amz_def_reg'};
-        
         $name = $data[0]->{'name'};
         $ssh_id = $data[0]->{'ssh_id'};
         $username = $data[0]->{'username'};
@@ -693,7 +680,6 @@ class dbfuncs {
         $nodes = $data[0]->{'nodes'};
         $autoscale_check = $data[0]->{'autoscale_check'};
         $autoscale_maxIns = $data[0]->{'autoscale_maxIns'};
-        
         $text= "cloud { \n";
         $text.= "   userName = '$username'\n";
         $text.= "   imageId = '$image_id'\n";
@@ -710,7 +696,6 @@ class dbfuncs {
         }
         $text.= "   }\n";
         }
-        
         $text.= "}\n";
         $text.= "aws{\n";
         $text.= "   accessKey = '$access_key'\n";
@@ -731,20 +716,9 @@ class dbfuncs {
     }
     
     function stopProAmazon($id,$ownerID){
-//        $amzPid = json_decode($this->getAmazonPid($id, $ownerID));
-//        $pid = $amzPid[0]->{'pid'};
         //stop amazon cluster
         $cmd = "cd {$this->amz_path}/pro_{$id} && yes | nextflow cloud shutdown cluster{$id} > logAmzStop.txt 2>&1 & echo $! &";
         $log_array = $this->runCommand ($cmd, 'stop_cloud', '');
-//        read logAmzStop.txt
-//        $logPath ="{$this->amz_path}/pro_{$id}/logAmzStop.txt";
-//        $logAmzStop = $this->readFile($logPath);
-//        $log_array['logAmzStop'] = $logAmzStop;
-//        //asagidaki patter varsa waiting statusu waitTerminate
-        //Please confirm you really want to shutdown cluster
-        
-        //check if it is active then assign to zero
-//        $this->updateAmazonProPid($id, "0", $ownerID);
         return json_encode($log_array);
     }
     
@@ -755,8 +729,6 @@ class dbfuncs {
         $log_array = array('logAmzStop' => $logAmzStop);
         return json_encode($log_array);
     }
-
-    
      //read both start and list files
         function readAmzCloudListStart($id){
         //read logAmzCloudList.txt
@@ -825,8 +797,6 @@ class dbfuncs {
                 $log_array['status'] = "retry";
                 return json_encode($log_array);
             }
-            
-            
         } else if ($status == "running"){
             //check cloud list
             $log_array = $this->readAmzCloudListStart($id);
@@ -845,21 +815,6 @@ class dbfuncs {
                 return json_encode($log_array);
             }
         } 
-//        else if ($status == "waitingTerm"){
-//            //check cloud list
-//            $log_array = $this->readAmzCloudListStart($id);
-//            if (preg_match("/running/",$log_array['logAmzCloudList']) && preg_match("/STATUS/",$log_array['logAmzCloudList'])){
-//                $log_array['status'] = "running";
-//                return json_encode($log_array);
-//            } else if (!preg_match("/running/",$log_array['logAmzCloudList']) && preg_match("/STATUS/",$log_array['logAmzCloudList'])){
-//                $this->updateAmazonProStatus($id, "terminated", $ownerID);
-//                $log_array['status'] = "terminated";
-//                return json_encode($log_array);
-//            } else {
-//                $log_array['status'] = "retry";
-//                return json_encode($log_array);
-//            }
-//        }
         else if ($status == "terminated"){
                 $log_array = $this->readAmzCloudListStart($id);
                 $log_array['status'] = "terminated";
@@ -880,10 +835,6 @@ class dbfuncs {
         $log_array = $this->runCommand ($cmd, 'cloudlist', '');
         return json_encode($log_array);
     }
-    
-    
-
-    
 //    ---------------  Users ---------------
     public function getUser($google_id) {
         $sql = "SELECT * FROM users WHERE google_id = '$google_id'";
@@ -1034,11 +985,7 @@ class dbfuncs {
         $sql = "DELETE FROM profile_amazon WHERE id = '$id'";
         return self::runSQL($sql);
     }
-    
-
-    
 //    ------------- Parameters ------------
-    
     public function getAllParameters($ownerID) {
         if ($ownerID == ""){
         $ownerID ="''";
@@ -1369,7 +1316,6 @@ class dbfuncs {
             }
         }
     }
-    //xxxx
     public function renameLogSSH($project_pipeline_id,$profileType, $profileId, $ownerID) {
         if ($profileType == 'cluster'){
             //getRun pid
@@ -1390,7 +1336,6 @@ class dbfuncs {
             $run_path_real = "../{$this->run_path}/run{$project_pipeline_id}";
             $cmd = "ssh {$this->ssh_settings}  -i $userpky $connect \"mv $dolphin_path_real/log.txt $dolphin_path_real/log$attempt.txt \" 2>&1 & echo $! &";
             $log_array = $this->runCommand ($cmd, 'rename_log', '');
-//            return json_encode($cmd);
             return json_encode($log_array);
         }
     }
@@ -1455,7 +1400,6 @@ class dbfuncs {
                 $where";
 		return self::queryTable($sql);
     }
-    
     public function insertProjectInput($project_id, $input_id, $ownerID) {
         $sql = "INSERT INTO project_input(project_id, input_id, owner_id, perms, date_created, date_modified, last_modified_user) VALUES 
 			('$project_id', '$input_id', '$ownerID', 3, now(), now(), '$ownerID')";
@@ -1471,11 +1415,7 @@ class dbfuncs {
         $sql = "UPDATE input SET name='$name', date_modified= now(), last_modified_user ='$ownerID'  WHERE id = '$id'";
         return self::runSQL($sql);
     }
-    
-
-    
      // ------- Project Pipelines  ------
- 
     public function insertProjectPipeline($name, $project_id, $pipeline_id, $summary, $output_dir, $profile, $interdel, $cmd, $exec_each, $exec_all, $exec_all_settings, $exec_each_settings, $docker_check, $docker_img, $singu_check, $singu_img, $exec_next_settings, $docker_opt, $singu_opt, $amazon_cre_id, $publish_dir, $publish_dir_check, $ownerID) {
         $sql = "INSERT INTO project_pipeline(name, project_id, pipeline_id, summary, output_dir, profile, interdel, cmd, exec_each, exec_all, exec_all_settings, exec_each_settings, docker_check, docker_img, singu_check, singu_img, exec_next_settings, docker_opt, singu_opt, amazon_cre_id, publish_dir, publish_dir_check, owner_id, date_created, date_modified, last_modified_user, perms) 
                 VALUES ('$name', '$project_id', '$pipeline_id', '$summary', '$output_dir', '$profile', '$interdel', '$cmd', '$exec_each', '$exec_all', '$exec_all_settings', '$exec_each_settings', '$docker_check', '$docker_img', '$singu_check', '$singu_img', '$exec_next_settings', '$docker_opt', '$singu_opt', '$amazon_cre_id', '$publish_dir','$publish_dir_check','$ownerID', now(), now(), '$ownerID', 3)";
@@ -1484,9 +1424,7 @@ class dbfuncs {
     public function updateProjectPipeline($id, $name, $summary, $output_dir, $perms, $profile, $interdel, $cmd, $group_id, $exec_each, $exec_all, $exec_all_settings, $exec_each_settings, $docker_check, $docker_img, $singu_check, $singu_img, $exec_next_settings, $docker_opt, $singu_opt, $amazon_cre_id, $publish_dir, $publish_dir_check, $ownerID) {
         $sql = "UPDATE project_pipeline SET name='$name', summary='$summary', output_dir='$output_dir', perms='$perms', profile='$profile', interdel='$interdel', cmd='$cmd', group_id='$group_id', exec_each='$exec_each', exec_all='$exec_all', exec_all_settings='$exec_all_settings', exec_each_settings='$exec_each_settings', docker_check='$docker_check', docker_img='$docker_img', singu_check='$singu_check', singu_img='$singu_img', exec_next_settings='$exec_next_settings', docker_opt='$docker_opt', singu_opt='$singu_opt', amazon_cre_id='$amazon_cre_id', publish_dir='$publish_dir', publish_dir_check='$publish_dir_check', date_modified= now(), last_modified_user ='$ownerID'  WHERE id = '$id'";
         return self::runSQL($sql);
-        
     }
-    
     public function getProjectPipelines($id,$project_id,$ownerID) {
 		if ($id != ""){
 			$where = " where pp.id = '$id' AND (pp.owner_id = '$ownerID' OR pp.perms = 63 OR (ug.u_id ='$ownerID' and pp.perms = 15))";
@@ -1613,51 +1551,12 @@ class dbfuncs {
         $sql = "DELETE FROM process_parameter WHERE process_id = '$process_id'";
         return self::runSQL($sql);
     }
-
-    
-    // --------- Nextflow -------------
-	
-//    public function getNextflow($id) {
-//        $data = array();
-//
-//        $sql = "SELECT DISTINCT pi.id as pipeline_id,
-//                pro.id as process_id,
-//                pro.name as process_name,
-//                pro.script as process_script,
-//                pro.script_header as process_script_header,
-//                propara.sname as process_parameter_name,
-//                propara.type as process_parameter_type,
-//                para.id as parameter_id,	
-//                para.name as parameter_name,
-//                para.channel_name as parameter_channel_name,
-//                para.file_path as parameter_file_path,
-//                para.qualifier as parameter_qualifier,
-//                para.input_text as parameter_input_text,
-//				para.file_type as file_type,
-//				ppp.id as ppp_id,
-//                ppp.name as ppp_name, 
-//                ppp.pipeline_id as ppp_pipeline_id,
-//                ppp.parameter_id as ppp_parameter_id,
-//				ppp.process_id as ppp_process_id,
-//				ppp.process_name as ppp_process_name,
-//				ppp.type as ppp_type
-//				
-//                FROM pipeline pi, process pro, process_parameter propara, parameter para,
-//					 pipeline_process_parameter ppp
-//                WHERE pro.id = propara.process_id AND ppp.parameter_id=para.id
-//				AND ppp.pipeline_id = pi.id AND ppp.process_id=pro.id AND ppp.type=propara.type
-//                AND propara.parameter_id = para.id AND pi.id = '$id'";
-//        return self::queryTable($sql);
-//    }
-	
     //------- feedback ------
-    
         public function savefeedback($email,$message,$url) {
         $sql = "INSERT INTO feedback(email, message, url, date_created) VALUES 
 			('$email', '$message','$url', now())";
         return self::insTable($sql);
         }
-	
 // --------- New Pipeline -----------
 public function getPublicPipelines() {
         $sql= "SELECT pip.id, pip.name, pip.summary, pip.pin, pip.pin_order
@@ -1670,7 +1569,6 @@ public function getPublicPipelines() {
                 ) b ON pip.rev_id = b.rev_id AND pip.pipeline_gid=b.pipeline_gid ";
      return self::queryTable($sql);
    }
-
 	public function getProcessData($ownerID) {
         if ($ownerID == ""){
             $ownerID ="''";
@@ -1687,7 +1585,6 @@ public function getPublicPipelines() {
         WHERE p.owner_id = '$ownerID' OR p.perms = 63 OR (ug.u_id ='$ownerID' and p.perms = 15)";
 		return self::queryTable($sql);
 	}
-    
     public function getProcessDataById($id, $ownerID) {
         if ($ownerID == ""){
             $ownerID ="''";
@@ -1704,7 +1601,6 @@ public function getPublicPipelines() {
         where p.id = '$id' AND (p.owner_id = '$ownerID' OR p.perms = 63 OR (ug.u_id ='$ownerID' and p.perms = 15))";
 		return self::queryTable($sql);
 	}
-    
     public function getProcessRevision($process_gid,$ownerID) {
         if ($ownerID != ""){
          $userRole = json_decode($this->getUserRole($ownerID))[0]->{'role'};
@@ -1923,7 +1819,6 @@ public function getPublicPipelines() {
                 
             }
         endforeach;
-        
 	
 	    if ($id > 0){
             $sql = "UPDATE biocorepipe_save set name = '$name', edges = '$edges', summary = '$summary', mainG = '$mainG', nodes ='$nodes', date_modified = now(), group_id = '$group_id', perms = '$perms', pin = '$pin', publish = '$publish', pin_order = '$pin_order', last_modified_user = '$ownerID' where id = '$id'";
@@ -1932,8 +1827,6 @@ public function getPublicPipelines() {
 		}
   		return self::insTable($sql);
 	}
-    
-    
 	public function getSavedPipelines($ownerID) {
         if ($ownerID == ""){
             $ownerID ="''";
@@ -1946,7 +1839,6 @@ public function getPublicPipelines() {
                 return self::queryTable($sql);
             }
         }
-        
         $where = " where pip.owner_id = '$ownerID' OR pip.perms = 63 OR (ug.u_id ='$ownerID' and pip.perms = 15)";
 		$sql = "select DISTINCT pip.id, pip.rev_id, pip.name, pip.summary, pip.date_modified, u.username
         FROM biocorepipe_save pip
@@ -1955,7 +1847,6 @@ public function getPublicPipelines() {
         $where";
 		return self::queryTable($sql);
 	}
-    
 	public function loadPipeline($id,$ownerID) {
             if ($ownerID != ""){
                 $userRole = json_decode($this->getUserRole($ownerID))[0]->{'role'};
@@ -1974,7 +1865,6 @@ public function getPublicPipelines() {
                 where pip.id = '$id' AND (pip.owner_id = '$ownerID' OR pip.perms = 63 OR (ug.u_id ='$ownerID' and pip.perms = 15))";
 	   return self::queryTable($sql);
 	}
-    
     public function removePipelineById($id) {
 		$sql = "DELETE FROM biocorepipe_save WHERE id = '$id'";
 	   return self::runSQL($sql);
@@ -1987,7 +1877,6 @@ public function getPublicPipelines() {
         $sql = "UPDATE biocorepipe_save SET summary='$summary', group_id='$group_id', publish='$publish', perms='$perms', pin='$pin', pin_order='$pin_order', last_modified_user = '$ownerID'  WHERE id = '$id'";
         return self::runSQL($sql);
     }
-    
     public function insertPipelineName($name,$ownerID) {
         $sql = "INSERT INTO biocorepipe_save(owner_id, name) VALUES 
 			('$ownerID','$name')";

@@ -7,9 +7,19 @@ $ownerID = isset($_SESSION['ownerID']) ? $_SESSION['ownerID'] : "";
 
 chdir('ajax/');
 use PHPUnit\Framework\TestCase;
-class denemeTest extends TestCase
+class ajaxQueryTest extends TestCase
 {
-	public function testgetProjects() {
+        public function testInsertProject() {
+		ob_start();
+		$_REQUEST['p'] = 'saveProject';
+		$_REQUEST['name'] = 'testProject';
+		$_REQUEST['summary'] = "testSummary";
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'67');
+		ob_end_clean();
+	}
+    
+	public function testGetProjects() {
 		ob_start();
 		$_REQUEST['p'] = 'getProjects';
 		$_REQUEST['id'] = 62;
@@ -18,130 +28,12 @@ class denemeTest extends TestCase
 		$this->assertEquals(json_decode($data)[0]->name,'testRuns');
 		ob_end_clean();
 	}
-	
-//	public function testGetTableRuns() {
-//		ob_start();
-//		$_GET['p'] = 'getTableRuns';
-//		$_GET['search'] = 1;
-//		include('tablegenerator.php');
-//		$this->assertEquals(json_decode($data)[0]->sample_id,'1');
-//		$this->assertEquals(json_decode($data)[0]->run_id,'1');
-//		$this->assertEquals(json_decode($data)[0]->run_name,'barcode test');
-//		$this->assertEquals(json_decode($data)[0]->wkey,'J98Oe0bSZ18fBx9pPuDnsD8ITRVPGV');
-//		ob_end_clean();
-//	}
-//	
-//	//find wkey example
-//	public function testGetTableReportsList() {
-//		ob_start();
-//		$_GET['p'] = 'getTableReportsList';
-//		$_GET['wkey'] = '3pl8cmzYJ4ezgX2a9RevZxHmihpOA';
-//		include('tablegenerator.php');
-//		$this->assertEquals(json_decode($data)[0]->file,'rsem/genes_expression_tpm.tsv');
-//		$this->assertEquals(json_decode($data)[0]->json_parameters,'{"genomebuild":"mousetest,mm10","spaired":"paired","resume":"no","fastqc":"yes","barcodes":"distance,1:format,5 end read 1","adapter":"none","quality":"none","trim":"none","split":"none","commonind":"rRNA,miRNA,tRNA","pipeline":["RNASeqRSEM:--bowtie-e 70 --bowtie-chunkmbs 100:no:no","DESeq:control_rep1,control_rep2,control_rep3,exper_rep1,exper_rep2,exper_rep3:Cond1,Cond1,Cond1,Cond2,Cond2,Cond2:parametric:Yes:0.01:2"]}');
-//		ob_end_clean();
-//	}
-//	
-//	public function testSamplesWithRuns() {
-//		ob_start();
-//		$_GET['p'] = 'samplesWithRuns';
-//		include('tablegenerator.php');
-//		$this->assertEquals(json_decode($data)[0]->sample_id,'1');
-//		ob_end_clean();
-//	}
-//	
-//	public function testCreateTableFile(){
-//		ob_start();
-//		$_GET['p'] = 'createTableFile';
-//		$_GET['samples'] = 'samples=1,2,3,4,5,6:3';
-//		$_GET['file'] = 'file=rsem/genes_expression_tpm.tsv';
-//		$_GET['common'] = 'common=gene,transcript';
-//		$_GET['key'] = 'key=gene';
-//		$_GET['format'] = 'format=json';
-//		$_GET['url'] = substr(getcwd(), 0, strlen(getcwd()) - 11) . 'public/api/getsamplevals.php';
-//		include('tablegenerator.php');
-//		$file = json_decode($data);
-//		$this->assertEquals(json_decode($data),$file);
-//		ob_end_clean();
-//		return $file;
-//	}
-//	
-//	/**
-//	 * @depends testCreateTableFile
-//	 */
-//	public function testCreateNewTable($file){
-//		ob_start();
-//		$_GET['p'] = 'createNewTable';
-//		$_GET['search'] = 'samples=1,2,3,4,5,6:3&file=rsem/genes_expression_tpm.tsv&common=gene,transcript&key=gene&format=json';
-//		$_GET['name'] = 'test_table';
-//		$_GET['file'] = $file;
-//		$_GET['group'] = '1';
-//		$_GET['perms'] = '15';
-//		include('tablegenerator.php');
-//		$this->assertEquals(json_decode($data),'true');
-//		$_GET['p'] = 'createNewTable';
-//		$_GET['search'] = 'samples=1,2,3,4,5,6:3&file=rsem/genes_expression_tpm.tsv&common=gene,transcript&key=gene&format=json';
-//		$_GET['name'] = 'test_table2';
-//		$_GET['file'] = $file;
-//		$_GET['group'] = '1';
-//		$_GET['perms'] = '15';
-//		include('tablegenerator.php');
-//		$this->assertEquals(json_decode($data),'true');
-//		ob_end_clean();
-//	}
-//	
-//	public function testGetCreatedTables(){
-//		ob_start();
-//		$_GET['p'] = 'getCreatedTables';
-//		$_GET['gids'] = '1';
-//		include('tablegenerator.php');
-//		$this->assertEquals(json_decode($data)[0]->id,'1');
-//		$this->assertEquals(json_decode($data)[0]->name,'test_table2');
-//		$this->assertEquals(json_decode($data)[0]->parameters,'samples=1,2,3,4,5,6:3&file=rsem/genes_expression_tpm.tsv&common=gene,transcript&key=gene&format=json');
-//		$this->assertEquals(json_decode($data)[0]->owner_id,'1');
-//		$this->assertEquals(json_decode($data)[0]->group_id,'1');
-//		$this->assertEquals(json_decode($data)[0]->perms,'15');
-//		$this->assertEquals(json_decode($data)[0]->last_modified_user,'1');
-//		ob_end_clean();
-//	}
-//	
-//	public function testDeleteTable(){
-//		ob_start();
-//		$_GET['p'] = 'deleteTable';
-//		$_GET['id'] = '1';
-//		include('tablegenerator.php');
-//		$this->assertEquals(json_decode($data),'1');
-//		ob_end_clean();
-//	}
-	/*
-	public function testConvertToTSV(){
-		ob_start();
-		$_GET['p'] = 'convertToTSV';
-		$_GET['url'] = substr(getcwd(), 0, strlen(getcwd()) - 11) . 'public/api/getsamplevals.php';
-		$_GET['samples'] = 'samples=1,2,3,4,5,6:3';
-		$_GET['file'] = 'file=rsem/genes_expression_tpm.tsv';
-		$_GET['common'] = 'common=gene,transcript';
-		$_GET['key'] = 'key=gene';
-		$_GET['format'] = 'format=json';
-		include('tablegenerator.php');
-		$file = json_decode($data);
-		$this->assertEquals(json_decode($data),$file);
-		ob_end_clean();
-		return $file;
-	}
-	*/
-	/**
-	 * @depends testConvertToTSV
-	 */
-	/*
-	public function testRemoveTSV($file){
-		ob_start();
-		$_GET['p'] = 'removeTSV';
-		$_GET['file'] = $file;
-		include('tablegenerator.php');
-		$this->assertEquals(json_decode($data),'deleted');
-		ob_end_clean();
-	}
-	*/
+
 }
+
+
+
+
+
+
 ?>
