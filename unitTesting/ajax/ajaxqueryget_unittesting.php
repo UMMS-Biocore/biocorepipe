@@ -9,19 +9,8 @@ chdir('ajax/');
 use PHPUnit\Framework\TestCase;
 
 
-class ajaxQueryTest extends TestCase
-{
-/** @beforeClass */
-public function testInsertProject() {
-ob_start();
-$_REQUEST['p'] = 'saveProject';
-$_REQUEST['name'] = 'testProject';
-$_REQUEST['summary'] = "testSummary";
-include('ajaxquery.php');
-$this->assertEquals(json_decode($data)->id,'1');
-ob_end_clean();
-}
-/** @afterClass */
+class ajaxQueryTest2 extends TestCase{
+
 public function testGetProjects() {
 ob_start();
 $_REQUEST['p'] = 'getProjects';
