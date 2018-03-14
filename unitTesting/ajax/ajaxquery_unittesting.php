@@ -74,7 +74,7 @@ class ajaxQueryTest extends TestCase
     public function testInsertProfileCluster() {
 		ob_start();
 		$_REQUEST['p'] = 'saveProfileCluster';
-		$_REQUEST['name'] = "local";
+		$_REQUEST['name'] = "localtest";
 		$_REQUEST['cmd'] = "source /etc/profile";
 		$_REQUEST['executor'] = "local";
 		$_REQUEST['next_memory'] = "";
@@ -91,10 +91,36 @@ class ajaxQueryTest extends TestCase
 		$_REQUEST['next_path'] = "";
 		$_REQUEST['ssh_id'] = "1";
 		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'2');
+		ob_end_clean();
+	}
+    public function testInsertProfileAmazon() {
+		ob_start();
+		$_REQUEST['p'] = 'saveProfileAmazon';
+		$_REQUEST['name'] = "amazontest";
+		$_REQUEST['cmd'] = "";
+		$_REQUEST['executor'] = "local";
+		$_REQUEST['next_memory'] = "";
+		$_REQUEST['next_queue'] = "";
+		$_REQUEST['next_time'] = "";
+		$_REQUEST['next_cpu'] = "";
+		$_REQUEST['executor_job'] = "local";
+		$_REQUEST['job_memory'] = "";
+		$_REQUEST['job_queue'] = "";
+		$_REQUEST['job_time'] = "";
+		$_REQUEST['job_cpu'] = "";
+		$_REQUEST['ins_type'] = "";
+		$_REQUEST['image_id'] = "";
+		$_REQUEST['subnet_id'] = "";
+		$_REQUEST['shared_storage_id'] = "";
+		$_REQUEST['shared_storage_mnt'] = "";
+		$_REQUEST['next_path'] = "";
+		$_REQUEST['ssh_id'] = "1";
+		$_REQUEST['amazon_cre_id'] = "1";
+		include('ajaxquery.php');
 		$this->assertEquals(json_decode($data)->id,'1');
 		ob_end_clean();
 	}
-
     
     
     
