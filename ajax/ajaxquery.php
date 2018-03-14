@@ -479,7 +479,9 @@ else if ($p=="saveUser"){
     //check if Google ID already exits
     $checkUser = $db->getUser($google_id);
     $checkarray = json_decode($checkUser,true); 
+    if (!empty($checkarray)){
     $id = $checkarray[0]["id"];
+    }
     if (!empty($id)) {
         $data = $db->updateUser($id, $google_id, $name, $email, $google_image, $username);    
     } else {
