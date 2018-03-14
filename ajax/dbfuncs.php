@@ -25,11 +25,11 @@ class dbfuncs {
         }
     }
 
-    function __destruct() {
-        if (isset(self::$link)) {
-            self::$link->close();
-        }
-    }
+//    function __destruct() {
+//        if (isset(self::$link)) {
+//            self::$link->close();
+//        }
+//    }
    function runSQL($sql)
    {
         $link = new mysqli($this->dbhost, $this->dbuser, $this->dbpass, $this->db);
@@ -38,6 +38,8 @@ class dbfuncs {
                 exit('Connect failed: '. mysqli_connect_error());
         }
         $result=self::$link->query($sql);
+            $link->close();
+       
 		if (!$result) {
             trigger_error('Database Error: ' . self::$link->error);
         }
