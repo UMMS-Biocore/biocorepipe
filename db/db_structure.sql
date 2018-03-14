@@ -291,7 +291,7 @@ CREATE TABLE `process_group` (
   `date_modified` datetime DEFAULT NULL,
   `last_modified_user` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -300,7 +300,6 @@ CREATE TABLE `process_group` (
 
 LOCK TABLES `process_group` WRITE;
 /*!40000 ALTER TABLE `process_group` DISABLE KEYS */;
-INSERT INTO `process_group` VALUES (1,'Index',1,NULL,63,NULL,NULL,NULL),(2,'Alignment',1,NULL,63,NULL,NULL,NULL),(4,'Samtools',1,NULL,63,NULL,NULL,NULL),(5,'Misc.',1,NULL,63,NULL,NULL,NULL),(6,'QC',1,NULL,63,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `process_group` ENABLE KEYS */;
 UNLOCK TABLES;
 

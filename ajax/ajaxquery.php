@@ -492,8 +492,7 @@ else if ($p=="saveUser"){
 }
 else if ($p=="checkLogin"){
     if (!empty($google_id)) {
-       $checkUser = $db->getUserLess($google_id);
-       $data = $checkUser;
+       $data = $db->getUserLess($google_id);
     }else {
 	   $errAr = array('error' => 1);
 	   $data = json_encode($errAr);
@@ -536,7 +535,6 @@ else if ($p=="saveProcess"){
             $db->updateProcessGroupGroupPerm($id, $group_id, $perms, $ownerID);
         }
     }
-    
 }
 else if ($p=="saveProject"){
     $name = $_REQUEST['name'];

@@ -157,13 +157,12 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)->id,'1');
 		ob_end_clean();
 	}
-
     public function testCheckLoginDecline() {
 		ob_start();
 		$_REQUEST['p'] = 'checkLogin';
         unset($google_id);
 		include('ajaxquery.php');
-		$this->assertEquals(json_decode($data)->error,'1');
+		$this->assertEquals(json_decode($data)[0]->error,'1');
 		ob_end_clean();
 	}
     public function testInsertProcessGroup() {
@@ -174,6 +173,29 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)->id,'1');
 		ob_end_clean();
 	}
+    public function testInsertProcess() {
+		ob_start();
+		$_REQUEST['p'] = 'saveProcess';
+		$_REQUEST['name'] = 'test_process';
+		$_REQUEST['process_gid'] = '1';
+		$_REQUEST['summary'] = 'test_summary';
+		$_REQUEST['process_group_id'] = '1';
+		$_REQUEST['script'] = 'test_script';
+		$_REQUEST['script_header'] = 'test_script_header';
+		$_REQUEST['script_mode'] = 'perl';
+		$_REQUEST['script_mode_header'] = 'python';
+		$_REQUEST['rev_id'] = '';
+		$_REQUEST['rev_comment'] = '';
+		$_REQUEST['group'] = '';
+		$_REQUEST['perms'] = '3';
+		$_REQUEST['publish'] = 'false';
+		$_REQUEST['publish'] = 'false';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'1');
+		ob_end_clean();
+	}
+    
+
     
     
 
