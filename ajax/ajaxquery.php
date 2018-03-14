@@ -339,26 +339,26 @@ else if ($p=="updateAmazonProStatus"){
     $status = $_REQUEST['status'];
     $data = $db->updateAmazonProStatus($id, $status, $ownerID);
 }
-else if ($p=="saveProfileLocal"){
-    $name = $_REQUEST['name'];
-    $executor = $_REQUEST['executor'];
-    $next_path = $_REQUEST['next_path'];
-    $cmd = $_REQUEST['cmd'];
-    $next_memory = $_REQUEST['next_memory'];
-    $next_queue = $_REQUEST['next_queue'];
-    $next_time = $_REQUEST['next_time'];
-    $next_cpu = $_REQUEST['next_cpu'];
-    $executor_job = $_REQUEST['executor_job'];
-    $job_memory = $_REQUEST['job_memory'];
-    $job_queue = $_REQUEST['job_queue'];
-    $job_time = $_REQUEST['job_time'];
-    $job_cpu = $_REQUEST['job_cpu'];
-    if (!empty($id)) {
-       $data = $db->updateProfileLocal($id, $name, $executor,$next_path, $cmd, $next_memory, $next_queue, $next_time, $next_cpu, $executor_job, $job_memory, $job_queue, $job_time, $job_cpu, $ownerID);
-    } else {
-       $data = $db->insertProfileLocal($name, $executor,$next_path, $cmd, $next_memory, $next_queue, $next_time, $next_cpu, $executor_job, $job_memory, $job_queue, $job_time, $job_cpu, $ownerID);
-    }
-}
+//else if ($p=="saveProfileLocal"){
+//    $name = $_REQUEST['name'];
+//    $executor = $_REQUEST['executor'];
+//    $next_path = $_REQUEST['next_path'];
+//    $cmd = $_REQUEST['cmd'];
+//    $next_memory = $_REQUEST['next_memory'];
+//    $next_queue = $_REQUEST['next_queue'];
+//    $next_time = $_REQUEST['next_time'];
+//    $next_cpu = $_REQUEST['next_cpu'];
+//    $executor_job = $_REQUEST['executor_job'];
+//    $job_memory = $_REQUEST['job_memory'];
+//    $job_queue = $_REQUEST['job_queue'];
+//    $job_time = $_REQUEST['job_time'];
+//    $job_cpu = $_REQUEST['job_cpu'];
+//    if (!empty($id)) {
+//       $data = $db->updateProfileLocal($id, $name, $executor,$next_path, $cmd, $next_memory, $next_queue, $next_time, $next_cpu, $executor_job, $job_memory, $job_queue, $job_time, $job_cpu, $ownerID);
+//    } else {
+//       $data = $db->insertProfileLocal($name, $executor,$next_path, $cmd, $next_memory, $next_queue, $next_time, $next_cpu, $executor_job, $job_memory, $job_queue, $job_time, $job_cpu, $ownerID);
+//    }
+//}
 else if ($p=="saveSSHKeys"){
     $name = $_REQUEST['name'];
     $check_userkey = $_REQUEST['check_userkey'];

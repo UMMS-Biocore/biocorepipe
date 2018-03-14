@@ -35,7 +35,7 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)->id,'1');
 		ob_end_clean();
 	}
-        public function testInsertParameter() {
+    public function testInsertParameter() {
 		ob_start();
 		$_REQUEST['p'] = 'saveParameter';
 		$_REQUEST['name'] = "inputDir";
@@ -46,6 +46,23 @@ class ajaxQueryTest extends TestCase
 		ob_end_clean();
 	}
     
+
+    public function testInsertSSH() {
+		ob_start();
+		$_REQUEST['p'] = 'saveSSHKeys';
+		$_REQUEST['name'] = "dockerKey";
+		$_REQUEST['check_userkey'] = "on";
+		$_REQUEST['check_ourkey'] = "";
+        //***discuss
+		$_REQUEST['prikey'] = "";
+		$_REQUEST['pubkey'] = "";
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'1');
+		ob_end_clean();
+	}
+    
+    
+
     
     
 //    /**
