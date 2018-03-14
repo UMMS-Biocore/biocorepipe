@@ -11,6 +11,9 @@ use PHPUnit\Framework\TestCase;
 
 class ajaxQueryTest extends TestCase
 {
+    /**
+     * @before
+     */
     public function testInsertProject() {
 		ob_start();
 		$_REQUEST['p'] = 'saveProject';
@@ -20,6 +23,9 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)->id,'1');
 		ob_end_clean();
 	}
+    /**
+     * @after
+     */
 	public function testGetProjects() {
 		ob_start();
 		$_REQUEST['p'] = 'getProjects';
