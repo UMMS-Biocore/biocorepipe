@@ -320,7 +320,6 @@ function publishDir(id, currgid) {
                     var userEntryId = "text-" + fNode.split("-")[4]
                     outParUserEntry = document.getElementById(userEntryId).getAttribute('name');
                     reg_ex = document.getElementById(oId).getAttribute("reg_ex");
-                    console.log(reg_ex)
                     if (reg_ex !== "" && reg_ex !== null) {
                             reg_ex = decodeHtml(reg_ex);
                         if (reg_ex.length > 0) {
@@ -342,7 +341,6 @@ function publishDir(id, currgid) {
                     oText = oText + tempText
                 } else if (fNode.split("-")[1] === "outPro" && closePar === true) {
                     reg_ex = document.getElementById(oId).getAttribute("reg_ex");
-                    console.log(reg_ex)
                     if (reg_ex !== "" && reg_ex !== null) {
                             reg_ex = decodeHtml(reg_ex);
                         if (reg_ex.length > 0) {

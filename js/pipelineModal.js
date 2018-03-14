@@ -26,6 +26,7 @@ $(function () {
 function cleanProcessName(proName) {
     proName = proName.replace(/ /g, "_");
     proName = proName.replace(/-/g, "_");
+    proName = proName.replace(/:/g, "_");
     proName = proName.replace(/,/g, "_");
     proName = proName.replace(/\$/g, "_");
     proName = proName.replace(/\!/g, "_");
@@ -1676,9 +1677,6 @@ $(document).ready(function () {
             var scripteditor = encodeURIComponent(scripteditor);
             var scripteditorProHeader = encodeURIComponent(scripteditorProHeader);
             var maxProcess_gid = getValues({ p: "getMaxProcess_gid" })[0].process_gid;
-            if (maxProcess_gid === null){
-                maxProcess_gid = 0;
-            }
             var newProcess_gid = parseInt(maxProcess_gid) + 1;
             var script_mode = $('#script_mode').val();
             var script_mode_header = $('#script_mode_header').val();

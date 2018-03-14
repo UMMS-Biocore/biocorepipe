@@ -178,6 +178,7 @@ else if ($p=="getProjectInput"){
 }
 else if ($p=="getProjectPipelineInputs"){
     $g_num = $_REQUEST['g_num'];
+    settype($g_num, 'integer');
     $project_pipeline_id = $_REQUEST['project_pipeline_id'];
     if (!empty($id)) {
     $data = $db->getProjectPipelineInputsById($id,$ownerID);
@@ -339,26 +340,26 @@ else if ($p=="updateAmazonProStatus"){
     $status = $_REQUEST['status'];
     $data = $db->updateAmazonProStatus($id, $status, $ownerID);
 }
-else if ($p=="saveProfileLocal"){
-    $name = $_REQUEST['name'];
-    $executor = $_REQUEST['executor'];
-    $next_path = $_REQUEST['next_path'];
-    $cmd = $_REQUEST['cmd'];
-    $next_memory = $_REQUEST['next_memory'];
-    $next_queue = $_REQUEST['next_queue'];
-    $next_time = $_REQUEST['next_time'];
-    $next_cpu = $_REQUEST['next_cpu'];
-    $executor_job = $_REQUEST['executor_job'];
-    $job_memory = $_REQUEST['job_memory'];
-    $job_queue = $_REQUEST['job_queue'];
-    $job_time = $_REQUEST['job_time'];
-    $job_cpu = $_REQUEST['job_cpu'];
-    if (!empty($id)) {
-       $data = $db->updateProfileLocal($id, $name, $executor,$next_path, $cmd, $next_memory, $next_queue, $next_time, $next_cpu, $executor_job, $job_memory, $job_queue, $job_time, $job_cpu, $ownerID);
-    } else {
-       $data = $db->insertProfileLocal($name, $executor,$next_path, $cmd, $next_memory, $next_queue, $next_time, $next_cpu, $executor_job, $job_memory, $job_queue, $job_time, $job_cpu, $ownerID);
-    }
-}
+//else if ($p=="saveProfileLocal"){
+//    $name = $_REQUEST['name'];
+//    $executor = $_REQUEST['executor'];
+//    $next_path = $_REQUEST['next_path'];
+//    $cmd = $_REQUEST['cmd'];
+//    $next_memory = $_REQUEST['next_memory'];
+//    $next_queue = $_REQUEST['next_queue'];
+//    $next_time = $_REQUEST['next_time'];
+//    $next_cpu = $_REQUEST['next_cpu'];
+//    $executor_job = $_REQUEST['executor_job'];
+//    $job_memory = $_REQUEST['job_memory'];
+//    $job_queue = $_REQUEST['job_queue'];
+//    $job_time = $_REQUEST['job_time'];
+//    $job_cpu = $_REQUEST['job_cpu'];
+//    if (!empty($id)) {
+//       $data = $db->updateProfileLocal($id, $name, $executor,$next_path, $cmd, $next_memory, $next_queue, $next_time, $next_cpu, $executor_job, $job_memory, $job_queue, $job_time, $job_cpu, $ownerID);
+//    } else {
+//       $data = $db->insertProfileLocal($name, $executor,$next_path, $cmd, $next_memory, $next_queue, $next_time, $next_cpu, $executor_job, $job_memory, $job_queue, $job_time, $job_cpu, $ownerID);
+//    }
+//}
 else if ($p=="saveSSHKeys"){
     $name = $_REQUEST['name'];
     $check_userkey = $_REQUEST['check_userkey'];
@@ -479,7 +480,11 @@ else if ($p=="saveUser"){
     //check if Google ID already exits
     $checkUser = $db->getUser($google_id);
     $checkarray = json_decode($checkUser,true); 
-    $id = $checkarray[0]["id"];
+    if (!empty($checkarray)){
+        $id = $checkarray[0]["id"];
+    } else {
+        $id = "";
+    }
     if (!empty($id)) {
         $data = $db->updateUser($id, $google_id, $name, $email, $google_image, $username);    
     } else {
@@ -488,9 +493,11 @@ else if ($p=="saveUser"){
 }
 else if ($p=="checkLogin"){
     if (!empty($google_id)) {
-       $checkUser = $db->getUserLess($google_id);
-       $data = $checkUser;
+       $data = $db->getUserLess($google_id);
     }else {
+       $_SESSION['ownerID'] = "";
+       $_SESSION['username'] = "";
+       $_SESSION['google_id'] = "";
 	   $errAr = array('error' => 1);
 	   $data = json_encode($errAr);
     }
@@ -519,6 +526,7 @@ else if ($p=="saveProcess"){
     $publish = $_REQUEST['publish']; 
     settype($rev_id, 'integer');
     settype($group_id, 'integer');
+    settype($process_gid, "integer");
     if (!empty($id)) {
         $data = $db->updateProcess($id, $name, $process_gid, $summary, $process_group_id, $script, $script_header, $group_id, $perms, $publish, $script_mode, $script_mode_header, $ownerID);
         if ($perms !== "3"){
@@ -532,7 +540,6 @@ else if ($p=="saveProcess"){
             $db->updateProcessGroupGroupPerm($id, $group_id, $perms, $ownerID);
         }
     }
-    
 }
 else if ($p=="saveProject"){
     $name = $_REQUEST['name'];
@@ -549,7 +556,6 @@ else if ($p=="saveGroup"){
     $idArray = json_decode($data,true);
     $g_id = $idArray["id"];
     $db->insertUserGroup($g_id, $ownerID, $ownerID);
-
 }
 else if ($p=="saveUserGroup"){
     $u_id = $_REQUEST['u_id'];
