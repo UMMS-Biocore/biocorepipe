@@ -439,7 +439,6 @@ CREATE TABLE `profile_cluster` (
 
 LOCK TABLES `profile_cluster` WRITE;
 /*!40000 ALTER TABLE `profile_cluster` DISABLE KEYS */;
-INSERT INTO `profile_cluster` VALUES (1,'Local','docker','localhost',1,'','local','100','short','1','32','local','100','short','1','32','source /etc/profile',1,3,'2018-03-13 20:11:42','2018-03-13 20:11:42','1');
 /*!40000 ALTER TABLE `profile_cluster` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -733,7 +732,6 @@ CREATE TABLE `ssh` (
 
 LOCK TABLES `ssh` WRITE;
 /*!40000 ALTER TABLE `ssh` DISABLE KEYS */;
-INSERT INTO `ssh` VALUES (1,'dockerkey','','on',1,NULL,3,'2018-03-13 20:11:04','2018-03-13 20:11:15','1');
 /*!40000 ALTER TABLE `ssh` ENABLE KEYS */;
 UNLOCK TABLES;
 
