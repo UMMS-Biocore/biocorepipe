@@ -121,10 +121,41 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)->id,'1');
 		ob_end_clean();
 	}
+    public function testInsertInput() {
+		ob_start();
+		$_REQUEST['p'] = 'saveInput';
+		$_REQUEST['name'] = "testinput";
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'1');
+		ob_end_clean();
+	}
+    public function testInsertProPipeInput() {
+		ob_start();
+		$_REQUEST['p'] = 'saveProPipeInput';
+		$_REQUEST['input_id'] = "1";
+		$_REQUEST['project_id'] = "1";
+		$_REQUEST['pipeline_id'] = "1";
+		$_REQUEST['project_pipeline_id'] = "1";
+		$_REQUEST['g_num'] = "1";
+		$_REQUEST['given_name'] = "test_inputparam";
+		$_REQUEST['qualifier'] = "test_inputparam";
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'1');
+		ob_end_clean();
+	}
+    public function testInsertProjectInput() {
+		ob_start();
+		$_REQUEST['p'] = 'saveProjectInput';
+		$_REQUEST['input_id'] = "1";
+		$_REQUEST['project_id'] = "1";
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'1');
+		ob_end_clean();
+	}
     
+
     
-    
-    
+}
     
 //    /**
 //     * @afterClass
