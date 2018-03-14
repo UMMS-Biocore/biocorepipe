@@ -20,7 +20,7 @@ $_REQUEST['p'] = 'saveProject';
 $_REQUEST['name'] = 'testProject';
 $_REQUEST['summary'] = "testSummary";
 include('ajaxquery.php');
-$this->assertEquals(json_decode($data)->id,'2');
+$this->assertEquals(json_decode($data)->id,'1');
 ob_end_clean();
 }
 /**
@@ -29,9 +29,9 @@ ob_end_clean();
 public function testGetProjects() {
 ob_start();
 $_REQUEST['p'] = 'getProjects';
-$_REQUEST['id'] = 2;
+$_REQUEST['id'] = 1;
 include('ajaxquery.php');
-$this->assertEquals(json_decode($data)[0]->id,'2');
+$this->assertEquals(json_decode($data)[0]->id,'1');
 $this->assertEquals(json_decode($data)[0]->name,'testProject');
 $this->assertEquals(json_decode($data)[0]->summary,'testSummary');
 ob_end_clean();
