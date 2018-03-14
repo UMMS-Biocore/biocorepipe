@@ -47,18 +47,18 @@ class ajaxQueryTest extends TestCase
 	}
     
         //***discuss
-    public function testInsertSSH() {
-		ob_start();
-		$_REQUEST['p'] = 'saveSSHKeys';
-		$_REQUEST['name'] = "dockerKey";
-		$_REQUEST['check_userkey'] = "on";
-		$_REQUEST['check_ourkey'] = "";
-		$_REQUEST['prikey'] = "";
-		$_REQUEST['pubkey'] = "";
-		include('ajaxquery.php');
-		$this->assertEquals(json_decode($data)->id,'1');
-		ob_end_clean();
-	}
+//    public function testInsertSSH() {
+//		ob_start();
+//		$_REQUEST['p'] = 'saveSSHKeys';
+//		$_REQUEST['name'] = "dockerKey";
+//		$_REQUEST['check_userkey'] = "on";
+//		$_REQUEST['check_ourkey'] = "";
+////		$_REQUEST['prikey'] = "";
+////		$_REQUEST['pubkey'] = "";
+//		include('ajaxquery.php');
+//		$this->assertEquals(json_decode($data)->id,'1');
+//		ob_end_clean();
+//	}
     public function testInsertAmz() {
 		ob_start();
 		$_REQUEST['p'] = 'saveAmzKeys';
@@ -74,21 +74,22 @@ class ajaxQueryTest extends TestCase
     public function testInsertProfileCluster() {
 		ob_start();
 		$_REQUEST['p'] = 'saveProfileCluster';
-		$_REQUEST['name'] = "amzKey";
-		$_REQUEST['cmd'] = "test1";
-		$_REQUEST['next_memory'] = "test2";
-		$_REQUEST['next_queue'] = "test3";
-		$_REQUEST['next_time'] = "test3";
-		$_REQUEST['next_cpu'] = "test3";
-		$_REQUEST['executor_job'] = "test3";
-		$_REQUEST['job_memory'] = "test3";
-		$_REQUEST['job_queue'] = "test3";
-		$_REQUEST['job_time'] = "test3";
-		$_REQUEST['job_cpu'] = "test3";
-		$_REQUEST['username'] = "test3";
-		$_REQUEST['hostname'] = "test3";
-		$_REQUEST['next_path'] = "test3";
-		$_REQUEST['ssh_id'] = "test3";
+		$_REQUEST['name'] = "local";
+		$_REQUEST['cmd'] = "source /etc/profile";
+		$_REQUEST['executor'] = "local";
+		$_REQUEST['next_memory'] = "";
+		$_REQUEST['next_queue'] = "";
+		$_REQUEST['next_time'] = "";
+		$_REQUEST['next_cpu'] = "";
+		$_REQUEST['executor_job'] = "local";
+		$_REQUEST['job_memory'] = "";
+		$_REQUEST['job_queue'] = "";
+		$_REQUEST['job_time'] = "";
+		$_REQUEST['job_cpu'] = "";
+		$_REQUEST['username'] = "docker";
+		$_REQUEST['hostname'] = "localhost";
+		$_REQUEST['next_path'] = "";
+		$_REQUEST['ssh_id'] = "1";
 		include('ajaxquery.php');
 		$this->assertEquals(json_decode($data)->id,'1');
 		ob_end_clean();
