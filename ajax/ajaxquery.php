@@ -494,6 +494,9 @@ else if ($p=="checkLogin"){
     if (!empty($google_id)) {
        $data = $db->getUserLess($google_id);
     }else {
+       $_SESSION['ownerID'] = "";
+       $_SESSION['username'] = "";
+       $_SESSION['google_id'] = "";
 	   $errAr = array('error' => 1);
 	   $data = json_encode($errAr);
     }
@@ -551,7 +554,6 @@ else if ($p=="saveGroup"){
     $idArray = json_decode($data,true);
     $g_id = $idArray["id"];
     $db->insertUserGroup($g_id, $ownerID, $ownerID);
-
 }
 else if ($p=="saveUserGroup"){
     $u_id = $_REQUEST['u_id'];

@@ -162,7 +162,7 @@ class ajaxQueryTest extends TestCase
 		$_REQUEST['p'] = 'checkLogin';
         unset($google_id);
 		include('ajaxquery.php');
-		$this->assertEquals(json_decode($data)[0]->error,'1');
+		$this->assertEquals(json_decode($data)->{'error'},'1');
 		ob_end_clean();
 	}
     public function testInsertProcessGroup() {
@@ -194,9 +194,24 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)->id,'1');
 		ob_end_clean();
 	}
-    
+    public function testInsertGroup() {
+		ob_start();
+		$_REQUEST['p'] = 'saveGroup';
+		$_REQUEST['name'] = 'test_group';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'1');
+		ob_end_clean();
+	}
+    public function testInsertUserGroup() {
+		ob_start();
+		$_REQUEST['p'] = 'saveUserGroup';
+		$_REQUEST['u_id'] = '1';
+		$_REQUEST['g_id'] = '1';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'1');
+		ob_end_clean();
+	}
 
-    
     
 
 
