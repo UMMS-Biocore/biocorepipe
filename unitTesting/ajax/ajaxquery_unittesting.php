@@ -4,6 +4,9 @@ $_SESSION['ownerID'] = '1';
 $_SESSION['username'] = 'admin';
 $_SESSION['google_id'] = '111';
 $ownerID = isset($_SESSION['ownerID']) ? $_SESSION['ownerID'] : "";
+$google_id = isset($_SESSION['google_id']) ? $_SESSION['google_id'] : "";
+$username = isset($_SESSION['username']) ? $_SESSION['username'] : "";
+
 
 chdir('ajax/');
 use PHPUnit\Framework\TestCase;
@@ -152,10 +155,26 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)->id,'1');
 		ob_end_clean();
 	}
+    public function testcheckLogin() {
+		ob_start();
+		$_REQUEST['p'] = 'checkLogin';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'1');
+		ob_end_clean();
+	}
+    public function testcheckLoginError() {
+		ob_start();
+		$_REQUEST['p'] = 'checkLogin';
+        $google_id = "";
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->error,'1');
+		ob_end_clean();
+	}
+    
+    
     
 
     
-}
     
 //    /**
 //     * @afterClass
