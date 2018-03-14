@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class ajaxQueryTest extends TestCase
 {
-       /**
+    /**
      * @beforeClass
      */
     public function testInsertProject() {
@@ -20,7 +20,7 @@ class ajaxQueryTest extends TestCase
 		$_REQUEST['name'] = 'testProject';
 		$_REQUEST['summary'] = "testSummary";
 		include('ajaxquery.php');
-		$this->assertEquals(json_decode($data)->id,'5');
+		$this->assertEquals(json_decode($data)->id,'2');
 		ob_end_clean();
 	}
     /**
@@ -29,11 +29,11 @@ class ajaxQueryTest extends TestCase
 	public function testGetProjects() {
 		ob_start();
 		$_REQUEST['p'] = 'getProjects';
-		$_REQUEST['id'] = 5;
+		$_REQUEST['id'] = 2;
 		include('ajaxquery.php');
-		$this->assertEquals(json_decode($data)[0]->id,'5');
+		$this->assertEquals(json_decode($data)[0]->id,'2');
 		$this->assertEquals(json_decode($data)[0]->name,'testProject');
-//		$this->assertEquals(json_decode($data)[0]->summary,'testSummary');
+		$this->assertEquals(json_decode($data)[0]->summary,'testSummary');
 		ob_end_clean();
 	}
 
