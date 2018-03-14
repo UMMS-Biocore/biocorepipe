@@ -46,23 +46,57 @@ class ajaxQueryTest extends TestCase
 		ob_end_clean();
 	}
     
-
+        //***discuss
     public function testInsertSSH() {
 		ob_start();
 		$_REQUEST['p'] = 'saveSSHKeys';
 		$_REQUEST['name'] = "dockerKey";
 		$_REQUEST['check_userkey'] = "on";
 		$_REQUEST['check_ourkey'] = "";
-        //***discuss
 		$_REQUEST['prikey'] = "";
 		$_REQUEST['pubkey'] = "";
 		include('ajaxquery.php');
 		$this->assertEquals(json_decode($data)->id,'1');
 		ob_end_clean();
 	}
+    public function testInsertAmz() {
+		ob_start();
+		$_REQUEST['p'] = 'saveAmzKeys';
+		$_REQUEST['name'] = "amzKey";
+		$_REQUEST['amz_def_reg'] = "test1";
+		$_REQUEST['amz_acc_key'] = "test2";
+		$_REQUEST['amz_suc_key'] = "test3";
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'1');
+		ob_end_clean();
+	}
     
-    
+    public function testInsertProfileCluster() {
+		ob_start();
+		$_REQUEST['p'] = 'saveProfileCluster';
+		$_REQUEST['name'] = "amzKey";
+		$_REQUEST['cmd'] = "test1";
+		$_REQUEST['next_memory'] = "test2";
+		$_REQUEST['next_queue'] = "test3";
+		$_REQUEST['next_time'] = "test3";
+		$_REQUEST['next_cpu'] = "test3";
+		$_REQUEST['executor_job'] = "test3";
+		$_REQUEST['job_memory'] = "test3";
+		$_REQUEST['job_queue'] = "test3";
+		$_REQUEST['job_time'] = "test3";
+		$_REQUEST['job_cpu'] = "test3";
+		$_REQUEST['username'] = "test3";
+		$_REQUEST['hostname'] = "test3";
+		$_REQUEST['next_path'] = "test3";
+		$_REQUEST['ssh_id'] = "test3";
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'1');
+		ob_end_clean();
+	}
 
+    
+    
+    
     
     
 //    /**
