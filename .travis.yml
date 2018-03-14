@@ -18,16 +18,14 @@ before_install:
   - sudo apt-get -y install python-software-properties
   - sudo apt-get update
   - git clone https://github.com/UMMS-Biocore/biocorepipe.git /home/travis/build/dolphinnext
-#  - sudo wget https://phar.phpunit.de/phpunit-6.5.phar
-#  - sudo chmod +x phpunit-6.5.phar
-#  - sudo mv phpunit-6.5.phar /usr/local/bin/phpunit
-#  - phpunit --version
+  - sudo chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www
+  - sudo cat /etc/apache2/envvars
   
 before_script:
   - sudo service apache2 restart
   - sudo mysql -e "CREATE DATABASE biocorepipe;" -uroot
   - cd db
-  - sudo mysql -u root biocorepipe < biocorepipe.sql
+  - sudo mysql -u root biocorepipe < db_structure.sql
   - sudo ./runUpdate biocorepipe
   - cd ..
   
@@ -43,6 +41,14 @@ after_script:
   - mysql -e "show databases;" -uroot
   - mysql -e "use biocorepipe; show tables;" -uroot
   - mysql -e "use biocorepipe; SELECT * FROM biocorepipe_save;" -uroot
+  - mysql -e "use biocorepipe; SELECT * FROM process;" -uroot
+  - mysql -e "use biocorepipe; SELECT * FROM project;" -uroot
+  - mysql -e "use biocorepipe; SELECT * FROM users;" -uroot
+  - mysql -e "use biocorepipe; SELECT * FROM user_group;" -uroot
+  - mysql -e "use biocorepipe; SELECT * FROM groups;" -uroot
+  - mysql -e "use biocorepipe; SELECT * FROM input;" -uroot
+  - mysql -e "use biocorepipe; SELECT * FROM project_input;" -uroot
+  - mysql -e "use biocorepipe; SELECT * FROM project_pipeline_input;" -uroot
 
   
   
