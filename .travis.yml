@@ -23,7 +23,7 @@ before_script:
   - sudo service apache2 restart
   - sudo mysql -e "CREATE DATABASE biocorepipe;" -uroot
   - cd db
-  - sudo mysql -u root biocorepipe < biocorepipe.sql
+  - sudo mysql -u root biocorepipe < db_structure.sql
   - sudo ./runUpdate biocorepipe
   - cd ..
   
@@ -39,6 +39,7 @@ after_script:
   - mysql -e "show databases;" -uroot
   - mysql -e "use biocorepipe; show tables;" -uroot
   - mysql -e "use biocorepipe; SELECT * FROM biocorepipe_save;" -uroot
+  - mysql -e "use biocorepipe; SELECT * FROM project;" -uroot
 
   
   
