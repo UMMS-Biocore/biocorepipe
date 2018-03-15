@@ -527,11 +527,44 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)[0]->name, 'testinput');
 		ob_end_clean();
 	}
+    /**
+     * @depends testInsertInput
+     */
+    public function testgetInputs() {
+		ob_start();
+		$_REQUEST['p'] = 'getInputs';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id, '1');
+		$this->assertEquals(json_decode($data)[0]->name, 'testinput');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertInput
+     */
+    public function testgetInputsById() {
+		ob_start();
+		$_REQUEST['p'] = 'getInputs';
+		$_REQUEST['id'] = '1';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id, '1');
+		$this->assertEquals(json_decode($data)[0]->name, 'testinput');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertInput
+     */
+    public function testgetInputsById() {
+		ob_start();
+		$_REQUEST['p'] = 'getInputs';
+		$_REQUEST['id'] = '1';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id, '1');
+		$this->assertEquals(json_decode($data)[0]->name, 'testinput');
+		ob_end_clean();
+	}
     
 
-//else if ($p=="getInputs"){
-//    $data = $db -> getInputs($id,$ownerID);
-//}
+
 //else if ($p=="getAllProcessGroups"){
 //    $data = $db -> getAllProcessGroups($ownerID);
 //}
