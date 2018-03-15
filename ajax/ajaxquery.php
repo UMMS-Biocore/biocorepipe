@@ -314,11 +314,11 @@ else if ($p=="readGenerateKeys")
 }
 else if ($p=="getProfileLocal")
 {
-    if (!empty($id)) {
-    $data = $db->getProfileLocalbyID($id, $ownerID);
-    } else {
-    $data = $db->getProfileLocal($ownerID);
-    }
+//    if (!empty($id)) {
+//    $data = $db->getProfileLocalbyID($id, $ownerID);
+//    } else {
+//    $data = $db->getProfileLocal($ownerID);
+//    }
 }
 else if ($p=="getProfileCluster")
 {
