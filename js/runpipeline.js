@@ -823,12 +823,13 @@
 	                  }
 	                  var inRow = insertRowTable(rowType, firGnum, secGnum, paramGivenName, paraIdentifier, paraFileType, paraQualifier, processName, selectFileButton);
 	                  $('#' + rowType + 'sTable > tbody:last-child').append(inRow);
-	                  //xxx get project_pipeline_inputs:
+	                  //get project_pipeline_inputs:
 	                  var getProPipeInputs = getValues({
 	                      p: "getProjectPipelineInputs",
 	                      project_pipeline_id: project_pipeline_id,
 	                      g_num: firGnum
 	                  });
+                      a = getProPipeInputs;
 	                  if (getProPipeInputs.length === 1) {
 	                      var rowID = rowType + 'Ta-' + firGnum;
 	                      var filePath = getProPipeInputs[0].name; //value for val type
@@ -1892,6 +1893,7 @@
 	      serverLog = '';
 	      if (proType === 'cluster' || proType === 'amazon') {
 	          serverLog = getServerLog(project_pipeline_id);
+              if (serverLog && serverLog !== null && serverLog !== false){
 	          $('#runLogArea').val(serverLog);
 	          //xxxxxxx
 	          //for lsf: Job <203477> is submitted to queue <long>.\n"
@@ -1899,6 +1901,7 @@
 	              var runPid = serverLog.match(/Job <(.*)> is submitted/)[1];
 	              var updateRunPidComp = getValues({ p: "updateRunPid", pid: runPid, project_pipeline_id: project_pipeline_id });
 	          }
+              }
 	      }
 
 	      nextflowLog = getNextflowLog(project_pipeline_id, proType, proId);

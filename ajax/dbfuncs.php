@@ -25,11 +25,11 @@ class dbfuncs {
         }
     }
 
-    function __destruct() {
-        if (isset(self::$link)) {
-            self::$link->close();
-        }
-    }
+//    function __destruct() {
+//        if (isset(self::$link)) {
+//            self::$link->close();
+//        }
+//    }
    function runSQL($sql)
    {
         $link = new mysqli($this->dbhost, $this->dbuser, $this->dbpass, $this->db);
@@ -38,6 +38,8 @@ class dbfuncs {
                 exit('Connect failed: '. mysqli_connect_error());
         }
         $result=self::$link->query($sql);
+            $link->close();
+       
 		if (!$result) {
             trigger_error('Database Error: ' . self::$link->error);
         }
@@ -1500,7 +1502,7 @@ class dbfuncs {
     
     public function getProjectPipelineInputs($g_num, $project_pipeline_id,$ownerID) {
         $where = " where ppi.project_pipeline_id = '$project_pipeline_id' AND (ppi.owner_id = '$ownerID' OR ppi.perms = 63 OR (ug.u_id ='$ownerID' and ppi.perms = 15))" ; 
-        if ($g_num != ""){
+        if (isset($g_num)){
 			 $where = " where ppi.g_num= '$g_num' AND ppi.project_pipeline_id = '$project_pipeline_id' AND (ppi.owner_id = '$ownerID' OR ppi.perms = 63 OR (ug.u_id ='$ownerID' and ppi.perms = 15))" ; 
 		}
 		$sql = "SELECT DISTINCT ppi.id, i.id as input_id, i.name, ppi.given_name, ppi.g_num
@@ -1510,6 +1512,8 @@ class dbfuncs {
                 $where";
 		return self::queryTable($sql);
     }
+
+    
     public function getProjectPipelineInputsById($id,$ownerID) {
         $where = " where ppi.id= '$id' AND (ppi.owner_id = '$ownerID' OR ppi.perms = 63)" ; 
 		$sql = "SELECT ppi.id, i.id as input_id, i.name
@@ -1809,17 +1813,18 @@ public function getPublicPipelines() {
         settype($pipeline_gid, "integer");
         settype($group_id, "integer");
         settype($pin_order, "integer");
-        foreach ($obj[2]->{"nodes"} as $item):
-            if ($item[2] !== "inPro" && $item[2] !== "outPro" ){
-                $proId = $item[2];
-                $this->updateParameterGroupPerm($proId, $group_id, $perms, $ownerID);
-                $this->updateProcessGroupPerm($proId, $group_id, $perms, $ownerID);
-                $this->updateProcessParameterGroupPerm($proId, $group_id, $perms, $ownerID);
-                $this->updateProcessGroupGroupPerm($proId, $group_id, $perms, $ownerID);
-                
-            }
-        endforeach;
-	
+        $nodesRaw = $obj[2]->{"nodes"};
+        if (!empty($nodesRaw)){
+            foreach ($nodesRaw as $item):
+                if ($item[2] !== "inPro" && $item[2] !== "outPro" ){
+                    $proId = $item[2];
+                    $this->updateParameterGroupPerm($proId, $group_id, $perms, $ownerID);
+                    $this->updateProcessGroupPerm($proId, $group_id, $perms, $ownerID);
+                    $this->updateProcessParameterGroupPerm($proId, $group_id, $perms, $ownerID);
+                    $this->updateProcessGroupGroupPerm($proId, $group_id, $perms, $ownerID);
+                }
+            endforeach;
+        }
 	    if ($id > 0){
             $sql = "UPDATE biocorepipe_save set name = '$name', edges = '$edges', summary = '$summary', mainG = '$mainG', nodes ='$nodes', date_modified = now(), group_id = '$group_id', perms = '$perms', pin = '$pin', publish = '$publish', pin_order = '$pin_order', last_modified_user = '$ownerID' where id = '$id'";
 		}else{
@@ -1878,8 +1883,8 @@ public function getPublicPipelines() {
         return self::runSQL($sql);
     }
     public function insertPipelineName($name,$ownerID) {
-        $sql = "INSERT INTO biocorepipe_save(owner_id, name) VALUES 
-			('$ownerID','$name')";
+        $sql = "INSERT INTO biocorepipe_save(owner_id, name, rev_id, date_created, date_modified, last_modified_user) VALUES 
+			('$ownerID','$name', '0', now(), now(), '$ownerID')";
         return self::insTable($sql);
     }
 }
