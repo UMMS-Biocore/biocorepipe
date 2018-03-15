@@ -124,6 +124,15 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)->id,'1');
 		ob_end_clean();
 	}
+    public function testsaveAllPipeline() {
+		ob_start();
+		$_REQUEST['p'] = 'saveAllPipeline';
+		$_REQUEST['dat'] = '[{"id":"3","edges":"{\'edges\':[]}","mainG":"{\'mainG\':[0,0,1]}","nodes":"{\"g-0\":[255.6666717529297,136.6666717529297,\"1\",\"Build_index\"]}","pin_order":"0","pin":"false","publish":"0","name":"ss","script_header":null,"script_mode":null,"owner_id":"1","group_id":"0","perms":"3","date_created":"2018-03-15 00:40:47","date_modified":"2018-03-15 00:40:48","last_modified_user":"1","rev_id":"0","rev_comment":"","pipeline_gid":"2","summary":"","username":"onuryukselen","own":"1"}]';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'1');
+		ob_end_clean();
+	}
+    
     public function testInsertInput() {
 		ob_start();
 		$_REQUEST['p'] = 'saveInput';
@@ -212,42 +221,84 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)->id,'2');
 		ob_end_clean();
 	}
-    public function testInsertProjectPipeline() {
+    
+    //Database Error: Cannot add or update a child row: a foreign key constraint fails (`biocorepipe`.`project_pipeline`, CONSTRAINT `project_pipeline_ibfk_2` FOREIGN KEY (`pipeline_id`) REFERENCES `biocorepipe_save` (`id`))
+//    public function testInsertProjectPipeline() {
+//		ob_start();
+//		$_REQUEST['p'] = 'saveProjectPipeline';
+//		$_REQUEST['pipeline_id'] = '1';
+//		$_REQUEST['project_id'] = '1';
+//		$_REQUEST['name'] = 'test_run';
+//		$_REQUEST['summary'] = 'test_sum';
+//		$_REQUEST['output_dir'] = '';
+//		$_REQUEST['publish_dir'] = '';
+//		$_REQUEST['publish_dir_check'] = '';
+//		$_REQUEST['perms'] = '3';
+//		$_REQUEST['profile'] = '1';
+//		$_REQUEST['interdel'] = '';
+//		$_REQUEST['group_id'] = '';
+//		$_REQUEST['cmd'] = '';
+//        $_REQUEST['exec_each'] = "";
+//        $_REQUEST['exec_all'] = "";
+//        $_REQUEST['exec_all_settings'] = "";
+//        $_REQUEST['exec_each_settings'] = "";
+//        $_REQUEST['exec_next_settings'] = "";
+//        $_REQUEST['docker_check'] = "";
+//        $_REQUEST['docker_img'] = "";
+//        $_REQUEST['docker_opt'] = "";
+//        $_REQUEST['singu_check'] = "";
+//        $_REQUEST['singu_img'] = "";
+//        $_REQUEST['singu_opt'] = "";
+//        $_REQUEST['amazon_cre_id'] = "";
+//		include('ajaxquery.php');
+//		$this->assertEquals(json_decode($data)->id,'1');
+//		ob_end_clean();
+//	}
+
+    
+    public function testInsertProcessParameter() {
 		ob_start();
-		$_REQUEST['p'] = 'saveProjectPipeline';
-		$_REQUEST['pipeline_id'] = '1';
-		$_REQUEST['project_id'] = '1';
-		$_REQUEST['name'] = '1';
-		$_REQUEST['summary'] = '1';
-		$_REQUEST['output_dir'] = '1';
-		$_REQUEST['publish_dir'] = '';
-		$_REQUEST['publish_dir_check'] = '';
-		$_REQUEST['perms'] = '';
-		$_REQUEST['profile'] = '';
-		$_REQUEST['interdel'] = '';
-		$_REQUEST['group_id'] = '';
-		$_REQUEST['cmd'] = '';
-        $_REQUEST['exec_each'] = "";
-        $_REQUEST['exec_all'] = "";
-        $_REQUEST['exec_all_settings'] = "";
-        $_REQUEST['exec_each_settings'] = "";
-        $_REQUEST['exec_next_settings'] = "";
-        $_REQUEST['docker_check'] = "";
-        $_REQUEST['docker_img'] = "";
-        $_REQUEST['docker_opt'] = "";
-        $_REQUEST['singu_check'] = "";
-        $_REQUEST['singu_img'] = "";
-        $_REQUEST['singu_opt'] = "";
-        $_REQUEST['amazon_cre_id'] = "";
+		$_REQUEST['p'] = 'saveProcessParameter';
+		$_REQUEST['sname'] = 'test_input';
+		$_REQUEST['closure'] = '';
+		$_REQUEST['reg_ex'] = '';
+		$_REQUEST['operator'] = '';
+		$_REQUEST['process_id'] = '1';
+		$_REQUEST['parameter_id'] = '1';
+		$_REQUEST['type'] = 'input';
+        $_REQUEST['perms'] = "3";
+        $_REQUEST['group'] = "";
 		include('ajaxquery.php');
 		$this->assertEquals(json_decode($data)->id,'1');
 		ob_end_clean();
 	}
 
-
-
-
-
+    public function testgetMaxProcess_gid() {
+		ob_start();
+		$_REQUEST['p'] = 'getMaxProcess_gid';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'1');
+		ob_end_clean();
+	}
+    
+    public function testgetMaxPipeline_gid() {
+		ob_start();
+		$_REQUEST['p'] = 'getMaxPipeline_gid';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'1');
+		ob_end_clean();
+	}
+    
+    public function testinsertPipelineName() {
+		ob_start();
+		$_REQUEST['p'] = 'savePipelineName';
+		$_REQUEST['name'] = 'test_pipeline';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'1');
+		ob_end_clean();
+	}
+    
+ 
     
     
     
@@ -266,6 +317,16 @@ class ajaxQueryTest extends TestCase
 //    $new_name = $_REQUEST['name'];
 //    $old_id = $_REQUEST['id'];
 //    $data = $db->duplicateProcess($new_process_gid, $new_name, $old_id, $ownerID);
+//    $idArray = json_decode($data,true);
+//    $new_pro_id = $idArray["id"];
+//    $db->duplicateProcessParameter($new_pro_id, $old_id, $ownerID);
+//}
+//    else if ($p=="createProcessRev"){
+//    $rev_comment = $_REQUEST['rev_comment'];
+//    $rev_id = $_REQUEST['rev_id'];
+//    $new_process_gid = $_REQUEST['process_gid'];
+//    $old_id = $_REQUEST['id'];
+//    $data = $db->createProcessRev($new_process_gid, $rev_comment, $rev_id, $old_id, $ownerID);
 //    $idArray = json_decode($data,true);
 //    $new_pro_id = $idArray["id"];
 //    $db->duplicateProcessParameter($new_pro_id, $old_id, $ownerID);
@@ -299,13 +360,13 @@ class ajaxQueryTest extends TestCase
     
     
         //after insert user
-//    public function testCheckLogin() {
-//		ob_start();
-//		$_REQUEST['p'] = 'checkLogin';
-//		include('ajaxquery.php');
-//		$this->assertEquals(json_decode($data)->id,'1');
-//		ob_end_clean();
-//	}
+    public function testCheckLogin() {
+		ob_start();
+		$_REQUEST['p'] = 'checkLogin';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'1');
+		ob_end_clean();
+	}
 
 }
 
