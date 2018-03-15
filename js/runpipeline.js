@@ -823,12 +823,13 @@
 	                  }
 	                  var inRow = insertRowTable(rowType, firGnum, secGnum, paramGivenName, paraIdentifier, paraFileType, paraQualifier, processName, selectFileButton);
 	                  $('#' + rowType + 'sTable > tbody:last-child').append(inRow);
-	                  //xxx get project_pipeline_inputs:
+	                  //get project_pipeline_inputs:
 	                  var getProPipeInputs = getValues({
 	                      p: "getProjectPipelineInputs",
 	                      project_pipeline_id: project_pipeline_id,
 	                      g_num: firGnum
 	                  });
+                      a = getProPipeInputs;
 	                  if (getProPipeInputs.length === 1) {
 	                      var rowID = rowType + 'Ta-' + firGnum;
 	                      var filePath = getProPipeInputs[0].name; //value for val type

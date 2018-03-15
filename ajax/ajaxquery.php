@@ -178,6 +178,7 @@ else if ($p=="getProjectInput"){
 }
 else if ($p=="getProjectPipelineInputs"){
     $g_num = $_REQUEST['g_num'];
+    settype($g_num, 'integer');
     $project_pipeline_id = $_REQUEST['project_pipeline_id'];
     if (!empty($id)) {
     $data = $db->getProjectPipelineInputsById($id,$ownerID);

@@ -1512,6 +1512,8 @@ class dbfuncs {
                 $where";
 		return self::queryTable($sql);
     }
+
+    
     public function getProjectPipelineInputsById($id,$ownerID) {
         $where = " where ppi.id= '$id' AND (ppi.owner_id = '$ownerID' OR ppi.perms = 63)" ; 
 		$sql = "SELECT ppi.id, i.id as input_id, i.name
