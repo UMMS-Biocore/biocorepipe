@@ -467,13 +467,47 @@ class ajaxQueryTest extends TestCase
      * @depends testInsertProject
      * @depends testInsertInput
      */
-    public function testgetProjectInputs() {
+    public function testgetProjectInput() {
 		ob_start();
 		$_REQUEST['p'] = 'getProjectInput';
 		$_REQUEST['id'] = '1';
 		include('ajaxquery.php');
 		$this->assertEquals(json_decode($data)[0]->id, '1');
 		$this->assertEquals(json_decode($data)[0]->input_id, '1');
+		ob_end_clean();
+	}
+    
+    /**
+     * @depends testInsertProject
+     * @depends testInsertInput
+     * @depends testInsertProjectPipeline
+     */
+    public function testgetProjectPipelineInputs() {
+		ob_start();
+		$_REQUEST['p'] = 'getProjectPipelineInputs';
+		$_REQUEST['g_num'] = '0';
+		$_REQUEST['project_pipeline_id'] = '1';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id, '1');
+		$this->assertEquals(json_decode($data)[0]->input_id, '1');
+		$this->assertEquals(json_decode($data)[0]->given_name, 'test_inputparam');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertProject
+     * @depends testInsertInput
+     * @depends testInsertProjectPipeline
+     */
+    public function testgetProjectPipelineInputsById() {
+		ob_start();
+		$_REQUEST['p'] = 'getProjectPipelineInputs';
+		$_REQUEST['g_num'] = '0';
+		$_REQUEST['project_pipeline_id'] = '1';
+		$_REQUEST['id'] = '1';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id, '1');
+		$this->assertEquals(json_decode($data)[0]->input_id, '1');
+		$this->assertEquals(json_decode($data)[0]->name, 'testinput');
 		ob_end_clean();
 	}
     
