@@ -26,6 +26,7 @@ $(function () {
 function cleanProcessName(proName) {
     proName = proName.replace(/ /g, "_");
     proName = proName.replace(/-/g, "_");
+    proName = proName.replace(/:/g, "_");
     proName = proName.replace(/,/g, "_");
     proName = proName.replace(/\$/g, "_");
     proName = proName.replace(/\!/g, "_");

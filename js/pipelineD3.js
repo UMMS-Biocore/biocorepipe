@@ -1521,8 +1521,6 @@
 	              savedList.push({ "rev_id": 0 });
 	              savedList.push({ "rev_comment": "" });
 	              sl = JSON.stringify(savedList);
-                  console.log(sl)
-                  
 	              var ret = getValues({ p: "saveAllPipeline", dat: sl });
 	              $("#pipeline-title").attr('pipelineid', ret.id);
 	              pipeline_id = $('#pipeline-title').attr('pipelineid'); //refresh pipeline_id

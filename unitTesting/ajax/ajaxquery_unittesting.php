@@ -205,6 +205,17 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)->id,'2');
 		ob_end_clean();
 	}
+    public function testsavefeedback() {
+		ob_start();
+		$_REQUEST['p'] = 'savefeedback';
+		$_REQUEST['email'] = 'test@gmail.com';
+		$_REQUEST['message'] = 'test_message';
+		$_REQUEST['url'] = 'https://dolphinnext.umassmed.edu/index.php?np=2';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'2');
+		ob_end_clean();
+	}
+    
     public function testInsertProjectPipeline() {
 		ob_start();
 		$_REQUEST['p'] = 'saveProjectPipeline';
@@ -347,19 +358,107 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)[0]->username,'admin');
 		ob_end_clean();
 	}
+    /**
+     * @depends testInsertParameter
+     */
+    public function testgetAllParameters() {
+		ob_start();
+		$_REQUEST['p'] = 'getAllParameters';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id,'1');
+		$this->assertEquals(json_decode($data)[0]->name,'inputDir');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertParameter
+     */
+    public function testgetEditDelParameters() {
+		ob_start();
+		$_REQUEST['p'] = 'getEditDelParameters';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id,'1');
+		$this->assertEquals(json_decode($data)[0]->name,'inputDir');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertGroup
+     */
+    public function testgetMemberAdd() {
+		ob_start();
+		$_REQUEST['p'] = 'getMemberAdd';
+		$_REQUEST['g_id'] = '1';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id,'1');
+		$this->assertEquals(json_decode($data)[0]->u_id,'1');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertGroup
+     */
+    public function testgetGroups() {
+		ob_start();
+		$_REQUEST['p'] = 'getGroups';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id,'1');
+		$this->assertEquals(json_decode($data)[0]->name,'test_group');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertGroup
+     */
+    public function testgetUserGroups() {
+		ob_start();
+		$_REQUEST['p'] = 'getUserGroups';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id,'1');
+		$this->assertEquals(json_decode($data)[0]->name,'test_group');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertUser
+     */
+    public function testgetUserRole() {
+		ob_start();
+		$_REQUEST['p'] = 'getUserRole';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->role, null);
+		ob_end_clean();
+	}
     
-    
-//    else if ($p=="getAllParameters"){
-//    $data = $db -> getAllParameters($ownerID);
+
+
+//else if ($p=="getExistProjectPipelines"){
+//    $pipeline_id = $_REQUEST['pipeline_id'];
+//    $data = $db -> getExistProjectPipelines($pipeline_id,$ownerID);
 //}
-//else if ($p=="getEditDelParameters"){
-//    $data = $db -> getEditDelParameters($ownerID);
+//else if ($p=="getProjectPipelines"){
+//    $project_id = $_REQUEST['project_id'];
+//    $data = $db -> getProjectPipelines($id,$project_id,$ownerID);
 //}
-//else if ($p=="savefeedback"){
-//	$email = $_REQUEST['email'];
-//	$message = $_REQUEST['message'];
-//	$url = $_REQUEST['url'];
-//    $data = $db -> savefeedback($email,$message,$url);
+//else if ($p=="getProjectInputs"){
+//    $project_id = $_REQUEST['project_id'];
+//    $data = $db -> getProjectInputs($project_id,$ownerID);
+//}
+//else if ($p=="getProjectInput"){
+//    $data = $db -> getProjectInput($id,$ownerID);
+//}
+//else if ($p=="getProjectPipelineInputs"){
+//    $g_num = $_REQUEST['g_num'];
+//    $project_pipeline_id = $_REQUEST['project_pipeline_id'];
+//    if (!empty($id)) {
+//    $data = $db->getProjectPipelineInputsById($id,$ownerID);
+//    } else {
+//    $data = $db->getProjectPipelineInputs($g_num, $project_pipeline_id,$ownerID);
+//    }
+//}
+//else if ($p=="getInputs"){
+//    $data = $db -> getInputs($id,$ownerID);
+//}
+//else if ($p=="getAllProcessGroups"){
+//    $data = $db -> getAllProcessGroups($ownerID);
+//}
+//else if ($p=="getEditDelProcessGroups"){
+//    $data = $db -> getEditDelProcessGroups($ownerID);
 //}
     
     
