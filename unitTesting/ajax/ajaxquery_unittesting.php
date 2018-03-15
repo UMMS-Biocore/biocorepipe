@@ -206,9 +206,6 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)->id,'2');
 		ob_end_clean();
 	}
-    
-    
-    //Database Error: Cannot add or update a child row: a foreign key constraint fails (`biocorepipe`.`project_pipeline`, CONSTRAINT `project_pipeline_ibfk_2` FOREIGN KEY (`pipeline_id`) REFERENCES `biocorepipe_save` (`id`))
     public function testInsertProjectPipeline() {
 		ob_start();
 		$_REQUEST['p'] = 'saveProjectPipeline';
@@ -240,8 +237,6 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)->id,'1');
 		ob_end_clean();
 	}
-
-    
     public function testInsertProcessParameter() {
 		ob_start();
 		$_REQUEST['p'] = 'saveProcessParameter';
@@ -258,7 +253,6 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)->id,'1');
 		ob_end_clean();
 	}
-
     public function testgetMaxProcess_gid() {
 		ob_start();
 		$_REQUEST['p'] = 'getMaxProcess_gid';
@@ -266,7 +260,6 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)[0]->process_gid,'0');
 		ob_end_clean();
 	}
-    
     public function testgetMaxPipeline_gid() {
 		ob_start();
 		$_REQUEST['p'] = 'getMaxPipeline_gid';
@@ -274,7 +267,6 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)[0]->pipeline_gid,'0');
 		ob_end_clean();
 	}
-    
     public function testinsertPipelineName() {
 		ob_start();
 		$_REQUEST['p'] = 'savePipelineName';
@@ -283,8 +275,6 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)->id,'2');
 		ob_end_clean();
 	}
-        //Database Error: Cannot add or update a child row: a foreign key constraint fails (`biocorepipe`.`project_pipeline_input`, CONSTRAINT `project_pipeline_input_ibfk_3` FOREIGN KEY (`pipeline_id`) REFERENCES `biocorepipe_save` (`id`))
-    
     public function testInsertProPipeInput() {
 		ob_start();
 		$_REQUEST['p'] = 'saveProPipeInput';
@@ -300,39 +290,43 @@ class ajaxQueryTest extends TestCase
 		ob_end_clean();
 	}
     
+    public function testduplicateProcess() {
+		ob_start();
+		$_REQUEST['p'] = 'duplicateProcess';
+		$_REQUEST['name'] = "duplicate_process";
+		$_REQUEST['id'] = "1";
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'2');
+		ob_end_clean();
+	}
+    /**
+     * @depends testduplicateProcess
+     */
+    public function testcreateProcessRev() {
+		ob_start();
+		$_REQUEST['p'] = 'createProcessRev';
+		$_REQUEST['rev_comment'] = "test_comment";
+		$_REQUEST['rev_id'] = "1";
+		$_REQUEST['process_gid'] = "1";
+		$_REQUEST['id'] = "1";
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'3');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertProPipeInput
+     */
+    public function testduplicateProjectPipelineInput() {
+		ob_start();
+		$_REQUEST['p'] = 'duplicateProjectPipelineInput';
+		$_REQUEST['new_id'] = "2";
+		$_REQUEST['old_id'] = "1";
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'2');
+		ob_end_clean();
+	}
  
-    
-    
-    
-    
-    
-    
-//    to be modified section:
-    
-//    else if ($p=="duplicateProjectPipelineInput"){
-//    $new_id = $_REQUEST['new_id'];
-//    $old_id = $_REQUEST['old_id'];
-//    $data = $db->duplicateProjectPipelineInput($new_id, $old_id, $ownerID);
-//}
-//else if ($p=="duplicateProcess"){
-//    $new_process_gid = $_REQUEST['process_gid'];
-//    $new_name = $_REQUEST['name'];
-//    $old_id = $_REQUEST['id'];
-//    $data = $db->duplicateProcess($new_process_gid, $new_name, $old_id, $ownerID);
-//    $idArray = json_decode($data,true);
-//    $new_pro_id = $idArray["id"];
-//    $db->duplicateProcessParameter($new_pro_id, $old_id, $ownerID);
-//}
-//    else if ($p=="createProcessRev"){
-//    $rev_comment = $_REQUEST['rev_comment'];
-//    $rev_id = $_REQUEST['rev_id'];
-//    $new_process_gid = $_REQUEST['process_gid'];
-//    $old_id = $_REQUEST['id'];
-//    $data = $db->createProcessRev($new_process_gid, $rev_comment, $rev_id, $old_id, $ownerID);
-//    $idArray = json_decode($data,true);
-//    $new_pro_id = $idArray["id"];
-//    $db->duplicateProcessParameter($new_pro_id, $old_id, $ownerID);
-//}
+
     
 //    if ($p=="saveRun"){
 //	$project_pipeline_id = $_REQUEST['project_pipeline_id'];
