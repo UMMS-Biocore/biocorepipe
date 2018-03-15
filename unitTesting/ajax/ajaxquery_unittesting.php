@@ -382,6 +382,7 @@ class ajaxQueryTest extends TestCase
 	}
     /**
      * @depends testInsertGroup
+     * @depends testInsertUser
      */
     public function testgetMemberAdd() {
 		ob_start();
@@ -481,6 +482,7 @@ class ajaxQueryTest extends TestCase
      * @depends testInsertProject
      * @depends testInsertInput
      * @depends testInsertProjectPipeline
+     * @depends testInsertProPipeInput
      */
     public function testgetProjectPipelineInputs() {
 		ob_start();
