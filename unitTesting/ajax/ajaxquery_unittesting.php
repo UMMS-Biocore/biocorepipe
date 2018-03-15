@@ -37,6 +37,21 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)->id,'1');
 		ob_end_clean();
 	}
+    /**
+     * @depends testInsertUser
+     */
+    public function testInsertUser2() {
+		ob_start();
+		$_REQUEST['p'] = 'saveUser';
+		$_REQUEST['google_id'] = '222';
+		$_REQUEST['name'] = "member name";
+		$_REQUEST['google_image'] = "https://lh4.googleusercontent.com/-h7_FO3k9sB4/AAAAAAAAAAI/AAAAAAAAAAA/AGi4gfw9MqsLVfHz5xXsoOzA1KIZ1yLwXw/s96-c/photo.jpg";
+		$_REQUEST['username'] = "member";
+		$_REQUEST['email'] = "member@gmail.com";
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'2');
+		ob_end_clean();
+	}
     public function testInsertProject() {
 		ob_start();
 		$_REQUEST['p'] = 'saveProject';
@@ -389,8 +404,8 @@ class ajaxQueryTest extends TestCase
 		$_REQUEST['p'] = 'getMemberAdd';
 		$_REQUEST['g_id'] = '1';
 		include('ajaxquery.php');
-		$this->assertEquals(json_decode($data)[0]->id,'1');
-		$this->assertEquals(json_decode($data)[0]->username,'admin');
+		$this->assertEquals(json_decode($data)[0]->id,'2');
+		$this->assertEquals(json_decode($data)[0]->username,'member');
 		ob_end_clean();
 	}
     /**
@@ -514,15 +529,6 @@ class ajaxQueryTest extends TestCase
 	}
     
 
-//else if ($p=="getProjectPipelineInputs"){
-//    $g_num = $_REQUEST['g_num'];
-//    $project_pipeline_id = $_REQUEST['project_pipeline_id'];
-//    if (!empty($id)) {
-//    $data = $db->getProjectPipelineInputsById($id,$ownerID);
-//    } else {
-//    $data = $db->getProjectPipelineInputs($g_num, $project_pipeline_id,$ownerID);
-//    }
-//}
 //else if ($p=="getInputs"){
 //    $data = $db -> getInputs($id,$ownerID);
 //}
