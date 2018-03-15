@@ -507,7 +507,7 @@ class ajaxQueryTest extends TestCase
 		include('ajaxquery.php');
 		$this->assertEquals(json_decode($data)[0]->id, '1');
 		$this->assertEquals(json_decode($data)[0]->input_id, '1');
-//		$this->assertEquals(json_decode($data)[0]->given_name, 'test_inputparam');
+		$this->assertEquals(json_decode($data)[0]->given_name, 'test_inputparam');
 		ob_end_clean();
 	}
     /**

@@ -612,7 +612,7 @@ CREATE TABLE `project_pipeline_input` (
   `pipeline_id` int(11) NOT NULL,
   `input_id` int(11) NOT NULL,
   `project_pipeline_id` int(11) NOT NULL,
-  `g_num` int(11) DEFAULT NULL,
+  `g_num` varchar(11) DEFAULT NULL,
   `given_name` varchar(256) DEFAULT NULL,
   `owner_id` int(11) DEFAULT NULL,
   `group_id` int(11) DEFAULT NULL,
