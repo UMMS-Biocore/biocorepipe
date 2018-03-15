@@ -344,10 +344,23 @@ class ajaxQueryTest extends TestCase
 		ob_start();
 		$_REQUEST['p'] = 'checkLogin';
 		include('ajaxquery.php');
-		$this->assertEquals(json_decode($data)[0]->id,'1');
+		$this->assertEquals(json_decode($data)[0]->username,'admin');
 		ob_end_clean();
 	}
     
+    
+//    else if ($p=="getAllParameters"){
+//    $data = $db -> getAllParameters($ownerID);
+//}
+//else if ($p=="getEditDelParameters"){
+//    $data = $db -> getEditDelParameters($ownerID);
+//}
+//else if ($p=="savefeedback"){
+//	$email = $_REQUEST['email'];
+//	$message = $_REQUEST['message'];
+//	$url = $_REQUEST['url'];
+//    $data = $db -> savefeedback($email,$message,$url);
+//}
     
     
     //    if ($p=="saveRun"){
