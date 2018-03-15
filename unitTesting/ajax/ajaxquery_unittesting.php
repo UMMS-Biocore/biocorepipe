@@ -551,26 +551,27 @@ class ajaxQueryTest extends TestCase
 		ob_end_clean();
 	}
     /**
-     * @depends testInsertInput
+     * @depends testInsertProcessGroup
      */
-    public function testgetInputsById() {
+    public function testgetAllProcessGroups() {
 		ob_start();
-		$_REQUEST['p'] = 'getInputs';
-		$_REQUEST['id'] = '1';
+		$_REQUEST['p'] = 'getAllProcessGroups';
 		include('ajaxquery.php');
 		$this->assertEquals(json_decode($data)[0]->id, '1');
-		$this->assertEquals(json_decode($data)[0]->name, 'testinput');
+		$this->assertEquals(json_decode($data)[0]->group_name, 'test_menu');
 		ob_end_clean();
 	}
-    
-
-
-//else if ($p=="getAllProcessGroups"){
-//    $data = $db -> getAllProcessGroups($ownerID);
-//}
-//else if ($p=="getEditDelProcessGroups"){
-//    $data = $db -> getEditDelProcessGroups($ownerID);
-//}
+    /**
+     * @depends testInsertProcessGroup
+     */
+    public function testgetEditDelProcessGroups() {
+		ob_start();
+		$_REQUEST['p'] = 'getEditDelProcessGroups';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id, '1');
+		$this->assertEquals(json_decode($data)[0]->group_name, 'test_menu');
+		ob_end_clean();
+	}
     
     
     //    if ($p=="saveRun"){
