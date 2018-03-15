@@ -40,7 +40,7 @@ class ajaxQueryTest extends TestCase
     public function testInsertProject() {
 		ob_start();
 		$_REQUEST['p'] = 'saveProject';
-		$_REQUEST['name'] = 'testProject';
+		$_REQUEST['name'] = 'test_project';
 		$_REQUEST['summary'] = "testSummary";
 		include('ajaxquery.php');
 		$this->assertEquals(json_decode($data)->id,'1');
@@ -212,7 +212,7 @@ class ajaxQueryTest extends TestCase
 		$_REQUEST['message'] = 'test_message';
 		$_REQUEST['url'] = 'https://dolphinnext.umassmed.edu/index.php?np=2';
 		include('ajaxquery.php');
-		$this->assertEquals(json_decode($data)->id,'2');
+		$this->assertEquals(json_decode($data)->id,'1');
 		ob_end_clean();
 	}
     
@@ -344,7 +344,7 @@ class ajaxQueryTest extends TestCase
 		$_REQUEST['id'] = '1';
 		include('ajaxquery.php');
 		$this->assertEquals(json_decode($data)[0]->id,'1');
-		$this->assertEquals(json_decode($data)[0]->name,'testProject');
+		$this->assertEquals(json_decode($data)[0]->name,'test_project');
 		$this->assertEquals(json_decode($data)[0]->summary,'testSummary');
 		ob_end_clean();
 	}
@@ -389,7 +389,7 @@ class ajaxQueryTest extends TestCase
 		$_REQUEST['g_id'] = '1';
 		include('ajaxquery.php');
 		$this->assertEquals(json_decode($data)[0]->id,'1');
-		$this->assertEquals(json_decode($data)[0]->u_id,'1');
+		$this->assertEquals(json_decode($data)[0]->username,'admin');
 		ob_end_clean();
 	}
     /**
@@ -424,24 +424,60 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)[0]->role, null);
 		ob_end_clean();
 	}
+    /**
+     * @depends testInsertProjectPipeline
+     */
+    public function testgetExistProjectPipelines() {
+		ob_start();
+		$_REQUEST['p'] = 'getExistProjectPipelines';
+		$_REQUEST['pipeline_id'] = '1';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id, '1');
+		$this->assertEquals(json_decode($data)[0]->pp_name, 'test_run');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertProjectPipeline
+     * @depends testInsertProject
+     */
+    public function testgetProjectPipelines() {
+		ob_start();
+		$_REQUEST['p'] = 'getProjectPipelines';
+		$_REQUEST['project_id'] = '1';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id, '1');
+		$this->assertEquals(json_decode($data)[0]->pp_name, 'test_run');
+		$this->assertEquals(json_decode($data)[0]->project_name, 'test_project');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertProject
+     * @depends testInsertInput
+     */
+    public function testgetProjectInputs() {
+		ob_start();
+		$_REQUEST['p'] = 'getProjectInputs';
+		$_REQUEST['project_id'] = '1';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id, '1');
+		$this->assertEquals(json_decode($data)[0]->input_id, '1');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertProject
+     * @depends testInsertInput
+     */
+    public function testgetProjectInputs() {
+		ob_start();
+		$_REQUEST['p'] = 'getProjectInput';
+		$_REQUEST['id'] = '1';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id, '1');
+		$this->assertEquals(json_decode($data)[0]->input_id, '1');
+		ob_end_clean();
+	}
     
 
-
-//else if ($p=="getExistProjectPipelines"){
-//    $pipeline_id = $_REQUEST['pipeline_id'];
-//    $data = $db -> getExistProjectPipelines($pipeline_id,$ownerID);
-//}
-//else if ($p=="getProjectPipelines"){
-//    $project_id = $_REQUEST['project_id'];
-//    $data = $db -> getProjectPipelines($id,$project_id,$ownerID);
-//}
-//else if ($p=="getProjectInputs"){
-//    $project_id = $_REQUEST['project_id'];
-//    $data = $db -> getProjectInputs($project_id,$ownerID);
-//}
-//else if ($p=="getProjectInput"){
-//    $data = $db -> getProjectInput($id,$ownerID);
-//}
 //else if ($p=="getProjectPipelineInputs"){
 //    $g_num = $_REQUEST['g_num'];
 //    $project_pipeline_id = $_REQUEST['project_pipeline_id'];
