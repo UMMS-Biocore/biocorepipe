@@ -1502,7 +1502,7 @@ class dbfuncs {
     
     public function getProjectPipelineInputs($g_num, $project_pipeline_id,$ownerID) {
         $where = " where ppi.project_pipeline_id = '$project_pipeline_id' AND (ppi.owner_id = '$ownerID' OR ppi.perms = 63 OR (ug.u_id ='$ownerID' and ppi.perms = 15))" ; 
-        if ($g_num != ""){
+        if (isset($g_num)){
 			 $where = " where ppi.g_num= '$g_num' AND ppi.project_pipeline_id = '$project_pipeline_id' AND (ppi.owner_id = '$ownerID' OR ppi.perms = 63 OR (ug.u_id ='$ownerID' and ppi.perms = 15))" ; 
 		}
 		$sql = "SELECT DISTINCT ppi.id, i.id as input_id, i.name, ppi.given_name, ppi.g_num
