@@ -1880,8 +1880,8 @@ public function getPublicPipelines() {
         return self::runSQL($sql);
     }
     public function insertPipelineName($name,$ownerID) {
-        $sql = "INSERT INTO biocorepipe_save(owner_id, name) VALUES 
-			('$ownerID','$name')";
+        $sql = "INSERT INTO biocorepipe_save(owner_id, name, rev_id, date_created, date_modified, last_modified_user) VALUES 
+			('$ownerID','$name', '0', now(), now(), '$ownerID')";
         return self::insTable($sql);
     }
 }

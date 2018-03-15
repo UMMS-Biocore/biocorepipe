@@ -14,9 +14,17 @@ use PHPUnit\Framework\TestCase;
 
 class ajaxQueryTest extends TestCase
 {
-/**
-* @beforeClass
-*/
+
+    public function testInsertParameter() {
+		ob_start();
+		$_REQUEST['p'] = 'saveParameter';
+		$_REQUEST['name'] = "inputDir";
+		$_REQUEST['qualifier'] = "val";
+		$_REQUEST['file_type'] = "inputDir";
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'1');
+		ob_end_clean();
+	}
     public function testInsertUser() {
 		ob_start();
 		$_REQUEST['p'] = 'saveUser';
@@ -38,16 +46,44 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)->id,'1');
 		ob_end_clean();
 	}
-    public function testInsertParameter() {
+       public function testInsertProcessGroup() {
 		ob_start();
-		$_REQUEST['p'] = 'saveParameter';
-		$_REQUEST['name'] = "inputDir";
-		$_REQUEST['qualifier'] = "val";
-		$_REQUEST['file_type'] = "inputDir";
+		$_REQUEST['p'] = 'saveProcessGroup';
+		$_REQUEST['group_name'] = 'test_menu';
 		include('ajaxquery.php');
 		$this->assertEquals(json_decode($data)->id,'1');
 		ob_end_clean();
 	}
+    public function testInsertProcess() {
+		ob_start();
+		$_REQUEST['p'] = 'saveProcess';
+		$_REQUEST['name'] = 'test_process';
+		$_REQUEST['process_gid'] = '1';
+		$_REQUEST['summary'] = 'test_summary';
+		$_REQUEST['process_group_id'] = '1';
+		$_REQUEST['script'] = 'test_script';
+		$_REQUEST['script_header'] = 'test_script_header';
+		$_REQUEST['script_mode'] = 'perl';
+		$_REQUEST['script_mode_header'] = 'python';
+		$_REQUEST['rev_id'] = '';
+		$_REQUEST['rev_comment'] = '';
+		$_REQUEST['group'] = '';
+		$_REQUEST['perms'] = '3';
+		$_REQUEST['publish'] = 'false';
+		$_REQUEST['publish'] = 'false';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'1');
+		ob_end_clean();
+	}
+    public function testInsertInput() {
+		ob_start();
+		$_REQUEST['p'] = 'saveInput';
+		$_REQUEST['name'] = "testinput";
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'1');
+		ob_end_clean();
+	}
+
     
         //***discuss
 //    public function testInsertSSH() {
@@ -124,39 +160,6 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)->id,'1');
 		ob_end_clean();
 	}
-    public function testsaveAllPipeline() {
-		ob_start();
-		$_REQUEST['p'] = 'saveAllPipeline';
-		$_REQUEST['dat'] = '[{"id":"3","edges":"{\'edges\':[]}","mainG":"{\'mainG\':[0,0,1]}","nodes":"{\"g-0\":[255.6666717529297,136.6666717529297,\"1\",\"Build_index\"]}","pin_order":"0","pin":"false","publish":"0","name":"ss","script_header":null,"script_mode":null,"owner_id":"1","group_id":"0","perms":"3","date_created":"2018-03-15 00:40:47","date_modified":"2018-03-15 00:40:48","last_modified_user":"1","rev_id":"0","rev_comment":"","pipeline_gid":"2","summary":"","username":"onuryukselen","own":"1"}]';
-		include('ajaxquery.php');
-		$this->assertEquals(json_decode($data)->id,'1');
-		ob_end_clean();
-	}
-    
-    public function testInsertInput() {
-		ob_start();
-		$_REQUEST['p'] = 'saveInput';
-		$_REQUEST['name'] = "testinput";
-		include('ajaxquery.php');
-		$this->assertEquals(json_decode($data)->id,'1');
-		ob_end_clean();
-	}
-    //Database Error: Cannot add or update a child row: a foreign key constraint fails (`biocorepipe`.`project_pipeline_input`, CONSTRAINT `project_pipeline_input_ibfk_3` FOREIGN KEY (`pipeline_id`) REFERENCES `biocorepipe_save` (`id`))
-    
-//    public function testInsertProPipeInput() {
-//		ob_start();
-//		$_REQUEST['p'] = 'saveProPipeInput';
-//		$_REQUEST['input_id'] = "1";
-//		$_REQUEST['project_id'] = "1";
-//		$_REQUEST['pipeline_id'] = "1";
-//		$_REQUEST['project_pipeline_id'] = "1";
-//		$_REQUEST['g_num'] = "1";
-//		$_REQUEST['given_name'] = "test_inputparam";
-//		$_REQUEST['qualifier'] = "test_inputparam";
-//		include('ajaxquery.php');
-//		$this->assertEquals(json_decode($data)->id,'1');
-//		ob_end_clean();
-//	}
     public function testInsertProjectInput() {
 		ob_start();
 		$_REQUEST['p'] = 'saveProjectInput';
@@ -166,6 +169,21 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)->id,'1');
 		ob_end_clean();
 	}
+    public function testsaveAllPipeline() {
+		ob_start();
+		$_REQUEST['p'] = 'saveAllPipeline';
+		$_REQUEST['dat'] = '{"name":"test_pipeline","id":"","nodes":"{\"g-0\":[255.6666717529297,136.6666717529297,\"1\",\"test_process\"]}","mainG":"{\'mainG\':[0,0,1]}","edges":"{\'edges\':[]}","summary":"","group_id":"0","perms":"3","pin":"false","pin_order":"0","publish":"0","pipeline_gid":"1","rev_comment":"","rev_id":"0"}';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'1');
+		ob_end_clean();
+	}
+ 
+    
+    
+    
+
+
+
     //not working
 //    public function testCheckLoginDecline() {
 //		ob_start();
@@ -175,35 +193,7 @@ class ajaxQueryTest extends TestCase
 //		$this->assertEquals(json_decode($data)->error,'1');
 //		ob_end_clean();
 //	}
-    public function testInsertProcessGroup() {
-		ob_start();
-		$_REQUEST['p'] = 'saveProcessGroup';
-		$_REQUEST['group_name'] = 'test_menu';
-		include('ajaxquery.php');
-		$this->assertEquals(json_decode($data)->id,'1');
-		ob_end_clean();
-	}
-    public function testInsertProcess() {
-		ob_start();
-		$_REQUEST['p'] = 'saveProcess';
-		$_REQUEST['name'] = 'test_process';
-		$_REQUEST['process_gid'] = '1';
-		$_REQUEST['summary'] = 'test_summary';
-		$_REQUEST['process_group_id'] = '1';
-		$_REQUEST['script'] = 'test_script';
-		$_REQUEST['script_header'] = 'test_script_header';
-		$_REQUEST['script_mode'] = 'perl';
-		$_REQUEST['script_mode_header'] = 'python';
-		$_REQUEST['rev_id'] = '';
-		$_REQUEST['rev_comment'] = '';
-		$_REQUEST['group'] = '';
-		$_REQUEST['perms'] = '3';
-		$_REQUEST['publish'] = 'false';
-		$_REQUEST['publish'] = 'false';
-		include('ajaxquery.php');
-		$this->assertEquals(json_decode($data)->id,'1');
-		ob_end_clean();
-	}
+
     public function testInsertGroup() {
 		ob_start();
 		$_REQUEST['p'] = 'saveGroup';
@@ -222,38 +212,39 @@ class ajaxQueryTest extends TestCase
 		ob_end_clean();
 	}
     
+    
     //Database Error: Cannot add or update a child row: a foreign key constraint fails (`biocorepipe`.`project_pipeline`, CONSTRAINT `project_pipeline_ibfk_2` FOREIGN KEY (`pipeline_id`) REFERENCES `biocorepipe_save` (`id`))
-//    public function testInsertProjectPipeline() {
-//		ob_start();
-//		$_REQUEST['p'] = 'saveProjectPipeline';
-//		$_REQUEST['pipeline_id'] = '1';
-//		$_REQUEST['project_id'] = '1';
-//		$_REQUEST['name'] = 'test_run';
-//		$_REQUEST['summary'] = 'test_sum';
-//		$_REQUEST['output_dir'] = '';
-//		$_REQUEST['publish_dir'] = '';
-//		$_REQUEST['publish_dir_check'] = '';
-//		$_REQUEST['perms'] = '3';
-//		$_REQUEST['profile'] = '1';
-//		$_REQUEST['interdel'] = '';
-//		$_REQUEST['group_id'] = '';
-//		$_REQUEST['cmd'] = '';
-//        $_REQUEST['exec_each'] = "";
-//        $_REQUEST['exec_all'] = "";
-//        $_REQUEST['exec_all_settings'] = "";
-//        $_REQUEST['exec_each_settings'] = "";
-//        $_REQUEST['exec_next_settings'] = "";
-//        $_REQUEST['docker_check'] = "";
-//        $_REQUEST['docker_img'] = "";
-//        $_REQUEST['docker_opt'] = "";
-//        $_REQUEST['singu_check'] = "";
-//        $_REQUEST['singu_img'] = "";
-//        $_REQUEST['singu_opt'] = "";
-//        $_REQUEST['amazon_cre_id'] = "";
-//		include('ajaxquery.php');
-//		$this->assertEquals(json_decode($data)->id,'1');
-//		ob_end_clean();
-//	}
+    public function testInsertProjectPipeline() {
+		ob_start();
+		$_REQUEST['p'] = 'saveProjectPipeline';
+		$_REQUEST['pipeline_id'] = '1';
+		$_REQUEST['project_id'] = '1';
+		$_REQUEST['name'] = 'test_run';
+		$_REQUEST['summary'] = 'test_sum';
+		$_REQUEST['output_dir'] = '';
+		$_REQUEST['publish_dir'] = '';
+		$_REQUEST['publish_dir_check'] = '';
+		$_REQUEST['perms'] = '3';
+		$_REQUEST['profile'] = '1';
+		$_REQUEST['interdel'] = '';
+		$_REQUEST['group_id'] = '';
+		$_REQUEST['cmd'] = '';
+        $_REQUEST['exec_each'] = "";
+        $_REQUEST['exec_all'] = "";
+        $_REQUEST['exec_all_settings'] = "";
+        $_REQUEST['exec_each_settings'] = "";
+        $_REQUEST['exec_next_settings'] = "";
+        $_REQUEST['docker_check'] = "";
+        $_REQUEST['docker_img'] = "";
+        $_REQUEST['docker_opt'] = "";
+        $_REQUEST['singu_check'] = "";
+        $_REQUEST['singu_img'] = "";
+        $_REQUEST['singu_opt'] = "";
+        $_REQUEST['amazon_cre_id'] = "";
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'1');
+		ob_end_clean();
+	}
 
     
     public function testInsertProcessParameter() {
@@ -277,7 +268,7 @@ class ajaxQueryTest extends TestCase
 		ob_start();
 		$_REQUEST['p'] = 'getMaxProcess_gid';
 		include('ajaxquery.php');
-		$this->assertEquals(json_decode($data)->id,'1');
+		$this->assertEquals(json_decode($data)[0]->process_gid,'0');
 		ob_end_clean();
 	}
     
@@ -285,7 +276,7 @@ class ajaxQueryTest extends TestCase
 		ob_start();
 		$_REQUEST['p'] = 'getMaxPipeline_gid';
 		include('ajaxquery.php');
-		$this->assertEquals(json_decode($data)->id,'1');
+		$this->assertEquals(json_decode($data)[0]->pipeline_gid,'0');
 		ob_end_clean();
 	}
     
@@ -293,6 +284,22 @@ class ajaxQueryTest extends TestCase
 		ob_start();
 		$_REQUEST['p'] = 'savePipelineName';
 		$_REQUEST['name'] = 'test_pipeline';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'2');
+		ob_end_clean();
+	}
+        //Database Error: Cannot add or update a child row: a foreign key constraint fails (`biocorepipe`.`project_pipeline_input`, CONSTRAINT `project_pipeline_input_ibfk_3` FOREIGN KEY (`pipeline_id`) REFERENCES `biocorepipe_save` (`id`))
+    
+    public function testInsertProPipeInput() {
+		ob_start();
+		$_REQUEST['p'] = 'saveProPipeInput';
+		$_REQUEST['input_id'] = "1";
+		$_REQUEST['project_id'] = "1";
+		$_REQUEST['pipeline_id'] = "1";
+		$_REQUEST['project_pipeline_id'] = "1";
+		$_REQUEST['g_num'] = "1";
+		$_REQUEST['given_name'] = "test_inputparam";
+		$_REQUEST['qualifier'] = "test_inputparam";
 		include('ajaxquery.php');
 		$this->assertEquals(json_decode($data)->id,'1');
 		ob_end_clean();
@@ -344,9 +351,9 @@ class ajaxQueryTest extends TestCase
 
     
     
-//    /**
-//     * @afterClass
-//     */
+    /**
+     * @depends testInsertProject
+     */
 	public function testGetProjects() {
 		ob_start();
 		$_REQUEST['p'] = 'getProjects';

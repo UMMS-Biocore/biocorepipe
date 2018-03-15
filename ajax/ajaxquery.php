@@ -525,6 +525,7 @@ else if ($p=="saveProcess"){
     $publish = $_REQUEST['publish']; 
     settype($rev_id, 'integer');
     settype($group_id, 'integer');
+    settype($process_gid, "integer");
     if (!empty($id)) {
         $data = $db->updateProcess($id, $name, $process_gid, $summary, $process_group_id, $script, $script_header, $group_id, $perms, $publish, $script_mode, $script_mode_header, $ownerID);
         if ($perms !== "3"){
