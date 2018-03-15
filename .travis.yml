@@ -41,6 +41,7 @@ after_script:
   - mysql -e "show databases;" -uroot
   - mysql -e "use biocorepipe; show tables;" -uroot
   - mysql -e "use biocorepipe; SELECT * FROM biocorepipe_save;" -uroot
+  - mysql -e "use biocorepipe; SELECT * FROM process;" -uroot
   - mysql -e "use biocorepipe; SELECT * FROM project;" -uroot
   - mysql -e "use biocorepipe; SELECT * FROM users;" -uroot
   - mysql -e "use biocorepipe; SELECT * FROM user_group;" -uroot

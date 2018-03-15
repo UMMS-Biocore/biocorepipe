@@ -58,7 +58,7 @@ class ajaxQueryTest extends TestCase
 		ob_start();
 		$_REQUEST['p'] = 'saveProcess';
 		$_REQUEST['name'] = 'test_process';
-		$_REQUEST['process_gid'] = '1';
+		$_REQUEST['process_gid'] = 'NaN';
 		$_REQUEST['summary'] = 'test_summary';
 		$_REQUEST['process_group_id'] = '1';
 		$_REQUEST['script'] = 'test_script';
@@ -172,17 +172,12 @@ class ajaxQueryTest extends TestCase
     public function testsaveAllPipeline() {
 		ob_start();
 		$_REQUEST['p'] = 'saveAllPipeline';
-		$_REQUEST['dat'] = '{"name":"test_pipeline","id":"","nodes":"{\"g-0\":[255.6666717529297,136.6666717529297,\"1\",\"test_process\"]}","mainG":"{\'mainG\':[0,0,1]}","edges":"{\'edges\':[]}","summary":"","group_id":"0","perms":"3","pin":"false","pin_order":"0","publish":"0","pipeline_gid":"1","rev_comment":"","rev_id":"0"}';
+		$_REQUEST['dat'] = '[{"name":"test_pipeline"},{"id":""},{"nodes":{"g-0":[318.6666564941406,106.66666412353516,"1","test_process"]}},{"mainG":[0,0,1]},{"edges":[]},{"summary":""},{"group_id":""},{"perms":"3"},{"pin":"false"},{"pin_order":""},{"publish":"0"},{"pipeline_gid":null},{"rev_comment":""},{"rev_id":0}]';
 		include('ajaxquery.php');
 		$this->assertEquals(json_decode($data)->id,'1');
 		ob_end_clean();
 	}
  
-    
-    
-    
-
-
 
     //not working
 //    public function testCheckLoginDecline() {
