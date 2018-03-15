@@ -307,7 +307,7 @@ class ajaxQueryTest extends TestCase
 		$_REQUEST['project_id'] = "1";
 		$_REQUEST['pipeline_id'] = "1";
 		$_REQUEST['project_pipeline_id'] = "1";
-		$_REQUEST['g_num'] = "1";
+		$_REQUEST['g_num'] = "0";
 		$_REQUEST['given_name'] = "test_inputparam";
 		$_REQUEST['qualifier'] = "test_inputparam";
 		include('ajaxquery.php');
