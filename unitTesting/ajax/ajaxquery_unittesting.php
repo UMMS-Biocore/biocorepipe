@@ -84,7 +84,6 @@ class ajaxQueryTest extends TestCase
 		ob_end_clean();
 	}
 
-    
         //***discuss
 //    public function testInsertSSH() {
 //		ob_start();
@@ -325,21 +324,6 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)->id,'2');
 		ob_end_clean();
 	}
- 
-
-    
-//    if ($p=="saveRun"){
-//	$project_pipeline_id = $_REQUEST['project_pipeline_id'];
-//	$profileType = $_REQUEST['profileType'];
-//	$profileId = $_REQUEST['profileId'];
-//	$amazon_cre_id = $_REQUEST['amazon_cre_id'];
-//    ...
-//    ...
-    
-    
-
-    
-    
     /**
      * @depends testInsertProject
      */
@@ -353,16 +337,26 @@ class ajaxQueryTest extends TestCase
 		$this->assertEquals(json_decode($data)[0]->summary,'testSummary');
 		ob_end_clean();
 	}
-    
-    
-        //after insert user
+    /**
+     * @depends testInsertUser
+     */
     public function testCheckLogin() {
 		ob_start();
 		$_REQUEST['p'] = 'checkLogin';
 		include('ajaxquery.php');
-		$this->assertEquals(json_decode($data)->id,'1');
+		$this->assertEquals(json_decode($data)[0]->id,'1');
 		ob_end_clean();
 	}
+    
+    
+    
+    //    if ($p=="saveRun"){
+//	$project_pipeline_id = $_REQUEST['project_pipeline_id'];
+//	$profileType = $_REQUEST['profileType'];
+//	$profileId = $_REQUEST['profileId'];
+//	$amazon_cre_id = $_REQUEST['amazon_cre_id'];
+//    ...
+//    ...
 
 }
 
