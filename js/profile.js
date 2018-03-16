@@ -34,14 +34,14 @@
 
     $(document).ready(function () {
         //get profiles for user
-        var proLocData = getValues({ p: "getProfileLocal" });
+//        var proLocData = getValues({ p: "getProfileLocal" });
         var proCluData = getValues({ p: "getProfileCluster" });
         var proAmzData = getValues({ p: "getProfileAmazon" });
-        if (proLocData.length + proCluData.length + proAmzData.length !== 0) {
+        if (proCluData.length + proAmzData.length !== 0) {
             $('#noProfile').css('display', 'none');
-            $.each(proLocData, function (el) {
-                addLocalRow(proLocData[el].id, proLocData[el].name, proLocData[el].next_path, proLocData[el].executor);
-            });
+//            $.each(proLocData, function (el) {
+//                addLocalRow(proLocData[el].id, proLocData[el].name, proLocData[el].next_path, proLocData[el].executor);
+//            });
             $.each(proCluData, function (el) {
                 addClusterRow(proCluData[el].id, proCluData[el].name, proCluData[el].next_path, proCluData[el].executor, proCluData[el].username, proCluData[el].hostname);
             });
@@ -136,10 +136,10 @@
                     $(formValues[23]).val(data[0].job_time);
                 };
                 if (proType === "local") {
-                    var data = getValues({ p: "getProfileLocal", id: proId });
-                    $('#chooseEnv').val('local').trigger('change');
-                    fillFixedCol(formValues, data);
-                    $('#mExec').trigger('change');
+//                    var data = getValues({ p: "getProfileLocal", id: proId });
+//                    $('#chooseEnv').val('local').trigger('change');
+//                    fillFixedCol(formValues, data);
+//                    $('#mExec').trigger('change');
                 } else if (proType === "cluster") {
                     var data = getValues({ p: "getProfileCluster", id: proId });
                     $('#chooseEnv').val('cluster').trigger('change');

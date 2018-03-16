@@ -1492,14 +1492,14 @@
 	  function loadRunOptions() {
 	      $('#chooseEnv').find('option').not(':disabled').remove();
 	      //get profiles for user
-	      var proLocData = getValues({ p: "getProfileLocal" });
+//	      var proLocData = getValues({ p: "getProfileLocal" });
 	      var proCluData = getValues({ p: "getProfileCluster" });
 	      var proAmzData = getValues({ p: "getProfileAmazon" });
-	      if (proLocData.length + proCluData.length + proAmzData.length !== 0) {
-	          $.each(proLocData, function (el) {
-	              var option = new Option(proLocData[el].name + ' (Local)', 'local-' + proLocData[el].id);
-	              $("#chooseEnv").append(option);
-	          });
+	      if (proCluData.length + proAmzData.length !== 0) {
+//	          $.each(proLocData, function (el) {
+//	              var option = new Option(proLocData[el].name + ' (Local)', 'local-' + proLocData[el].id);
+//	              $("#chooseEnv").append(option);
+//	          });
 	          $.each(proCluData, function (el) {
 	              var option = new Option(proCluData[el].name + ' (Remote machine: ' + proCluData[el].username + '@' + proCluData[el].hostname + ')', 'cluster-' + proCluData[el].id);
 	              $("#chooseEnv").append(option);
@@ -1634,6 +1634,13 @@
 	      } else {
 	          var s3status = false;
 	      }
+              console.log(publishReady)
+              console.log(s3status)
+              console.log(getProPipeInputs)
+              console.log(numInputRows)
+              console.log(profileNext)
+              console.log(output_dir)
+          
 	      if (publishReady && s3status && getProPipeInputs.length === numInputRows && profileNext !== '' && output_dir !== '') {
 	          if (((runStatus !== "NextRun" && runStatus !== "Waiting" && runStatus !== "init") && (checkType === "rerun" || checkType === "newrun")) || runStatus === "") {
 	              if (amzStatus) {
