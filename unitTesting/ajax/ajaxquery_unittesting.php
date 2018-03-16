@@ -7,14 +7,12 @@ $ownerID = isset($_SESSION['ownerID']) ? $_SESSION['ownerID'] : "";
 $google_id = isset($_SESSION['google_id']) ? $_SESSION['google_id'] : "";
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : "";
 
-
 chdir('ajax/');
 use PHPUnit\Framework\TestCase;
 
 
 class ajaxQueryTest extends TestCase
 {
-
     public function testInsertParameter() {
 		ob_start();
 		$_REQUEST['p'] = 'saveParameter';
@@ -574,7 +572,7 @@ class ajaxQueryTest extends TestCase
 		ob_end_clean();
 	}
     
-    
+
     //    if ($p=="saveRun"){
 //	$project_pipeline_id = $_REQUEST['project_pipeline_id'];
 //	$profileType = $_REQUEST['profileType'];
@@ -583,6 +581,11 @@ class ajaxQueryTest extends TestCase
 //    ...
 //    ...
 
+    
+    
+    
+    
+    
 }
 
 
