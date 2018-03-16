@@ -1,3 +1,10 @@
+16.03.2018 Version 0.0.98
+Debugging is upgraded by run logs.
+Adding NA as project file is fixed.
+
+16.03.2018 Version 0.0.97
+getProjectPipelineInputs function error fixed.
+
 15.03.2018 Version 0.0.96
 42 test functions for travis are added.
 check server log error fixed.
