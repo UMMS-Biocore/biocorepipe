@@ -349,12 +349,259 @@ class ajaxQueryTest extends TestCase
 		ob_end_clean();
 	}
     /**
+		ob_end_clean();
+	}
+    /**
+     * @depends testduplicateProcess
+     */
+    public function testcreateProcessRev() {
+		ob_start();
+		$_REQUEST['p'] = 'createProcessRev';
+		$_REQUEST['rev_comment'] = "test_comment";
+		$_REQUEST['rev_id'] = "1";
+		$_REQUEST['process_gid'] = "1";
+		$_REQUEST['id'] = "1";
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'3');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertProPipeInput
+     */
+    public function testduplicateProjectPipelineInput() {
+		ob_start();
+		$_REQUEST['p'] = 'duplicateProjectPipelineInput';
+		$_REQUEST['new_id'] = "2";
+		$_REQUEST['old_id'] = "1";
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)->id,'2');
+		ob_end_clean();
+	}
+    /**
      * @depends testInsertProject
      */
 	public function testGetProjects() {
 		ob_start();
 		$_REQUEST['p'] = 'getProjects';
 		$_REQUEST['id'] = '1';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id,'1');
+		$this->assertEquals(json_decode($data)[0]->name,'test_project');
+		$this->assertEquals(json_decode($data)[0]->summary,'testSummary');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertUser
+     */
+    public function testCheckLogin() {
+		ob_start();
+		$_REQUEST['p'] = 'checkLogin';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->username,'admin');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertParameter
+     */
+    public function testgetAllParameters() {
+		ob_start();
+		$_REQUEST['p'] = 'getAllParameters';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id,'1');
+		$this->assertEquals(json_decode($data)[0]->name,'inputDir');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertParameter
+     */
+    public function testgetEditDelParameters() {
+		ob_start();
+		$_REQUEST['p'] = 'getEditDelParameters';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id,'1');
+		$this->assertEquals(json_decode($data)[0]->name,'inputDir');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertGroup
+     * @depends testInsertUser
+     */
+    public function testgetMemberAdd() {
+		ob_start();
+		$_REQUEST['p'] = 'getMemberAdd';
+		$_REQUEST['g_id'] = '1';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id,'2');
+		$this->assertEquals(json_decode($data)[0]->username,'member');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertGroup
+     */
+    public function testgetGroups() {
+		ob_start();
+		$_REQUEST['p'] = 'getGroups';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id,'1');
+		$this->assertEquals(json_decode($data)[0]->name,'test_group');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertGroup
+     */
+    public function testgetUserGroups() {
+		ob_start();
+		$_REQUEST['p'] = 'getUserGroups';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id,'1');
+		$this->assertEquals(json_decode($data)[0]->name,'test_group');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertUser
+     */
+    public function testgetUserRole() {
+		ob_start();
+		$_REQUEST['p'] = 'getUserRole';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->role, null);
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertProjectPipeline
+     */
+    public function testgetExistProjectPipelines() {
+		ob_start();
+		$_REQUEST['p'] = 'getExistProjectPipelines';
+		$_REQUEST['pipeline_id'] = '1';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id, '1');
+		$this->assertEquals(json_decode($data)[0]->pp_name, 'test_run');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertProjectPipeline
+     * @depends testInsertProject
+     */
+    public function testgetProjectPipelines() {
+		ob_start();
+		$_REQUEST['p'] = 'getProjectPipelines';
+		$_REQUEST['project_id'] = '1';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id, '1');
+		$this->assertEquals(json_decode($data)[0]->pp_name, 'test_run');
+		$this->assertEquals(json_decode($data)[0]->project_name, 'test_project');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertProject
+     * @depends testInsertInput
+     */
+    public function testgetProjectInputs() {
+		ob_start();
+		$_REQUEST['p'] = 'getProjectInputs';
+		$_REQUEST['project_id'] = '1';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id, '1');
+		$this->assertEquals(json_decode($data)[0]->input_id, '1');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertProject
+     * @depends testInsertInput
+     */
+    public function testgetProjectInput() {
+		ob_start();
+		$_REQUEST['p'] = 'getProjectInput';
+		$_REQUEST['id'] = '1';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id, '1');
+		$this->assertEquals(json_decode($data)[0]->input_id, '1');
+		ob_end_clean();
+	}
+    
+    /**
+     * @depends testInsertProject
+     * @depends testInsertInput
+     * @depends testInsertProjectPipeline
+     * @depends testInsertProPipeInput
+     */
+//    public function testgetProjectPipelineInputs() {
+//		ob_start();
+//		$_REQUEST['p'] = 'getProjectPipelineInputs';
+//		$_REQUEST['g_num'] = '0';
+//		$_REQUEST['project_pipeline_id'] = '1';
+//        $_REQUEST['id'] = '';
+//		include('ajaxquery.php');
+//		$this->assertEquals(json_decode($data)[0]->id, '1');
+//		$this->assertEquals(json_decode($data)[0]->input_id, '1');
+//		$this->assertEquals(json_decode($data)[0]->given_name, 'test_inputparam');
+//		ob_end_clean();
+//	}
+    /**
+     * @depends testInsertProject
+     * @depends testInsertInput
+     * @depends testInsertProjectPipeline
+     */
+    public function testgetProjectPipelineInputsById() {
+		ob_start();
+		$_REQUEST['p'] = 'getProjectPipelineInputs';
+		$_REQUEST['g_num'] = '0';
+		$_REQUEST['project_pipeline_id'] = '1';
+		$_REQUEST['id'] = '1';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id, '1');
+		$this->assertEquals(json_decode($data)[0]->input_id, '1');
+		$this->assertEquals(json_decode($data)[0]->name, 'testinput');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertInput
+     */
+    public function testgetInputs() {
+		ob_start();
+		$_REQUEST['p'] = 'getInputs';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id, '1');
+		$this->assertEquals(json_decode($data)[0]->name, 'testinput');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertInput
+     */
+    public function testgetInputsById() {
+		ob_start();
+		$_REQUEST['p'] = 'getInputs';
+		$_REQUEST['id'] = '1';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id, '1');
+		$this->assertEquals(json_decode($data)[0]->name, 'testinput');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertProcessGroup
+     */
+    public function testgetAllProcessGroups() {
+		ob_start();
+		$_REQUEST['p'] = 'getAllProcessGroups';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id, '1');
+		$this->assertEquals(json_decode($data)[0]->group_name, 'test_menu');
+		ob_end_clean();
+	}
+    /**
+     * @depends testInsertProcessGroup
+     */
+    public function testgetEditDelProcessGroups() {
+		ob_start();
+		$_REQUEST['p'] = 'getEditDelProcessGroups';
+		include('ajaxquery.php');
+		$this->assertEquals(json_decode($data)[0]->id, '1');
+		$this->assertEquals(json_decode($data)[0]->group_name, 'test_menu');
+		ob_end_clean();
+	}
+    
+
 		include('ajaxquery.php');
 		$this->assertEquals(json_decode($data)[0]->id,'1');
 		$this->assertEquals(json_decode($data)[0]->name,'test_project');
