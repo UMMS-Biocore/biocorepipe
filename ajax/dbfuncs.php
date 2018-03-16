@@ -308,12 +308,10 @@ class dbfuncs {
             $configText.= "   region = '$default_region'\n";
             $configText.= "}\n";
         }
-        
-        
-       if ($profileType == 'cluster'){
         //rename the log file
+        if ($profileType == 'cluster'){
         $this->renameLogSSH($project_pipeline_id,$profileType, $profileId, $ownerID);
-    }
+        }
         //create folders
         mkdir("../{$this->run_path}/run{$project_pipeline_id}", 0755, true);
         $file = fopen("../{$this->run_path}/run{$project_pipeline_id}/nextflow.nf", 'w');//creates new file
@@ -325,22 +323,22 @@ class dbfuncs {
         fclose($file);
         chmod("../{$this->run_path}/run{$project_pipeline_id}/nextflow.config", 0755);
         if ($profileType == "local") {
-            // get outputdir
-            $proPipeAll = json_decode($this->getProjectPipelines($project_pipeline_id,"",$ownerID));
-            $outdir = $proPipeAll[0]->{'output_dir'};
-            $run_path_real = "$outdir/run{$project_pipeline_id}";
-            //check nextflow file
-            $log_path_server = "../{$this->run_path}/run{$project_pipeline_id}";
-            if (!file_exists($log_path_server."/nextflow.nf")) die(json_encode('Nextflow file is not found!'));
-            if (!file_exists($log_path_server."/nextflow.config")) die(json_encode('Nextflow config file is not found!'));
-            //mkdir and copy nextflow and config file to run directory in local
-            mkdir("$run_path_real", 0755, true);
-            $cmd = "cp $log_path_server/nextflow.nf $run_path_real/nextflow.nf && cp $log_path_server/nextflow.config $run_path_real/nextflow.config";
-            $this->writeLog($project_pipeline_id,$cmd,'w');
-            $pid_command = popen($cmd, 'r');//copy file
-            $pid = fread($pid_command, 2096);
-            pclose($pid_command);
-            chmod("$run_path_real/nextflow.nf", 0755);
+//            // get outputdir
+//            $proPipeAll = json_decode($this->getProjectPipelines($project_pipeline_id,"",$ownerID));
+//            $outdir = $proPipeAll[0]->{'output_dir'};
+//            $run_path_real = "$outdir/run{$project_pipeline_id}";
+//            //check nextflow file
+//            $log_path_server = "../{$this->run_path}/run{$project_pipeline_id}";
+//            if (!file_exists($log_path_server."/nextflow.nf")) die(json_encode('Nextflow file is not found!'));
+//            if (!file_exists($log_path_server."/nextflow.config")) die(json_encode('Nextflow config file is not found!'));
+//            //mkdir and copy nextflow and config file to run directory in local
+//            mkdir("$run_path_real", 0755, true);
+//            $cmd = "cp $log_path_server/nextflow.nf $run_path_real/nextflow.nf && cp $log_path_server/nextflow.config $run_path_real/nextflow.config";
+//            $this->writeLog($project_pipeline_id,$cmd,'w');
+//            $pid_command = popen($cmd, 'r');//copy file
+//            $pid = fread($pid_command, 2096);
+//            pclose($pid_command);
+//            chmod("$run_path_real/nextflow.nf", 0755);
         } else if ($profileType == "cluster") {
             // get outputdir
             $proPipeAll = json_decode($this->getProjectPipelines($project_pipeline_id,"",$ownerID));
@@ -353,17 +351,24 @@ class dbfuncs {
             //get userpky
             $userpky = "{$this->ssh_path}/{$ownerID}_{$ssh_id}_ssh_pri.pky";
             //check $userpky file exist
-            if (!file_exists($userpky)) die(json_encode('Private key is not found!'));
+            if (!file_exists($userpky)) {
+            $this->writeLog($project_pipeline_id,'Private key is not found!','a');
+            die(json_encode('Private key is not found!'));
+            }
             $run_path_real = "../{$this->run_path}/run{$project_pipeline_id}";
-            if (!file_exists($run_path_real."/nextflow.nf")) die(json_encode('Nextflow file is not found!'));
-            if (!file_exists($run_path_real."/nextflow.config")) die(json_encode('Nextflow config file is not found!'));
+            if (!file_exists($run_path_real."/nextflow.nf")) {
+            $this->writeLog($project_pipeline_id,'Nextflow file is not found!','a');
+            die(json_encode('Nextflow file is not found!'));
+            }
+            if (!file_exists($run_path_real."/nextflow.config")) {
+            $this->writeLog($project_pipeline_id,'Nextflow config file is not found!','a');
+            die(json_encode('Nextflow config file is not found!'));
+            }
             $dolphin_path_real = "$outdir/run{$project_pipeline_id}";
             //mkdir and copy nextflow file to run directory in cluster
             $cmd = "ssh {$this->ssh_settings}  -i $userpky $connect \"mkdir -p $dolphin_path_real\" > $run_path_real/log.txt 2>&1 && scp {$this->ssh_settings} -i $userpky $run_path_real/nextflow.nf $run_path_real/nextflow.config $connect:$dolphin_path_real >> $run_path_real/log.txt 2>&1";
             $mkdir_copynext_pid =shell_exec($cmd);
             $this->writeLog($project_pipeline_id,$cmd,'a');
-//           command below not working without &
-//            if (!$mkdir_copynext_pid) die('Connection failed while creating new folder in the cluster');
             $log_array = array('mkdir_copynext_pid' => $mkdir_copynext_pid);
             return $log_array;
         } else if ($profileType == "amazon") {
@@ -378,17 +383,24 @@ class dbfuncs {
             //get userpky
             $userpky = "{$this->ssh_path}/{$ownerID}_{$ssh_id}_ssh_pri.pky";
             //check $userpky file exist
-            if (!file_exists($userpky)) die(json_encode('Private key is not found!'));
+            if (!file_exists($userpky)) {
+                $this->writeLog($project_pipeline_id,'Private key is not found!','a');
+                die(json_encode('Private key is not found!'));
+            }
             $run_path_real = "../{$this->run_path}/run{$project_pipeline_id}";
-            if (!file_exists($run_path_real."/nextflow.nf")) die(json_encode('Nextflow file is not found!'));
-            if (!file_exists($run_path_real."/nextflow.config")) die(json_encode('Nextflow config file is not found!'));
+            if (!file_exists($run_path_real."/nextflow.nf")) {
+                $this->writeLog($project_pipeline_id,'Nextflow file is not found!','a');
+                die(json_encode('Nextflow file is not found!'));  
+            }
+            if (!file_exists($run_path_real."/nextflow.config")) {
+                $this->writeLog($project_pipeline_id,'Nextflow config file is not found!','a');
+                die(json_encode('Nextflow config file is not found!'));
+            }
             $dolphin_path_real = "$outdir/run{$project_pipeline_id}";
             //mkdir and copy nextflow file to run directory in cluster
             $cmd = "ssh {$this->ssh_settings}  -i $userpky $connect \"mkdir -p $dolphin_path_real\" > $run_path_real/log.txt 2>&1 && scp {$this->ssh_settings} -i $userpky $run_path_real/nextflow.nf $run_path_real/nextflow.config $connect:$dolphin_path_real >> $run_path_real/log.txt 2>&1";
             $mkdir_copynext_pid =shell_exec($cmd);
             $this->writeLog($project_pipeline_id,$cmd,'a');
-//           command below not working without &
-//            if (!$mkdir_copynext_pid) die('Connection failed while creating new folder in the cluster');
             $log_array = array('mkdir_copynext_pid' => $mkdir_copynext_pid);
             return $log_array;
         }
@@ -486,7 +498,10 @@ class dbfuncs {
             
             //get userpky
             $userpky = "{$this->ssh_path}/{$ownerID}_{$ssh_id}_ssh_pri.pky";
-            if (!file_exists($userpky)) die(json_encode('Private key is not found!'));
+            if (!file_exists($userpky)) {
+                $this->writeLog($project_pipeline_id,'Private key is not found!','a');
+                die(json_encode('Private key is not found!'));
+            }
             $run_path_real = "../{$this->run_path}/run{$project_pipeline_id}";
             $dolphin_path_real = "$outdir/run{$project_pipeline_id}";
             //check if files are exist
@@ -502,7 +517,10 @@ class dbfuncs {
             $cmd="ssh {$this->ssh_settings}  -i $userpky $connect \"cd $dolphin_path_real $preCmd && $exec_next_all\" >> $run_path_real/log.txt 2>&1 & echo $! &";
             $next_submit_pid= shell_exec($cmd); //"Job <203477> is submitted to queue <long>.\n"
             $this->writeLog($project_pipeline_id,$cmd,'a');
-            if (!$next_submit_pid) die(json_encode('Connection failed while running nextflow in the cluster'));
+            if (!$next_submit_pid) {
+                $this->writeLog($project_pipeline_id,'Connection failed while running nextflow in the cluster','a');
+                die(json_encode('Connection failed while running nextflow in the cluster'));
+            }
             $log_array['next_submit_pid'] = $next_submit_pid;
             return json_encode($log_array);
             
@@ -514,11 +532,15 @@ class dbfuncs {
                      $log_array['next_exist'] = $next_exist;
                      if ($matches[2] == " ") {
                          $next_submit_pid= shell_exec($cmd); //"Job <203477> is submitted to queue <long>.\n"
-                         if (!$next_submit_pid) die(json_encode('Connection failed while running nextflow in the cluster'));
+                         if (!$next_submit_pid) {
+                             $this->writeLog($project_pipeline_id,'Connection failed while running nextflow in the cluster','a');
+                             die(json_encode('Connection failed while running nextflow in the cluster'));
+                         }
                             $log_array['next_submit_pid'] = $next_submit_pid;
-                         return json_encode($log_array);
+                            return json_encode($log_array);
                      }
                 }
+                $this->writeLog($project_pipeline_id,'Connection failed while running nextflow in the cluster','a');
                 die(json_encode('Connection failed. Nextflow file not exists in cluster'));
             }
         } else if ($profileType == "amazon") {
@@ -534,7 +556,10 @@ class dbfuncs {
             $next_path_real = $this->getNextPathReal($next_path);
             //get userpky
             $userpky = "{$this->ssh_path}/{$ownerID}_{$ssh_id}_ssh_pri.pky";
-            if (!file_exists($userpky)) die(json_encode('Private key is not found!'));
+            if (!file_exists($userpky)) {
+                $this->writeLog($project_pipeline_id,'Private key is not found!','a');
+                die(json_encode('Private key is not found!'));
+            }
             $run_path_real = "../{$this->run_path}/run{$project_pipeline_id}";
             $dolphin_path_real = "$outdir/run{$project_pipeline_id}";
             //check if files are exist
@@ -550,7 +575,10 @@ class dbfuncs {
             $cmd="ssh {$this->ssh_settings}  -i $userpky $connect \"cd $dolphin_path_real $preCmd && $exec_next_all\" >> $run_path_real/log.txt 2>&1 & echo $! &";
             $next_submit_pid= shell_exec($cmd); //"Job <203477> is submitted to queue <long>.\n"
             $this->writeLog($project_pipeline_id,$cmd,'a');
-            if (!$next_submit_pid) die(json_encode('Connection failed while running nextflow in the cluster'));
+            if (!$next_submit_pid) {
+                $this->writeLog($project_pipeline_id,'Connection failed while running nextflow in the cluster','a');
+                die(json_encode('Connection failed while running nextflow in the cluster'));
+            }
             $log_array['next_submit_pid'] = $next_submit_pid;
             return json_encode($log_array);
             
@@ -562,12 +590,16 @@ class dbfuncs {
                      $log_array['next_exist'] = $next_exist;
                      if ($matches[2] == " ") {
                          $next_submit_pid= shell_exec($cmd); //"Job <203477> is submitted to queue <long>.\n"
-                         if (!$next_submit_pid) die(json_encode('Connection failed while running nextflow in the cluster'));
-                            $log_array['next_submit_pid'] = $next_submit_pid;
+                         if (!$next_submit_pid) {
+                             $this->writeLog($project_pipeline_id,'Connection failed while running nextflow in the cluster','a');
+                             die(json_encode('Connection failed while running nextflow in the cluster'));
+                         }
+                         $log_array['next_submit_pid'] = $next_submit_pid;
                          return json_encode($log_array);
                      }
                 }
-                die(json_encode('Connection failed. Nextflow file not exists in cluster'));
+                $this->writeLog($project_pipeline_id,'Connection failed while running nextflow in the cluster','a');
+                die(json_encode('Connection failed while running nextflow in the cluster'));
             }
         }
     }
