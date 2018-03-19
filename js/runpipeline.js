@@ -819,6 +819,7 @@
 	                      project_pipeline_id: project_pipeline_id,
 	                      g_num: firGnum
 	                  });
+
 	                  if (getProPipeInputs && getProPipeInputs != "") {
 	                      if (getProPipeInputs.length === 1) {
 	                          var rowID = rowType + 'Ta-' + firGnum;
@@ -1362,6 +1363,7 @@
 	      //get profiles for user
 	      var proCluData = getValues({ p: "getProfileCluster" });
 	      var proAmzData = getValues({ p: "getProfileAmazon" });
+
 	      if (proCluData && proAmzData) {
 	          if (proCluData.length + proAmzData.length !== 0) {
 	              $.each(proCluData, function (el) {
@@ -1401,7 +1403,6 @@
 	      $('#' + rowID + '> :nth-child(6) > button')[1].remove();
 	      $('#' + rowID).removeAttr('propipeinputid');
 	  }
-
 	  function saveFileSetValModal(data, sType) {
 	      if (sType === 'file' || sType === 'set') {
 	          var rowID = $('#mIdFile').attr('rowID'); //the id of table-row to be updated #inputTa-3
@@ -2079,7 +2080,6 @@
 	          //Changes are not saved. Please enter the run name. 
 	      }
 	  }
-
 	  function getProfileData(proType, proId) {
 	      if (proType === 'cluster') {
 	          var profileData = getValues({ p: "getProfileCluster", id: proId });
@@ -2088,7 +2088,6 @@
 	      }
 	      return profileData;
 	  }
-
 	  function getJobData(getType) {
 	      var chooseEnv = $('#chooseEnv option:selected').val();
 	      if (chooseEnv) {
@@ -2112,13 +2111,11 @@
 	          }
 	      }
 	  }
-
 	  function updateSideBarProPipe(project_id, project_pipeline_id, project_pipeline_name, type) {
 	      if (type === "edit") {
 	          $('#propipe-' + project_pipeline_id).html('<i class="fa fa-angle-double-right"></i>' + project_pipeline_name);
 	      }
 	  }
-
 	  function getRunStatus(project_pipeline_id) {
 	      var runStatusGet = getValues({ p: "getRunStatus", project_pipeline_id: project_pipeline_id });
 	      if (runStatusGet[0]) {
