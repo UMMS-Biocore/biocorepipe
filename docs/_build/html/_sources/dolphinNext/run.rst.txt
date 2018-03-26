@@ -103,7 +103,7 @@ Val         pair
 Val         ~/scripts/filter.py     
 =========== ================================
 
-* **Outputs:** After run succesfully complete, the path of the output files will be appear in this region. 
+* **Outputs:** When the run successfully completes, the path of the output files will be appeared in this region. 
 
 Workflow
 ========

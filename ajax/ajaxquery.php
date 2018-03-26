@@ -638,6 +638,25 @@ else if ($p=="checkPipeline")
 	$process_id = $_REQUEST['process_id'];
     $data = $db->checkPipeline($process_id, $ownerID);
 }
+else if ($p=="checkInput")
+{
+	$name = $_REQUEST['name'];
+    $data = $db->checkInput($name);
+}
+else if ($p=="checkProjectInput")
+{
+    $input_id = $_REQUEST['input_id'];
+    $project_id = $_REQUEST['project_id'];
+    $data = $db->checkProjectInput($project_id, $input_id);
+}
+else if ($p=="checkProPipeInput")
+{
+    $input_id = $_REQUEST['input_id'];
+    $project_id = $_REQUEST['project_id'];
+    $pipeline_id = $_REQUEST['pipeline_id'];
+    $project_pipeline_id = $_REQUEST['project_pipeline_id'];
+    $data = $db->checkProPipeInput($project_id, $input_id, $pipeline_id, $project_pipeline_id);
+}
 else if ($p=="checkPipelinePublic")
 {
 	$process_id = $_REQUEST['process_id'];
