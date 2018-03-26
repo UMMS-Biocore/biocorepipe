@@ -9,6 +9,7 @@
 	              return true;
 	      return false;
 	  };
+
 	  function dragStart(event) {
 	      event.dataTransfer.setData("Text", event.target.id);
 	  }
@@ -21,6 +22,7 @@
 	      event.preventDefault();
 	  }
 	  refreshDataset()
+
 	  function refreshDataset() {
 	      processData = getValues({
 	          p: "getProcessData"
@@ -1326,7 +1328,7 @@
 	      if (pipeData[0].profile !== "" && chooseEnv && chooseEnv !== "") {
 	          var [allProSett, profileData] = getJobData("both");
 	          var executor_job = profileData[0].executor_job;
-              console.log(executor_job)
+	          console.log(executor_job)
 	          if (executor_job === 'local' || executor_job === 'ignite') {
 	              $('#jobSettingsDiv').css('display', 'none');
 	          } else {
@@ -1414,39 +1416,73 @@
 	      var gNumParam = rowID.split('-')[1];
 	      var given_name = $("#input-PName-" + gNumParam).text(); //input-PName-3
 	      var qualifier = $('#' + rowID + ' > :nth-child(4)').text(); //input-PName-3
-	      data.push({ name: "p", value: "saveInput" });
-	      //insert into input table
-	      var inputGet = getValues(data);
-	      if (inputGet) {
-	          var input_id = inputGet.id;
+	      //xxxx
+	      //check database if file is exist?
+	      var nameInput = data[1].value;
+	      var checkInput = getValues({ name: nameInput, p: "checkInput" });
+	      if (checkInput && checkInput != '') {
+	          var input_id = checkInput[0].id;
+	      } else {
+	          //insert into input table
+	          data.push({ name: "p", value: "saveInput" });
+	          console.log(data)
+	          var inputGet = getValues(data);
+	          if (inputGet) {
+	              var input_id = inputGet.id;
+	          }
+	      }
+	      //check if project input is exist
+	      var checkProjectInput = getValues({ "p": "checkProjectInput", "input_id": input_id, "project_id": project_id });
+	      if (checkProjectInput && checkProjectInput != '') {
+	          var projectInputID = checkProjectInput[0].id;
+	      } else {
 	          //insert into project_input table
 	          var proInputGet = getValues({ "p": "saveProjectInput", "input_id": input_id, "project_id": project_id });
 	          if (proInputGet) {
 	              var projectInputID = proInputGet.id;
-	              //insert into project_pipeline_input table
-	              var propipeInputGet = getValues({
-	                  "p": "saveProPipeInput",
-	                  "input_id": input_id,
-	                  "project_id": project_id,
-	                  "pipeline_id": pipeline_id,
-	                  "project_pipeline_id": project_pipeline_id,
-	                  "g_num": gNumParam,
-	                  "given_name": given_name,
-	                  "qualifier": qualifier
-	              });
-	              if (propipeInputGet) {
-	                  var projectPipelineInputID = propipeInputGet.id;
-	                  //get inputdata from input table
-	                  var proInputGet = getValues({ "p": "getInputs", "id": input_id, });
-	                  if (proInputGet) {
-	                      var filePath = proInputGet[0].name;
-	                      //insert into #inputsTab
-	                      insertSelectInput(rowID, gNumParam, filePath, projectPipelineInputID, sType);
-	                  }
-	              }
 	          }
 	      }
-	      checkReadytoRun();
+	      //check if project input is exist
+	      var checkProPipeInput = getValues({ "p": "checkProPipeInput", "input_id": input_id, "project_id": project_id, "pipeline_id" : pipeline_id, "project_pipeline_id": project_pipeline_id });
+          console.log(checkProPipeInput)
+	      if (checkProPipeInput && checkProPipeInput != '') {
+	          var projectPipelineInputID = checkProPipeInput[0].id;
+              //update project_pipeline_input table
+	          var propipeInputGet = getValues({
+	              "id": projectPipelineInputID,
+	              "p": "saveProPipeInput",
+	              "input_id": input_id,
+	              "project_id": project_id,
+	              "pipeline_id": pipeline_id,
+	              "project_pipeline_id": project_pipeline_id,
+	              "g_num": gNumParam,
+	              "given_name": given_name,
+	              "qualifier": qualifier
+	          });
+	      } else {
+	          //insert into project_pipeline_input table
+	          var propipeInputGet = getValues({
+	              "p": "saveProPipeInput",
+	              "input_id": input_id,
+	              "project_id": project_id,
+	              "pipeline_id": pipeline_id,
+	              "project_pipeline_id": project_pipeline_id,
+	              "g_num": gNumParam,
+	              "given_name": given_name,
+	              "qualifier": qualifier
+	          });
+	          if (propipeInputGet) {
+	              var projectPipelineInputID = propipeInputGet.id;
+	          }
+	      }
+	      //get inputdata from input table
+	      var proInputGet = getValues({ "p": "getInputs", "id": input_id, });
+	      if (proInputGet) {
+	          var filePath = proInputGet[0].name;
+	          //insert into #inputsTab
+	          insertSelectInput(rowID, gNumParam, filePath, projectPipelineInputID, sType);
+	      }
+	  checkReadytoRun();
 	  }
 
 	  function editFileSetValModal(data, sType) {
@@ -1853,10 +1889,10 @@
 	          } else {
 	              //error occured
 	              console.log("Nextflow not started");
-                  //gives early error, if job is not started yet
-//	              if (runStatus !== "NextErr" || runStatus !== "NextSuc" || runStatus !== "Error" || runStatus !== "Terminated") {
-//	                  var setStatus = getValues({ p: "updateRunStatus", run_status: "Error", project_pipeline_id: project_pipeline_id });
-//	              }
+	              //gives early error, if job is not started yet
+	              //	              if (runStatus !== "NextErr" || runStatus !== "NextSuc" || runStatus !== "Error" || runStatus !== "Terminated") {
+	              //	                  var setStatus = getValues({ p: "updateRunStatus", run_status: "Error", project_pipeline_id: project_pipeline_id });
+	              //	              }
 	              if (type !== "reload") {
 	                  clearInterval(interval_readNextlog);
 	              }

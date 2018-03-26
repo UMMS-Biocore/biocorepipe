@@ -1703,6 +1703,18 @@ class dbfuncs {
 		$sql = "SELECT id, name FROM biocorepipe_save WHERE (owner_id = '$ownerID') AND nodes LIKE '%\"$process_id\",\"%'";
 		return self::queryTable($sql);
 	}
+    public function checkInput($name) {
+		$sql = "SELECT id, name FROM input WHERE name = $name";
+		return self::queryTable($sql);
+	}
+    public function checkProjectInput($project_id, $input_id) {
+		$sql = "SELECT id FROM project_input WHERE input_id = $input_id AND project_id = $project_id";
+		return self::queryTable($sql);
+	}
+    public function checkProPipeInput($project_id, $input_id, $pipeline_id, $project_pipeline_id) {
+		$sql = "SELECT id FROM project_pipeline_input WHERE input_id = $input_id AND project_id = $project_id AND pipeline_id = $pipeline_id AND project_pipeline_id = $project_pipeline_id";
+		return self::queryTable($sql);
+    }
     public function checkPipelinePublic($process_id, $ownerID) {
 		$sql = "SELECT id, name FROM biocorepipe_save WHERE (owner_id != '$ownerID') AND nodes LIKE '%\"$process_id\",\"%'";
 		return self::queryTable($sql);

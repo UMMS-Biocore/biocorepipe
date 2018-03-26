@@ -18,7 +18,14 @@ Clicking on the start/stop button will open new window called **Amazon Managemen
 Amazon Management Console
 =========================
 
-Starting and stoping AWS clouds are conducted in Amazon management console. When first created, your profile will be at inactive state as shown at below:
+Starting and stoping AWS cloud is conducted in Amazon management console. There are two ways to open console. First option is clicking following buttons: ``profile > run environments > Start/Stop``. Altervatively, you can quickly reach Amazon console by clicking "Amazon" button at the top of the screen. The number of active profile is displayed with green tag at the top of the amazon button. 
+
+.. image:: dolphinnext_images/amazon_quick.png
+    :align: center
+    :width: 25%
+
+
+When first created, state of your profile will be inactive as shown at below:
 
 .. image:: dolphinnext_images/amazon_inactive.png
     :align: center
