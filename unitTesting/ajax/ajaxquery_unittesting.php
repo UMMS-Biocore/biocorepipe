@@ -299,6 +299,7 @@ class ajaxQueryTest extends TestCase
 		ob_start();
 		$_REQUEST['p'] = 'saveInput';
 		$_REQUEST['name'] = "testinput_before_update";
+		$_REQUEST['type'] = "val";
 		$_REQUEST['id'] = "";
 		include('ajaxquery.php');
 		$this->assertEquals(json_decode($data)->id,'1');
@@ -323,6 +324,7 @@ class ajaxQueryTest extends TestCase
 		ob_start();
 		$_REQUEST['p'] = 'saveInput';
 		$_REQUEST['name'] = "testinput";
+        $_REQUEST['type'] = "val";
 		$_REQUEST['id'] = "1";
 		include('ajaxquery.php');
         $_REQUEST['p'] = 'getInputs';
