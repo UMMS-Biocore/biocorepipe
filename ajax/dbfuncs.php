@@ -92,13 +92,10 @@ class dbfuncs {
               if ($matches[1] != ''){
                   $imageName = str_replace("/","-",$matches[1]);
                   $image = '~/.dolphinnext/singularity/' + $imageName;
-                  if ($profileType == 'local' || $profileType == 'cluster'){
                   $cmd = "mkdir -p ~/.dolphinnext/singularity && cd ~/.dolphinnext/singularity && singularity pull --name ".$imageName.".simg ".$img;
-                  return $cmd;
-                  }
+                      return $cmd;
               }
-        } else if ($type == 'docker'){
-        }
+        } 
     }
 
     //type:w creates new file
@@ -155,7 +152,7 @@ class dbfuncs {
     }
 
     //get nextflow executor parameters
-    function getNextExecParam($project_pipeline_id,$ownerID){
+    function getNextExecParam($project_pipeline_id,$profileType,$ownerID){
         $proPipeAll = json_decode($this->getProjectPipelines($project_pipeline_id,"",$ownerID));
         $outdir = $proPipeAll[0]->{'output_dir'};
         $proPipeCmd = $proPipeAll[0]->{'cmd'};
@@ -163,8 +160,8 @@ class dbfuncs {
         $singu_check = $proPipeAll[0]->{'singu_check'};
         if ($singu_check == "true"){
             $singu_img = $proPipeAll[0]->{'singu_img'};
-            $imageCmd =='';
-//          $imageCmd = $this->imageCmd($singu_img, 'singularity', $profileType);
+//            $imageCmd =='';
+          $imageCmd = $this->imageCmd($singu_img, 'singularity', $profileType);
         }
         return array($outdir, $proPipeCmd, $jobname, $singu_check, $singu_img, $imageCmd);
     }
@@ -398,7 +395,7 @@ class dbfuncs {
     {
         if ($profileType == "cluster") {
             //get nextflow executor parameters
-            list($outdir, $proPipeCmd, $jobname, $singu_check, $singu_img, $imageCmd) = $this->getNextExecParam($project_pipeline_id,$ownerID);
+            list($outdir, $proPipeCmd, $jobname, $singu_check, $singu_img, $imageCmd) = $this->getNextExecParam($project_pipeline_id,$profileType,$ownerID);
             //get username and hostname and exec info for connection
             list($connect, $next_path, $profileCmd, $executor, $next_time, $next_queue, $next_memory, $next_cpu, $executor_job, $ssh_id)=$this->getNextConnectExec($profileId,$ownerID, $profileType);
             //get nextflow input parameters
@@ -461,7 +458,7 @@ class dbfuncs {
             }
         } else if ($profileType == "amazon") {
             //get nextflow executor parameters
-            list($outdir, $proPipeCmd, $jobname, $singu_check, $singu_img, $imageCmd) = $this->getNextExecParam($project_pipeline_id,$ownerID);
+            list($outdir, $proPipeCmd, $jobname, $singu_check, $singu_img, $imageCmd) = $this->getNextExecParam($project_pipeline_id,$profileType,$ownerID);
             //get username and hostname and exec info for connection
             list($connect, $next_path, $profileCmd, $executor, $next_time, $next_queue, $next_memory, $next_cpu, $executor_job, $ssh_id)=$this->getNextConnectExec($profileId,$ownerID, $profileType);
             //get nextflow input parameters

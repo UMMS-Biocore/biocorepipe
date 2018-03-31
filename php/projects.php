@@ -69,7 +69,7 @@
                     <tr>
                         <th>File/Value Name</th>
                         <th>Type</th>
-                        <th>Host</th>
+                        <th>Host/Shared Storage ID</th>
                         <th>Owner</th>
                         <th>Created On</th>
                         <th>Actions</th>
@@ -81,7 +81,7 @@
 
 
 <div id="publicmodal" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -96,14 +96,14 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="mInputName" class="col-sm-2 control-label">Name</label>
-                        <div class="col-sm-10">
+                        <label for="mInputName" class="col-sm-3 control-label">Name</label>
+                        <div class="col-sm-9">
                             <input type="text" class="form-control" id="mInputName" name="name">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="mInputType" class="col-sm-2 control-label">Type</label>
-                        <div class="col-sm-10">
+                        <label for="mInputType" class="col-sm-3 control-label">Type</label>
+                        <div class="col-sm-9">
                             <select id="mInputType" class="fbtn btn-default form-control" name="type">
                                     <option value="" disabled selected>Select Type </option>
                                     <option value="file">file</option>
@@ -112,8 +112,8 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="mInputHost" class="col-sm-2 control-label">Hostname</label>
-                        <div class="col-sm-10">
+                        <label for="mInputHost" class="col-sm-3 control-label">Hostname/ Shared Storage Id</label>
+                        <div class="col-sm-9">
                             <select id="mInputHost" class="fbtn btn-default form-control" name="host">
                               <option value="" disabled selected>Choose Hostname </option>
                             </select>

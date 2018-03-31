@@ -220,6 +220,17 @@ $(document).ready(function () {
 
             }
         }
+        var proAmzData = getValues({ p: "getProfileAmazon" });
+        if (proAmzData) {
+            if (proAmzData.length !== 0) {
+                $.each(proAmzData, function (el) {
+                    var option = new Option(proAmzData[el].shared_storage_id, proAmzData[el].shared_storage_id)
+                    $("#mInputHost").append(option);
+                });
+
+            }
+        }
+        
     }
 
     $('#publicmodal').on('show.bs.modal', function (event) {

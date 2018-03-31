@@ -1,3 +1,7 @@
+30.03.2018 Version 0.1.13
+While adding public files/values, shared storage id will be used for amazon profiles.
+shub extarnal url support added for singularity.
+
 29.03.2018 Version 0.1.12
 Adding files/values button is removed in process details page.
 Adding public files/values table is added in process page for admin.

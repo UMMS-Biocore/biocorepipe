@@ -1375,7 +1375,7 @@
 	              });
 	              $.each(proAmzData, function (el) {
 	                  var option = new Option(proAmzData[el].name + ' (Amazon: Status:' + proAmzData[el].status + ' Image id:' + proAmzData[el].image_id + ' Instance type:' + proAmzData[el].instance_type + ')', 'amazon-' + proAmzData[el].id)
-	                  option.setAttribute("host", "amazon");
+	                  option.setAttribute("host", proAmzData[el].shared_storage_id);
 	                  $("#chooseEnv").append(option);
 	              });
 	          }
@@ -1789,17 +1789,17 @@
 	      }
 	      if ($('#singu_check').is(":checked") === true) {
 	          var singu_img = $('#singu_img').val();
-	          //var patt = /^docker:\/\/(.*)/g;
-	          //	          var patt = /^shub:\/\/(.*)/g;
-	          //	          var singuPath = singu_img.replace(patt, '$1');
-	          //              console.log('singuPath');
-	          //              console.log(singuPath);
-	          //	          if (patt.test(singu_img)) {
-	          //	              singuPath = singuPath.replace(/\//g, '-')
-	          //	              var downSingu_img = '~/.dolphinnext/singularity/' + singuPath+'.simg';
-	          //	          } else {
-	          var downSingu_img = singu_img;
-	          //	          }
+	          var patt = /^docker:\/\/(.*)/g;
+	          var patt = /^shub:\/\/(.*)/g;
+	          var singuPath = singu_img.replace(patt, '$1');
+	          console.log('singuPath');
+	          console.log(singuPath);
+	          if (patt.test(singu_img)) {
+	              singuPath = singuPath.replace(/\//g, '-')
+	              var downSingu_img = '//$HOME/.dolphinnext/singularity/' + singuPath + '.simg';
+	          } else {
+	              var downSingu_img = singu_img;
+	          }
 
 	          var singu_opt = $('#singu_opt').val();
 	          configTextRaw += 'process.container = \'' + downSingu_img + '\'\n';
@@ -2359,7 +2359,7 @@
 	      $('#inputFilemodal').on('click', '#savefile', function (e) {
 	          e.preventDefault();
 	          var savetype = $('#mIdFile').val();
-              var checkdata = $('#inputFilemodal').find('.active.tab-pane')[0].getAttribute('id');
+	          var checkdata = $('#inputFilemodal').find('.active.tab-pane')[0].getAttribute('id');
 	          console.log(checkdata)
 	          if (!savetype.length) { //add item
 	              if (checkdata === 'manualTab') {
@@ -2635,9 +2635,9 @@
 	                      $('#inputValmodal').modal('hide');
 	                  }
 	              } else if (checkdata === 'projectValTab') {
-                      console.log("ss")
+	                  console.log("ss")
 	                  var rows_selected = projectValTable.column(0).checkboxes.selected();
-	                  console.log( rows_selected)
+	                  console.log(rows_selected)
 	                  if (rows_selected.length === 1) {
 	                      var input_id = rows_selected[0];
 	                      editFileSetValModal(null, 'val', input_id);
