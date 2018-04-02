@@ -1,6 +1,13 @@
+02.04.2018 Version 0.1.14
+Save over image option is added for shub external url support.
+Text wrap problem is fixed for long texts. (eg. Summary of public pipeline page and file paths of run pipeline page)
+Channel.fromPath syntax error fixed. 
+"toSortedList" operator is added to Channel.fromPath in order to receive files in sorted format.
+Removal of backslash while saving process script is fixed.
+
 30.03.2018 Version 0.1.13
 While adding public files/values, shared storage id will be used for amazon profiles.
-shub extarnal url support added for singularity.
+shub external url support added for singularity.
 
 29.03.2018 Version 0.1.12
 Adding files/values button is removed in process details page.

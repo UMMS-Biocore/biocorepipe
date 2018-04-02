@@ -491,8 +491,8 @@ else if ($p=="saveProcess"){
     $process_gid = $_REQUEST['process_gid'];
     $summary = $_REQUEST['summary'];
     $process_group_id = $_REQUEST['process_group_id'];
-    $script = htmlspecialchars(urldecode($_REQUEST['script']), ENT_QUOTES);
-    $script_header = htmlspecialchars(urldecode($_REQUEST['script_header']), ENT_QUOTES);
+    $script = addslashes(htmlspecialchars(urldecode($_REQUEST['script']), ENT_QUOTES));
+    $script_header = addslashes(htmlspecialchars(urldecode($_REQUEST['script_header']), ENT_QUOTES));
     $script_mode = $_REQUEST['script_mode'];
     $script_mode_header = $_REQUEST['script_mode_header'];
     $rev_id = $_REQUEST['rev_id']; 
@@ -594,13 +594,14 @@ else if ($p=="saveProjectPipeline"){
     $docker_img = $_REQUEST['docker_img'];
     $docker_opt = $_REQUEST['docker_opt'];
     $singu_check = $_REQUEST['singu_check'];
+    $singu_save = $_REQUEST['singu_save'];
     $singu_img = $_REQUEST['singu_img'];
     $singu_opt = $_REQUEST['singu_opt'];
     $amazon_cre_id = $_REQUEST['amazon_cre_id'];
     settype($group_id, 'integer');
     settype($amazon_cre_id, 'integer');
         if (!empty($id)) {
-        $data = $db->updateProjectPipeline($id, $name, $summary, $output_dir, $perms, $profile, $interdel, $cmd, $group_id, $exec_each, $exec_all, $exec_all_settings, $exec_each_settings, $docker_check, $docker_img, $singu_check, $singu_img, $exec_next_settings, $docker_opt, $singu_opt, $amazon_cre_id, $publish_dir, $publish_dir_check, $ownerID);
+        $data = $db->updateProjectPipeline($id, $name, $summary, $output_dir, $perms, $profile, $interdel, $cmd, $group_id, $exec_each, $exec_all, $exec_all_settings, $exec_each_settings, $docker_check, $docker_img, $singu_check, $singu_save, $singu_img, $exec_next_settings, $docker_opt, $singu_opt, $amazon_cre_id, $publish_dir, $publish_dir_check, $ownerID);
             if ($perms !== "3"){
             $db->updateProjectGroupPerm($id, $group_id, $perms, $ownerID);
             $db->updateProjectInputGroupPerm($id, $group_id, $perms, $ownerID);
@@ -610,13 +611,13 @@ else if ($p=="saveProjectPipeline"){
             $db->updatePipelineProcessGroupPerm($id, $group_id, $perms, $ownerID);
             }
     } else {
-        $data = $db->insertProjectPipeline($name, $project_id, $pipeline_id, $summary, $output_dir, $profile, $interdel, $cmd, $exec_each, $exec_all, $exec_all_settings, $exec_each_settings, $docker_check, $docker_img, $singu_check, $singu_img, $exec_next_settings, $docker_opt, $singu_opt, $amazon_cre_id, $publish_dir, $publish_dir_check, $ownerID);
+        $data = $db->insertProjectPipeline($name, $project_id, $pipeline_id, $summary, $output_dir, $profile, $interdel, $cmd, $exec_each, $exec_all, $exec_all_settings, $exec_each_settings, $docker_check, $docker_img, $singu_check, $singu_save, $singu_img, $exec_next_settings, $docker_opt, $singu_opt, $amazon_cre_id, $publish_dir, $publish_dir_check, $ownerID);
     }
 }
 else if ($p=="saveProcessParameter"){
-    $sname = htmlspecialchars(urldecode($_REQUEST['sname']), ENT_QUOTES);
-    $closure = htmlspecialchars(urldecode($_REQUEST['closure']), ENT_QUOTES);
-    $reg_ex = htmlspecialchars(urldecode($_REQUEST['reg_ex']), ENT_QUOTES);
+    $sname = addslashes(htmlspecialchars(urldecode($_REQUEST['sname']), ENT_QUOTES));
+    $closure = addslashes(htmlspecialchars(urldecode($_REQUEST['closure']), ENT_QUOTES));
+    $reg_ex = addslashes(htmlspecialchars(urldecode($_REQUEST['reg_ex']), ENT_QUOTES));
     $operator = $_REQUEST['operator'];
     $process_id = $_REQUEST['process_id'];
     $parameter_id = $_REQUEST['parameter_id'];

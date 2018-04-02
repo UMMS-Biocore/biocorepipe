@@ -769,6 +769,7 @@ class ajaxQueryTest extends TestCase
         $_REQUEST['docker_img'] = "";
         $_REQUEST['docker_opt'] = "";
         $_REQUEST['singu_check'] = "";
+        $_REQUEST['singu_save'] = "";
         $_REQUEST['singu_img'] = "";
         $_REQUEST['singu_opt'] = "";
         $_REQUEST['amazon_cre_id'] = "";
@@ -818,6 +819,7 @@ class ajaxQueryTest extends TestCase
         $_REQUEST['docker_img'] = "";
         $_REQUEST['docker_opt'] = "";
         $_REQUEST['singu_check'] = "";
+        $_REQUEST['singu_save'] = "";
         $_REQUEST['singu_img'] = "";
         $_REQUEST['singu_opt'] = "";
         $_REQUEST['amazon_cre_id'] = "";

@@ -188,15 +188,21 @@
                 </div>
                 <div id="singu_imgDiv" class="collapse">
                     <div class="form-group row">
-                        <label for="singu_img" class="col-sm-2 control-label">Image Path <span><a data-toggle="tooltip" data-placement="bottom" title="(eg. project/umw_biocore/singularity/ UMMS-Biocore-singularity-master.simg)"><i class='glyphicon glyphicon-info-sign'></i></a></span></label>
-                        <div class="col-sm-10">
+                        <label for="singu_img" class="col-sm-3 control-label">Image Path <span><a data-toggle="tooltip" data-placement="bottom" title="(eg. project/umw_biocore/singularity/ UMMS-Biocore-singularity-master.simg)"><i class='glyphicon glyphicon-info-sign'></i></a></span></label>
+                        <div class="col-sm-9">
                             <input type="text" class="form-control" id="singu_img" name="singu_img" placeholder="Enter singularity image path">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="singu_opt" class="col-sm-2 control-label"> RunOptions <span><a data-toggle="tooltip" data-placement="bottom" title="You can mount the directories by usig --bind command (eg. --bind /project:/project --bind /nl:/nl --bind /share:/share). It requires you to create the directories in the image beforehand. "><i class='glyphicon glyphicon-info-sign'></i></a></span></label>
-                        <div class="col-sm-10">
+                        <label for="singu_opt" class="col-sm-3 control-label"> RunOptions <span><a data-toggle="tooltip" data-placement="bottom" title="You can mount the directories by usig --bind command (eg. --bind /project:/project --bind /nl:/nl --bind /share:/share). It requires you to create the directories in the image beforehand. "><i class='glyphicon glyphicon-info-sign'></i></a></span></label>
+                        <div class="col-sm-9">
                             <input type="text" class="form-control" id="singu_opt" name="singu_opt" placeholder="Enter singularity runOptions">
+                        </div>
+                    </div>
+                    <div class="form-group row" id="singu_save_div" style="display:none">
+                        <label for="singu_save" class="col-sm-3 control-label"> Save over Image <span><a data-toggle="tooltip" data-placement="bottom" title="If you want to download and save over an existing image, you can check this box."><i class='glyphicon glyphicon-info-sign'></i></a></span></label>
+                        <div class="col-sm-9">
+                           <input type="checkbox" id="singu_save" name="singu_save" ></input>
                         </div>
                     </div>
                 </div>
@@ -324,10 +330,10 @@
                             <th scope="col">File Type</th>
                             <th scope="col">Qualifier</th>
                             <th scope="col">Process Name</th>
-                            <th style="color:#D59035" scope="col">File/Set/Val</th>
+                            <th style="color:#D59035;" scope="col">File/Set/Val</th>
                         </tr>
                     </thead>
-                    <tbody></tbody>
+                    <tbody style="word-break: break-all;"></tbody>
                 </table>
             </div>
         </div>
@@ -347,10 +353,9 @@
                             <th scope="col">Qualifier</th>
                             <th scope="col">Process Name</th>
                             <th scope="col">File/Set/Val</th>
-
                         </tr>
                     </thead>
-                    <tbody></tbody>
+                    <tbody style="word-break: break-all;"></tbody>
                 </table>
             </div>
         </div>

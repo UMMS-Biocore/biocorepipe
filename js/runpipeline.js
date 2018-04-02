@@ -1295,16 +1295,18 @@
 	      $('#chooseEnv').val(pipeData[0].profile);
 	      $('#perms').val(pipeData[0].perms);
 	      $('#runCmd').val(pipeData[0].cmd);
+          $('#docker_img').val(pipeData[0].docker_img);
+	      $('#docker_opt').val(pipeData[0].docker_opt);
+	      $('#singu_img').val(pipeData[0].singu_img);
+	      $('#singu_opt').val(pipeData[0].singu_opt);
 	      updateCheckBox('#publish_dir_check', pipeData[0].publish_dir_check);
 	      updateCheckBox('#intermeDel', pipeData[0].interdel);
 	      updateCheckBox('#exec_each', pipeData[0].exec_each);
 	      updateCheckBox('#exec_all', pipeData[0].exec_all);
 	      updateCheckBox('#docker_check', pipeData[0].docker_check);
 	      updateCheckBox('#singu_check', pipeData[0].singu_check);
-	      $('#docker_img').val(pipeData[0].docker_img);
-	      $('#docker_opt').val(pipeData[0].docker_opt);
-	      $('#singu_img').val(pipeData[0].singu_img);
-	      $('#singu_opt').val(pipeData[0].singu_opt);
+	      updateCheckBox('#singu_save', pipeData[0].singu_save);
+          checkShub()
 	      //load amazon keys for possible s3 connection
 	      loadAmzKeys();
 	      if (pipeData[0].amazon_cre_id !== "0") {
@@ -1641,6 +1643,34 @@
 	      }
 	  }
 
+      //check if singu image path contains shub:// pattern 
+      $("#singu_img").keyup(function () {
+	      autoCheckShub();
+	  });
+      var timeoutCheckShub = 0;
+      function autoCheckShub() {
+	      if (timeoutCheckShub) clearTimeout(timeoutCheck);
+	      timeoutCheckShub = setTimeout(function () { checkShub() }, 2000);
+	  }
+
+      //check if singu image path contains shub:// pattern then show "save over image" checkbox
+	  function checkShub() {
+          var singuPath = $("#singu_img").val()
+	      var shubpattern = 'shub://';
+	      var pathCheck = false;
+	      if (singuPath !== '') {
+	          if (singuPath.indexOf(shubpattern) > -1) {
+	              $("#singu_save_div").css('display', "block");
+	          } else {
+	              $("#singu_save_div").css('display', "none");
+	              $("#singu_save").prop('checked', false);
+	          }
+	      } else {
+	          $("#singu_save_div").css('display', "none");
+              $("#singu_save").prop('checked', false);
+	      }
+	  }
+
 	  //Autocheck the output,publish_dir,publish_dir_check for checkreadytorun
 	  $("#rOut_dir").keyup(function () {
 	      autoCheck();
@@ -1651,12 +1681,13 @@
 	  $("#publish_dir_check").click(function () {
 	      autoCheck();
 	  });
-	  var timeoutCheck = 0;
 
+	  var timeoutCheck = 0;
 	  function autoCheck() {
 	      if (timeoutCheck) clearTimeout(timeoutCheck);
 	      timeoutCheck = setTimeout(function () { checkReadytoRun() }, 2000);
 	  }
+
 	  //check if path contains s3:// pattern and shows aws menu
 	  function checkS3(path, getProPipeInputs) {
 	      //path part
@@ -1882,6 +1913,7 @@
 	          if (nextflowLog !== null) {
 	              $('#runLogArea').val(serverLog + nextflowLog);
 	          }
+	          clearInterval(interval_readNextlog);
 	          displayButton('terminatedProPipe');
 	      } else if (nextflowLog !== null) {
 	          $('#runLogArea').val(serverLog + nextflowLog);
@@ -1909,9 +1941,10 @@
 	                      clearInterval(interval_readNextlog);
 	                  }
 	                  displayButton('completeProPipe');
-	                  showOutputPath();
-
-	              } else if (nextflowLog.match(/error/gi) || nextflowLog.match(/failed/i)) {
+	                  showOutputPath();    
+                      
+                  //removed : || nextflowLog.match(/failed/i)
+	              } else if (nextflowLog.match(/error/gi)) {
 	                  // status completed with error
 	                  if (runStatus !== "NextErr" || runStatus !== "NextSuc" || runStatus !== "Error" || runStatus !== "Terminated") {
 	                      var setStatus = getValues({ p: "updateRunStatus", run_status: "NextErr", project_pipeline_id: project_pipeline_id });
@@ -2121,6 +2154,7 @@
 	      var docker_img = $('#docker_img').val();
 	      var docker_opt = $('#docker_opt').val();
 	      var singu_check = $('#singu_check').is(":checked").toString();
+	      var singu_save = $('#singu_save').is(":checked").toString();
 	      var singu_img = $('#singu_img').val();
 	      var singu_opt = $('#singu_opt').val();
 
@@ -2148,6 +2182,7 @@
 	          data.push({ name: "docker_img", value: docker_img });
 	          data.push({ name: "docker_opt", value: docker_opt });
 	          data.push({ name: "singu_check", value: singu_check });
+	          data.push({ name: "singu_save", value: singu_save });
 	          data.push({ name: "singu_img", value: singu_img });
 	          data.push({ name: "singu_opt", value: singu_opt });
 	          data.push({ name: "p", value: "saveProjectPipeline" });

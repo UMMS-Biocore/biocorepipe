@@ -254,7 +254,7 @@ function InputParameters(id, currgid) {
                         //all processes that are connected to
                         var channelNameAll = "";
                         channelNameAll = getChannelNameAll(channelName, Iid);
-                        secPartTemp = channelNameAll + " = " + "Channel.fromPath(" + inputParamName + ") \n"
+                        secPartTemp = channelNameAll + " = " + "Channel.fromPath(params." + inputParamName + ").toSortedList() \n"
                         firstPart = firstPart + firstPartTemp
                         secPart = secPart + secPartTemp
                         break
