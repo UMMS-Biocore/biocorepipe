@@ -7,7 +7,8 @@ function gFormat(gText) {
     return gText
 }
 
-function sortProcessList(processList) {
+function getMainEdges()
+{
     //remove inPro, outPro from edges
     var allEdges = edges;
     var mainEdges = [];
@@ -22,9 +23,16 @@ function sortProcessList(processList) {
             }
         }
     }
+    return mainEdges;
+}
+function sortProcessList(processList,sortGnum) {
+    var mainEdges = getMainEdges();
+    if (sortGnum == null){
     var sortGnum = [];
+    } 
     if (mainEdges.length > 0) {
         for (var e = 0; e < mainEdges.length; e++) { //mainEdges.length
+            console.log(e)
             var patt = /(.*)-(.*)-(.*)-(.*)-(.*)_(.*)-(.*)-(.*)-(.*)-(.*)/;
             var outGnum = '';
             var inGnum = '';
@@ -42,7 +50,10 @@ function sortProcessList(processList) {
                     sortGnum.push(outGnum);
                     var index = sortGnum.indexOf(outGnum);
                 }
+                console.log("insert")
+                console.log(sortGnum);
             } else {
+                
                 //check if the position of outGnum if inGnum is also exist in array
                 //cut inGnum and paste to indexOut position
                 if (sortGnum.includes(inGnum) && sortGnum.includes(outGnum)) {
@@ -54,6 +65,8 @@ function sortProcessList(processList) {
                     }
                 }
                 var index = sortGnum.indexOf(outGnum);
+                console.log("swap")
+                console.log(sortGnum);
             }
             if (!sortGnum.includes(inGnum)) {
                 sortGnum.splice(index + 1, 0, inGnum);
@@ -61,6 +74,8 @@ function sortProcessList(processList) {
             } else {
                 var index = sortGnum.indexOf(inGnum);
             }
+            console.log("last")
+            console.log(sortGnum);
             //stop for final edge
             if (e + 1 < mainEdges.length) {
                 for (var k = e + 1; k < mainEdges.length; k++) {
@@ -75,6 +90,8 @@ function sortProcessList(processList) {
                     }
                 }
             }
+            console.log("finaledge");
+            console.log(sortGnum);
         }
     }
     var sortProcessList = [];
@@ -87,7 +104,7 @@ function sortProcessList(processList) {
             sortProcessList.push(key);
         }
     }
-    return sortProcessList;
+    return [sortProcessList, sortGnum];
 }
 
 
@@ -110,7 +127,12 @@ function createNextflowFile(nxf_runmode) {
     }
     iniTextSecond = ""
     //sortProcessList
-    var sortedProcessList = sortProcessList(processList);
+    var sortedProcessList = [];
+    var sortGnumFirst = [];
+    var sortGnumSecond = [];
+    //sorting repeated twice to sort distant nodes.
+    [sortedProcessList, sortGnumFirst] = sortProcessList(processList,null);
+    [sortedProcessList, sortGnumSecond] = sortProcessList(processList,sortGnumFirst);
     //initial input data added
     sortedProcessList.forEach(function (key) {
         className = document.getElementById(key).getAttribute("class");

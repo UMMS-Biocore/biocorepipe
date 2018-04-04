@@ -376,19 +376,21 @@ else if ($p=="saveProfileCluster"){
     $next_queue = $_REQUEST['next_queue'];
     $next_time = $_REQUEST['next_time'];
     $next_cpu = $_REQUEST['next_cpu'];
+    $next_clu_opt = $_REQUEST['next_clu_opt'];
     $executor_job = $_REQUEST['executor_job'];
     $job_memory = $_REQUEST['job_memory'];
     $job_queue = $_REQUEST['job_queue'];
     $job_time = $_REQUEST['job_time'];
     $job_cpu = $_REQUEST['job_cpu'];
+    $job_clu_opt = $_REQUEST['job_clu_opt'];
     $username = $_REQUEST['username'];
     $hostname = $_REQUEST['hostname'];
     $next_path = $_REQUEST['next_path'];
     $ssh_id = $_REQUEST['ssh_id'];
     if (!empty($id)) {
-       $data = $db->updateProfileCluster($id, $name, $executor,$next_path, $username, $hostname, $cmd, $next_memory, $next_queue, $next_time, $next_cpu, $executor_job, $job_memory, $job_queue, $job_time, $job_cpu, $ssh_id, $ownerID);
+       $data = $db->updateProfileCluster($id, $name, $executor,$next_path, $username, $hostname, $cmd, $next_memory, $next_queue, $next_time, $next_cpu, $executor_job, $job_memory, $job_queue, $job_time, $job_cpu, $next_clu_opt, $job_clu_opt, $ssh_id, $ownerID);
     } else {
-       $data = $db->insertProfileCluster($name, $executor,$next_path, $username, $hostname, $cmd, $next_memory, $next_queue, $next_time, $next_cpu, $executor_job, $job_memory, $job_queue, $job_time, $job_cpu, $ssh_id, $ownerID);
+       $data = $db->insertProfileCluster($name, $executor,$next_path, $username, $hostname, $cmd, $next_memory, $next_queue, $next_time, $next_cpu, $executor_job, $job_memory, $job_queue, $job_time, $job_cpu, $next_clu_opt, $job_clu_opt, $ssh_id, $ownerID);
     }
 }
 else if ($p=="saveProfileAmazon"){
@@ -399,11 +401,13 @@ else if ($p=="saveProfileAmazon"){
     $next_queue = $_REQUEST['next_queue'];
     $next_time = $_REQUEST['next_time'];
     $next_cpu = $_REQUEST['next_cpu'];
+    $next_clu_opt = $_REQUEST['next_clu_opt'];
     $executor_job = $_REQUEST['executor_job'];
     $job_memory = $_REQUEST['job_memory'];
     $job_queue = $_REQUEST['job_queue'];
     $job_time = $_REQUEST['job_time'];
     $job_cpu = $_REQUEST['job_cpu'];
+    $job_clu_opt = $_REQUEST['job_clu_opt'];
     $ins_type = $_REQUEST['ins_type'];
     $image_id = $_REQUEST['image_id'];
     $subnet_id = $_REQUEST['subnet_id'];
@@ -413,9 +417,9 @@ else if ($p=="saveProfileAmazon"){
     $ssh_id = $_REQUEST['ssh_id'];
     $amazon_cre_id = $_REQUEST['amazon_cre_id'];
     if (!empty($id)) {
-       $data = $db->updateProfileAmazon($id, $name, $executor, $next_path, $ins_type, $image_id, $cmd, $next_memory, $next_queue, $next_time, $next_cpu, $executor_job, $job_memory, $job_queue, $job_time, $job_cpu, $subnet_id, $shared_storage_id,$shared_storage_mnt, $ssh_id, $amazon_cre_id, $ownerID);
+       $data = $db->updateProfileAmazon($id, $name, $executor, $next_path, $ins_type, $image_id, $cmd, $next_memory, $next_queue, $next_time, $next_cpu, $executor_job, $job_memory, $job_queue, $job_time, $job_cpu, $subnet_id, $shared_storage_id,$shared_storage_mnt, $ssh_id, $amazon_cre_id, $next_clu_opt, $job_clu_opt, $ownerID);
     } else {
-       $data = $db->insertProfileAmazon($name, $executor, $next_path, $ins_type, $image_id, $cmd, $next_memory, $next_queue, $next_time, $next_cpu, $executor_job, $job_memory, $job_queue, $job_time, $job_cpu, $subnet_id, $shared_storage_id,$shared_storage_mnt, $ssh_id, $amazon_cre_id, $ownerID);
+       $data = $db->insertProfileAmazon($name, $executor, $next_path, $ins_type, $image_id, $cmd, $next_memory, $next_queue, $next_time, $next_cpu, $executor_job, $job_memory, $job_queue, $job_time, $job_cpu, $subnet_id, $shared_storage_id,$shared_storage_mnt, $ssh_id, $amazon_cre_id, $next_clu_opt, $job_clu_opt, $ownerID);
     }
 }
 else if ($p=="saveInput"){
@@ -598,10 +602,14 @@ else if ($p=="saveProjectPipeline"){
     $singu_img = $_REQUEST['singu_img'];
     $singu_opt = $_REQUEST['singu_opt'];
     $amazon_cre_id = $_REQUEST['amazon_cre_id'];
+    $withReport = $_REQUEST['withReport'];
+    $withTrace = $_REQUEST['withTrace'];
+    $withTimeline = $_REQUEST['withTimeline'];
+    $withDag = $_REQUEST['withDag'];
     settype($group_id, 'integer');
     settype($amazon_cre_id, 'integer');
         if (!empty($id)) {
-        $data = $db->updateProjectPipeline($id, $name, $summary, $output_dir, $perms, $profile, $interdel, $cmd, $group_id, $exec_each, $exec_all, $exec_all_settings, $exec_each_settings, $docker_check, $docker_img, $singu_check, $singu_save, $singu_img, $exec_next_settings, $docker_opt, $singu_opt, $amazon_cre_id, $publish_dir, $publish_dir_check, $ownerID);
+        $data = $db->updateProjectPipeline($id, $name, $summary, $output_dir, $perms, $profile, $interdel, $cmd, $group_id, $exec_each, $exec_all, $exec_all_settings, $exec_each_settings, $docker_check, $docker_img, $singu_check, $singu_save, $singu_img, $exec_next_settings, $docker_opt, $singu_opt, $amazon_cre_id, $publish_dir, $publish_dir_check, $withReport, $withTrace, $withTimeline, $withDag, $ownerID);
             if ($perms !== "3"){
             $db->updateProjectGroupPerm($id, $group_id, $perms, $ownerID);
             $db->updateProjectInputGroupPerm($id, $group_id, $perms, $ownerID);
@@ -611,7 +619,7 @@ else if ($p=="saveProjectPipeline"){
             $db->updatePipelineProcessGroupPerm($id, $group_id, $perms, $ownerID);
             }
     } else {
-        $data = $db->insertProjectPipeline($name, $project_id, $pipeline_id, $summary, $output_dir, $profile, $interdel, $cmd, $exec_each, $exec_all, $exec_all_settings, $exec_each_settings, $docker_check, $docker_img, $singu_check, $singu_save, $singu_img, $exec_next_settings, $docker_opt, $singu_opt, $amazon_cre_id, $publish_dir, $publish_dir_check, $ownerID);
+        $data = $db->insertProjectPipeline($name, $project_id, $pipeline_id, $summary, $output_dir, $profile, $interdel, $cmd, $exec_each, $exec_all, $exec_all_settings, $exec_each_settings, $docker_check, $docker_img, $singu_check, $singu_save, $singu_img, $exec_next_settings, $docker_opt, $singu_opt, $amazon_cre_id, $publish_dir, $publish_dir_check, $withReport, $withTrace, $withTimeline, $withDag, $ownerID);
     }
 }
 else if ($p=="saveProcessParameter"){
