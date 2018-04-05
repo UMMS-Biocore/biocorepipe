@@ -1934,7 +1934,6 @@ $(document).ready(function () {
         }
         // B) Edit Process Ends----
     });
-
     //insert dropdown, textbox and 'remove button' for each parameters
     $(function () {
         $(document).on('change', '.mParChange', function () {
@@ -1968,14 +1967,16 @@ $(document).ready(function () {
                 }
                 $("#" + col1init).append('<select id="' + col1init + '-' + idRows + '" num="' + idRows + '" class="fbtn btn-default form-control mParChange" style ="margin-bottom: 5px;" prev ="-1"  name="' + col1init + '-' + idRows + '"></select>');
                 $("#" + col2init).append('<input type="text" ppID="" placeholder="Enter name" class="form-control " style ="margin-bottom: 5px;" id="' + col2init + '-' + String(idRows - 1) + '" name="' + col2init + '-' + String(idRows - 1) + '">');
-                $("#" + col3init).append('<button  type="submit" class="btn btn-default form-control delRow" style ="margin-bottom: 5px;" id="' + col3init + '-' + String(idRows - 1) + '" name="' + col3init + '-' + String(idRows - 1) + '"><i class="glyphicon glyphicon-remove"></i></button>');
-                $("#" + col4init).append('<a href="#" data-toggle="tooltip" data-placement="bottom" data-original-title="Add/Remove operator" class="btn btn-default addOpt" style ="margin-bottom: 5px;" id="' + col4init + '-' + String(idRows - 1) + '" name="' + col4init + '-' + String(idRows - 1) + '"> <span><i class="fa fa-wrench"></i></span></a>');
+                $("#" + col3init).append('<button  type="button" class="btn btn-default form-control delRow" style ="margin-bottom: 5px;" id="' + col3init + '-' + String(idRows - 1) + '" name="' + col3init + '-' + String(idRows - 1) + '"><a data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete Row"><span><i class="glyphicon glyphicon-remove"></i></span></a></button>');
+                $("#" + col4init).append('<button  type="button" class="btn btn-default form-control addOpt" style ="margin-bottom: 5px;" id="' + col4init + '-' + String(idRows - 1) + '" name="' + col4init + '-' + String(idRows - 1) + '"><a data-toggle="tooltip" data-placement="bottom" data-original-title="Add/Remove operator"><span><i class="fa fa-wrench"></i></span></a></button>');
                 $("#" + col5init).append('<select class="form-control" style ="visibility:hidden; margin-bottom: 5px;" id="' + col5init + '-' + String(idRows - 1) + '" name="' + col5init + '-' + String(idRows - 1) + '"></button>');
                 $("#" + col6init).append('<input type="text" ppID="" placeholder="Operator content" class="form-control " style ="visibility:hidden; margin-bottom: 5px;" id="' + col6init + '-' + String(idRows - 1) + '" name="' + col6init + '-' + String(idRows - 1) + '">');
-                $("#" + col7init).append('<button type="submit" class="btn btn-default form-control delOpt" style ="visibility:hidden; margin-bottom: 5px;" id="' + col7init + '-' + String(idRows - 1) + '" name="' + col7init + '-' + String(idRows - 1) + '"><i class="glyphicon glyphicon-remove"></i></button>');
-                $("#" + col8init).append('<a href="#" data-toggle="tooltip" data-placement="bottom" data-original-title="Add/Remove output regular expression" class="btn btn-default addRegEx" style ="margin-bottom: 5px;" id="' + col8init + '-' + String(idRows - 1) + '" name="' + col8init + '-' + String(idRows - 1) + '"> <span><i class="fa fa-code"></i></span></a>');
+                $("#" + col7init).append('<button type="submit" class="btn btn-default form-control delOpt" style ="visibility:hidden; margin-bottom: 5px;" id="' + col7init + '-' + String(idRows - 1) + '" name="' + col7init + '-' + String(idRows - 1) + '"><a data-toggle="tooltip" data-placement="bottom" data-original-title="Remove operator"><span><i class="glyphicon glyphicon-remove"></i></span></a></button>');
+                $("#" + col8init).append('<button  type="button" class="btn btn-default form-control addRegEx" style ="margin-bottom: 5px;" id="' + col8init + '-' + String(idRows - 1) + '" name="' + col8init + '-' + String(idRows - 1) + '"><a data-toggle="tooltip" data-placement="bottom" data-original-title="Add/Remove Output RegEx"><span><i class="fa fa-code"></i></span></a></button>');
                 $("#" + col9init).append('<input type="text" ppID="" placeholder="Enter RegEx" class="form-control " style ="visibility:hidden; margin-bottom: 5px;" id="' + col9init + '-' + String(idRows - 1) + '" name="' + col9init + '-' + String(idRows - 1) + '">');
-                $("#" + col10init).append('<button type="submit" class="btn btn-default form-control delRegEx" style ="visibility:hidden; margin-bottom: 5px;" id="' + col10init + '-' + String(idRows - 1) + '" name="' + col10init + '-' + String(idRows - 1) + '"><i class="glyphicon glyphicon-remove"></i></button>');
+                $("#" + col10init).append('<button type="submit" class="btn btn-default form-control delRegEx" style ="visibility:hidden; margin-bottom: 5px;" id="' + col10init + '-' + String(idRows - 1) + '" name="' + col10init + '-' + String(idRows - 1) + '"><a data-toggle="tooltip" data-placement="bottom" data-original-title="Remove Output RegEx"><span><i class="glyphicon glyphicon-remove"></i></span></a></button>');
+                //refresh tooltips
+                $('[data-toggle="tooltip"]').tooltip();
                 //load closure options
                 var closureOpt = $('#mOutOpt-0 option').each(function () {
                     var val = $(this).val()

@@ -202,7 +202,7 @@
                     <div class="form-group row" id="singu_save_div" style="display:none">
                         <label for="singu_save" class="col-sm-3 control-label"> Save over Image <span><a data-toggle="tooltip" data-placement="bottom" title="If you want to download and save over an existing image, you can check this box."><i class='glyphicon glyphicon-info-sign'></i></a></span></label>
                         <div class="col-sm-9">
-                           <input type="checkbox" id="singu_save" name="singu_save" ></input>
+                            <input type="checkbox" id="singu_save" name="singu_save"></input>
                         </div>
                     </div>
                 </div>
@@ -225,14 +225,14 @@
                 </div>
             </div>
             <div class="col-md-12">
-            <div>
-                <label><input type="checkbox" id="publish_dir_check" name="publish_dir_check"  data-toggle="collapse" data-target="#publishDirDiv"> Publish Directory</input> <span><a data-toggle="tooltip" data-placement="bottom" title="You may enter new publish directory (default: work directory) by clicking this item and entering path below.(eg. s3://yourbucket/test)"><i class='glyphicon glyphicon-info-sign'></i></a></span></label>
-            </div>
-            <div id="publishDirDiv" class=" collapse">
-                <div class="form-group">
-                    <input type="text" class="form-control" id="publish_dir" name="publish_dir" placeholder="Enter new publish directory">
+                <div>
+                    <label><input type="checkbox" id="publish_dir_check" name="publish_dir_check"  data-toggle="collapse" data-target="#publishDirDiv"> Publish Directory</input> <span><a data-toggle="tooltip" data-placement="bottom" title="You may enter new publish directory (default: work directory) by clicking this item and entering path below.(eg. s3://yourbucket/test)"><i class='glyphicon glyphicon-info-sign'></i></a></span></label>
                 </div>
-            </div>
+                <div id="publishDirDiv" class=" collapse">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="publish_dir" name="publish_dir" placeholder="Enter new publish directory">
+                    </div>
+                </div>
             </div>
 
             <div id="jobSettingsDiv" class="col-md-12">
@@ -248,6 +248,7 @@
                                     <th scope="col">Memory(GB)</th>
                                     <th scope="col">CPUs</th>
                                     <th scope="col">Time(min.)</th>
+                                    <th scope="col">Other Options</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -256,6 +257,7 @@
                                     <td><input id="job_memory" class="form-control" type="text" name="job_memory" value="32"></td>
                                     <td><input id="job_cpu" name="job_cpu" class="form-control" type="text" value="1"></td>
                                     <td><input id="job_time" name="job_time" class="form-control" type="text" value="100"></td>
+                                    <td><input id="job_clu_opt" name="job_clu_opt" class="form-control" type="text" value=""></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -275,6 +277,7 @@
                                     <th scope="col">Memory(GB)</th>
                                     <th scope="col">CPUs</th>
                                     <th scope="col">Time(min.)</th>
+                                    <th scope="col">Other Options</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -286,6 +289,28 @@
                 <div class="form-group">
                     <input type="checkbox" id="intermeDel" name="interDelete" value="interDel" checked> Delete intermadiate files after run</input>
                 </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group" style="  margin-bottom:8px;">
+                    <label>Report Options</label>
+                    <i data-toggle="tooltip" data-placement="bottom" data-original-title="Expand/Collapse"><a class="fa fa-plus-square-o collapseIcon" style=" font-size:15px; padding-left:5px; " data-toggle="collapse" data-target="#dispOpt"></a></i>
+                </div>
+            </div>
+            <!-- collapsed settings-->
+            <div id="dispOpt" class="col-md-12 collapse">
+                <div class="form-group col-md-1">
+                    <input type="checkbox" id="withReport"> Report</input>
+                </div>
+                <div class="form-group col-md-1">
+                    <input type="checkbox" id="withTrace"> Trace</input>
+                </div>
+                <div class="form-group col-md-1">
+                    <input type="checkbox" id="withDag"> DAG</input>
+                </div>
+                <div class="form-group col-md-2">
+                    <input type="checkbox" id="withTimeline"> Timeline</input>
+                </div>
+
             </div>
             <div class="col-md-6">
                 <div class="form-group">
@@ -478,47 +503,47 @@
                             </div>
                         </div>
                         <div id="publicFileTab" class="tab-pane ">
-                               <div class="row">
-                               <div class="col-sm-12" style="padding-top:6px;">
-                                <p id="publicFileTabWarn"></p>
-                                <table id="publicFileTable" class="table table-striped table-bordered display" cellspacing="0" width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Check</th>
-                                            <th scope="col">File/Values</th>
-                                            <th scope="col">Modified On</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
+                            <div class="row">
+                                <div class="col-sm-12" style="padding-top:6px;">
+                                    <p id="publicFileTabWarn"></p>
+                                    <table id="publicFileTable" class="table table-striped table-bordered display" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Check</th>
+                                                <th scope="col">File/Values</th>
+                                                <th scope="col">Modified On</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
                             </div>
-                            </div>
-                            </div>
+                        </div>
                         <div role="tabpanel" class="tab-pane" id="projectFileTab">
-                           <div class="row">
-                           <div class="col-sm-3" style="border-right:1px solid lightgrey; padding-top:6px;">
-                                <table id="projectListTable" class="table  table-striped display" cellspacing="0" width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Project Name</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-                            </div> 
-                            <div class="col-sm-9" style="padding-top:6px;">
-                                <table id="projectFileTable" class="table  table-striped  display" cellspacing="0" width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Check</th>
-                                            <th scope="col">File/Values</th>
-                                            <th scope="col">Modified On</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody style="word-break: break-all; "></tbody>
-                                </table>
+                            <div class="row">
+                                <div class="col-sm-3" style="border-right:1px solid lightgrey; padding-top:6px;">
+                                    <table id="projectListTable" class="table  table-striped display" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Project Name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                                <div class="col-sm-9" style="padding-top:6px;">
+                                    <table id="projectFileTable" class="table  table-striped  display" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Check</th>
+                                                <th scope="col">File/Values</th>
+                                                <th scope="col">Modified On</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="word-break: break-all; "></tbody>
+                                    </table>
+                                </div>
                             </div>
-                            </div> 
                         </div>
                     </div>
                 </div>
@@ -573,47 +598,47 @@
                             </div>
                         </div>
                         <div id="publicValTab" class="tab-pane ">
-                               <div class="row">
-                               <div class="col-sm-12" style="padding-top:6px;">
-                               <p id="publicValTabWarn"></p>
-                                <table id="publicValTable" class="table table-striped table-bordered display" cellspacing="0" width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Check</th>
-                                            <th scope="col">File/Values</th>
-                                            <th scope="col">Modified On</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
+                            <div class="row">
+                                <div class="col-sm-12" style="padding-top:6px;">
+                                    <p id="publicValTabWarn"></p>
+                                    <table id="publicValTable" class="table table-striped table-bordered display" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Check</th>
+                                                <th scope="col">File/Values</th>
+                                                <th scope="col">Modified On</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
                             </div>
-                            </div>
-                            </div>
+                        </div>
                         <div role="tabpanel" class="tab-pane" id="projectValTab">
-                           <div class="row">
-                           <div class="col-sm-3" style="border-right:1px solid lightgrey; padding-top:6px;">
-                                <table id="projectListTableVal" class="table  table-striped display" cellspacing="0" width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Project Name</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-                            </div> 
-                            <div class="col-sm-9" style="padding-top:6px;">
-                                <table id="projectValTable" class="table  table-striped  display" cellspacing="0" width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Check</th>
-                                            <th scope="col">File/Values</th>
-                                            <th scope="col">Modified On</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody style="word-break: break-all; "></tbody>
-                                </table>
+                            <div class="row">
+                                <div class="col-sm-3" style="border-right:1px solid lightgrey; padding-top:6px;">
+                                    <table id="projectListTableVal" class="table  table-striped display" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Project Name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                                <div class="col-sm-9" style="padding-top:6px;">
+                                    <table id="projectValTable" class="table  table-striped  display" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Check</th>
+                                                <th scope="col">File/Values</th>
+                                                <th scope="col">Modified On</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="word-break: break-all; "></tbody>
+                                    </table>
+                                </div>
                             </div>
-                            </div> 
                         </div>
                     </div>
                 </div>
@@ -625,4 +650,3 @@
         </div>
     </div>
 </div>
-
