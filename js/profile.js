@@ -113,7 +113,6 @@
                 var proType = clickedRowId.replace(patt, '$1');
                 var proId = clickedRowId.replace(patt, '$2');
                 var formValues = $('#profilemodal').find('input, select, textarea');
-                console.log(formValues);
 
                 function fillFixedCol(formValues, data) {
                     $(formValues[0]).val(data[0].id);
@@ -125,11 +124,13 @@
                     $(formValues[16]).val(data[0].next_memory);
                     $(formValues[17]).val(data[0].next_cpu);
                     $(formValues[18]).val(data[0].next_time);
-                    $(formValues[19]).val(data[0].executor_job);
-                    $(formValues[20]).val(data[0].job_queue);
-                    $(formValues[21]).val(data[0].job_memory);
-                    $(formValues[22]).val(data[0].job_cpu);
-                    $(formValues[23]).val(data[0].job_time);
+                    $(formValues[19]).val(data[0].next_clu_opt);
+                    $(formValues[20]).val(data[0].executor_job);
+                    $(formValues[21]).val(data[0].job_queue);
+                    $(formValues[22]).val(data[0].job_memory);
+                    $(formValues[23]).val(data[0].job_cpu);
+                    $(formValues[24]).val(data[0].job_time);
+                    $(formValues[25]).val(data[0].job_clu_opt);
                 };
                 if (proType === "cluster") {
                     var data = getValues({ p: "getProfileCluster", id: proId });
@@ -141,7 +142,6 @@
                     $('#mExec').trigger('change');
                 } else if (proType === "amazon") {
                     var data = getValues({ p: "getProfileAmazon", id: proId });
-                    console.log(data)
                     $('#chooseEnv').val('amazon').trigger('change');
                     fillFixedCol(formValues, data);
                     $(formValues[5]).val(data[0].ssh_id);
@@ -223,9 +223,7 @@
             $('#mExecJob').removeAttr('disabled');
             $('#mEnvAmzKey').find('option').not(':eq(0)').remove()
             $('#mEnvSSHKey').find('option').not(':eq(0)').remove()
-
         });
-
 
         $('#profilemodal').on('click', '#saveEnv', function (event) {
             event.preventDefault();
@@ -238,7 +236,12 @@
             var selEnvType = $('#chooseEnv option:selected').val();
             if (selEnvType.length && profileName !== '') {
                 if (selEnvType === "cluster") {
-                    data.push({ name: "p", value: "saveProfileCluster" });
+                    var sshID = $('#mEnvSSHKey').val();
+                    if (sshID) {
+                         data.push({ name: "p", value: "saveProfileCluster" });
+                    } else {
+                        data = [];
+                    }
                 } else if (selEnvType === "amazon") {
                     var sshID = $('#mEnvSSHKey').val();
                     var amzID = $('#mEnvAmzKey').val();
@@ -294,7 +297,6 @@
         $('#confirmDelProModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget);
             var clickedRowId = button.closest('tr').attr('id'); //local-20
-            console.log(clickedRowId);
             if (button.attr('id') === 'profileremove') {
                 $('#mDelProBtn').attr('clickedRowId', clickedRowId);
                 $('#mDelProBtn').attr('class', 'btn btn-primary deleteProfile');
@@ -979,7 +981,6 @@
                 $('#saveamzkey').data('clickedrow', clickedRow);
                 var formValues = $('#amzKeyModal').find('input');
                 var data = getValues({ p: "getAmz", id: rowData.id })[0];
-                console.log(data);
                 $(formValues[0]).val(rowData.id);
                 $(formValues[1]).val(rowData.name);
                 $('#mAmzDefReg').val(data.amz_def_reg);

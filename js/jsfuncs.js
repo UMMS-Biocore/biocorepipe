@@ -23,6 +23,7 @@ $(function () {
     $('[data-toggle="tooltip"]').tooltip();
 });
 
+
 // check the amazon profiles activity each 40 sec.
 checkAmzProfiles("timer");
 

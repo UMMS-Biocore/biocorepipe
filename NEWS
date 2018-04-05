@@ -1,3 +1,11 @@
+04.04.2018 Version 0.1.15
+Pipeline process sorting algorithm improved.
+Project based file selection modal in run pipeline page is improved.
+Tooltips added to add process modal.
+Process parameter (sname,closure,reg_ex) column types are assigned as text.
+Reporting options (withReport, withTrace, withDag, withTimeline ) are added in run pipeline page.
+Cluster options added to jobs settings section in profile and run pipeline page
+
 02.04.2018 Version 0.1.14
 Save over image option is added for shub external url support.
 Text wrap problem is fixed for long texts. (eg. Summary of public pipeline page and file paths of run pipeline page)

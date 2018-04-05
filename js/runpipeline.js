@@ -262,9 +262,8 @@
 	      }
 
 	  }
-	  //xxx
-	  function insertProRowTable(process_id, gNum, procName, procQueDef, procMemDef, procCpuDef, procTimeDef) {
-	      return '<tr procProId="' + process_id + '" id="procGnum-' + gNum + '"><td><input name="check" id="check-' + gNum + '" type="checkbox" </td><td>' + procName + '</td><td><input name="queue" class="form-control" type="text" value="' + procQueDef + '"></input></td><td><input class="form-control" type="text" name="memory" value="' + procMemDef + '"></input></td><td><input name="cpu" class="form-control" type="text" value="' + procCpuDef + '"></input></td><td><input name="time" class="form-control" type="text" value="' + procTimeDef + '"></input></td></tr>'
+	  function insertProRowTable(process_id, gNum, procName, procQueDef, procMemDef, procCpuDef, procTimeDef,procOptDef) {
+	      return '<tr procProId="' + process_id + '" id="procGnum-' + gNum + '"><td><input name="check" id="check-' + gNum + '" type="checkbox" </td><td>' + procName + '</td><td><input name="queue" class="form-control" type="text" value="' + procQueDef + '"></input></td><td><input class="form-control" type="text" name="memory" value="' + procMemDef + '"></input></td><td><input name="cpu" class="form-control" type="text" value="' + procCpuDef + '"></input></td><td><input name="time" class="form-control" type="text" value="' + procTimeDef + '"></input></td><td><input name="opt" class="form-control" type="text" value="' + procOptDef + '"></input></td></tr>'
 	  }
 
 	  //--Pipeline details table --
@@ -273,7 +272,8 @@
 	      var procMemDef = '10'
 	      var procCpuDef = '1';
 	      var procTimeDef = '100';
-	      var proRow = insertProRowTable(process_id, gNum, procName, procQueDef, procMemDef, procCpuDef, procTimeDef);
+	      var procOptDef = '';
+	      var proRow = insertProRowTable(process_id, gNum, procName, procQueDef, procMemDef, procCpuDef, procTimeDef,procOptDef);
 	      $('#processTable > tbody:last-child').append(proRow);
 	  }
 
@@ -1306,6 +1306,10 @@
 	      updateCheckBox('#docker_check', pipeData[0].docker_check);
 	      updateCheckBox('#singu_check', pipeData[0].singu_check);
 	      updateCheckBox('#singu_save', pipeData[0].singu_save);
+          updateCheckBox('#withTrace', pipeData[0].withTrace);
+          updateCheckBox('#withReport', pipeData[0].withReport);
+          updateCheckBox('#withDag', pipeData[0].withDag);
+          updateCheckBox('#withTimeline', pipeData[0].withTimeline);
           checkShub()
 	      //load amazon keys for possible s3 connection
 	      loadAmzKeys();
@@ -1734,6 +1738,7 @@
 	  function configTextAllProcess(exec_all_settings, type, proName) {
 	      if (type === "each") {
 	          for (var keyParam in exec_all_settings) {
+                  console.log(keyParam)
 	              if (exec_all_settings[keyParam] !== '' && (keyParam === 'time' || keyParam === 'job_time')) {
 	                  window.configTextRaw += 'process.$' + proName + '.time' + ' = \'' + exec_all_settings[keyParam] + 'm\'\n';
 	              } else if (exec_all_settings[keyParam] !== '' && (keyParam === 'cpu' || keyParam === 'job_cpu')) {
@@ -1742,11 +1747,14 @@
 	                  window.configTextRaw += 'process.$' + proName + '.queue' + ' = \'' + exec_all_settings[keyParam] + '\'\n';
 	              } else if (exec_all_settings[keyParam] !== '' && (keyParam === 'memory' || keyParam === 'job_memory')) {
 	                  window.configTextRaw += 'process.$' + proName + '.memory' + ' = \'' + exec_all_settings[keyParam] + ' GB\'\n';
+	              } else if (exec_all_settings[keyParam] !== '' && (keyParam === 'opt' || keyParam === 'job_clu_opt')) {
+	                  window.configTextRaw += 'process.$' + proName + '.clusterOptions' + ' = \'' + exec_all_settings[keyParam] + '\'\n';
 	              }
 	          }
 
 	      } else {
 	          for (var keyParam in exec_all_settings) {
+                  console.log(keyParam)
 	              if (exec_all_settings[keyParam] !== '' && (keyParam === 'time' || keyParam === 'job_time')) {
 	                  window.configTextRaw += 'process.' + 'time' + ' = \'' + exec_all_settings[keyParam] + 'm\'\n';
 	              } else if (exec_all_settings[keyParam] !== '' && (keyParam === 'cpu' || keyParam === 'job_cpu')) {
@@ -1755,6 +1763,8 @@
 	                  window.configTextRaw += 'process.' + 'queue' + ' = \'' + exec_all_settings[keyParam] + '\'\n';
 	              } else if (exec_all_settings[keyParam] !== '' && (keyParam === 'memory' || keyParam === 'job_memory')) {
 	                  window.configTextRaw += 'process.' + 'memory' + ' = \'' + exec_all_settings[keyParam] + ' GB\'\n';
+	              } else if (exec_all_settings[keyParam] !== '' && (keyParam === 'opt' || keyParam === 'job_clu_opt')) {
+	                  window.configTextRaw += 'process.' + 'clusterOptions' + ' = \'' + exec_all_settings[keyParam] + ' \'\n';
 	              }
 	          }
 	      }
@@ -1823,8 +1833,6 @@
 	          var patt = /^docker:\/\/(.*)/g;
 	          var patt = /^shub:\/\/(.*)/g;
 	          var singuPath = singu_img.replace(patt, '$1');
-	          console.log('singuPath');
-	          console.log(singuPath);
 	          if (patt.test(singu_img)) {
 	              singuPath = singuPath.replace(/\//g, '-')
 	              var downSingu_img = '//$HOME/.dolphinnext/singularity/' + singuPath + '.simg';
@@ -1943,8 +1951,7 @@
 	                  displayButton('completeProPipe');
 	                  showOutputPath();    
                       
-                  //removed : || nextflowLog.match(/failed/i)
-	              } else if (nextflowLog.match(/error/gi)) {
+	              } else if (nextflowLog.match(/error/gi) || nextflowLog.match(/failed/i)) {
 	                  // status completed with error
 	                  if (runStatus !== "NextErr" || runStatus !== "NextSuc" || runStatus !== "Error" || runStatus !== "Terminated") {
 	                      var setStatus = getValues({ p: "updateRunStatus", run_status: "NextErr", project_pipeline_id: project_pipeline_id });
@@ -2068,7 +2075,6 @@
 	      }
 	  }
 
-
 	  function getServerLog(project_pipeline_id) {
 	      var logText = getValues({
 	          p: "getServerLog",
@@ -2080,15 +2086,6 @@
 	          return "";
 	      }
 	  }
-
-	  //	  function getRunPid(project_pipeline_id) {
-	  //	      var runData = getValues({
-	  //	          p: "getRun",
-	  //	          project_pipeline_id: project_pipeline_id
-	  //	      });
-	  //	      var runPid = runData[0].pid;
-	  //	      return runPid;
-	  //	  }
 
 	  function formToJson(rawFormData, stringify) {
 	      var formDataSerial = rawFormData.serializeArray();
@@ -2157,7 +2154,12 @@
 	      var singu_save = $('#singu_save').is(":checked").toString();
 	      var singu_img = $('#singu_img').val();
 	      var singu_opt = $('#singu_opt').val();
-
+	      var withReport = $('#withReport').is(":checked").toString();
+	      var withTrace = $('#withTrace').is(":checked").toString();
+	      var withTimeline = $('#withTimeline').is(":checked").toString();
+	      var withDag = $('#withDag').is(":checked").toString();
+          
+          
 
 	      if (run_name !== '') {
 	          data.push({ name: "id", value: project_pipeline_id });
@@ -2185,6 +2187,10 @@
 	          data.push({ name: "singu_save", value: singu_save });
 	          data.push({ name: "singu_img", value: singu_img });
 	          data.push({ name: "singu_opt", value: singu_opt });
+	          data.push({ name: "withReport", value: withReport });
+	          data.push({ name: "withTrace", value: withTrace });
+	          data.push({ name: "withTimeline", value: withTimeline });
+	          data.push({ name: "withDag", value: withDag });
 	          data.push({ name: "p", value: "saveProjectPipeline" });
 	          $.ajax({
 	              type: "POST",
@@ -2236,6 +2242,7 @@
 	              allProSett.job_memory = profileData[0].job_memory;
 	              allProSett.job_cpu = profileData[0].job_cpu;
 	              allProSett.job_time = profileData[0].job_time;
+	              allProSett.job_clu_opt = profileData[0].job_clu_opt;
 	              if (getType === "job") {
 	                  return profileData;
 	              } else if (getType === "both") {
@@ -2458,13 +2465,13 @@
 	              var projectRows = $('#projectListTable > tbody >');
 	              // if project is exist click on the first one to show files
 	              if (projectRows && projectRows.length > 0) {
-	                  $('#projectListTable > tbody > tr >').first().trigger("click")
+                      $('#projectListTable > tbody > tr > td ').find('[projectid="'+project_id +'"]').trigger("click")
 	              }
 	          } else if (activatedTab === "#projectValTab") {
 	              var projectRows = $('#projectListTableVal > tbody >');
 	              // if project is exist click on the first one to show files
 	              if (projectRows && projectRows.length > 0) {
-	                  $('#projectListTableVal > tbody > tr >').first().trigger("click")
+                      $('#projectListTableVal > tbody > tr > td ').find('[projectid="'+project_id +'"]').trigger("click")
 	              }
 	          } else if (activatedTab === "#publicFileTab") {
 	              var host = $('#chooseEnv').find(":selected").attr("host");
@@ -2472,7 +2479,6 @@
 	                  if (host != "") {
 	                      $("#publicFileTabWarn").html("")
 	                      $("#publicFileTable").show();
-
 	                      var table_id = "publicFileTable";
 	                      var ajax = { "host": host, "p": "getPublicFiles" }
 	                      $('#' + table_id).dataTable().fnDestroy();
@@ -2485,10 +2491,7 @@
 	              }
 	          } else if (activatedTab === "#publicValTab") {
 	              var host = $('#chooseEnv').find(":selected").attr("host");
-	              console.log(host)
 	              if (host != undefined) {
-	                  console.log(host)
-
 	                  if (host != "") {
 	                      $("#publicValTabWarn").html("")
 	                      $("#publicValTable").show();
