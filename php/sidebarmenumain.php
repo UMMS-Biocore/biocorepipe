@@ -1,6 +1,7 @@
 <?php
 if (!isset($_SESSION) || !is_array($_SESSION)) session_start();
 $ownerID = isset($_SESSION['ownerID']) ? $_SESSION['ownerID'] : "";
+session_write_close();
 require_once(__DIR__."/../ajax/dbfuncs.php");
 $db = new dbfuncs();
 

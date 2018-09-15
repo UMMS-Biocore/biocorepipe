@@ -3465,7 +3465,7 @@ function readNextLog(proType, proId, type) {
         }
     }
     //trigger saving newxtflow log file
-    var saveLog = getValues({ p: "saveNextflowLog", project_pipeline_id: project_pipeline_id, profileType: proType, profileId: proId });
+    setTimeout(function () {getValues({ p: "saveNextflowLog", project_pipeline_id: project_pipeline_id, profileType: proType, profileId: proId }, true),100});
 }
 
 function showOutputPath() {
