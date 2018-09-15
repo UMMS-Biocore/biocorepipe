@@ -10,7 +10,7 @@ if (!isset($_SESSION) || !is_array($_SESSION)) session_start();
 $ownerID = isset($_SESSION['ownerID']) ? $_SESSION['ownerID'] : "";
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : "";
 $google_id = isset($_SESSION['google_id']) ? $_SESSION['google_id'] : "";
-
+session_write_close();
 $id = isset($_REQUEST["id"]) ? $_REQUEST["id"] : "";
 $p = isset($_REQUEST["p"]) ? $_REQUEST["p"] : "";
 
@@ -514,11 +514,13 @@ else if ($p=="checkLogin"){
     if (!empty($google_id)) {
        $data = $db->getUserLess($google_id);
     }else {
+       session_start();
        $_SESSION['ownerID'] = "";
        $_SESSION['username'] = "";
        $_SESSION['google_id'] = "";
 	   $errAr = array('error' => 1);
 	   $data = json_encode($errAr);
+       session_write_close();
     }
 }
 else if ($p=="savePipelineGroup"){

@@ -1,3 +1,7 @@
+14.09.2018 Version 0.1.90
+browser lock fixed by using session_write_close in php pages.
+while copying run, user allowed to use new pipeline revision 
+
 14.09.2018 Version 0.1.89
 Appearance of sign in button is fixed.
 save nextflow log file to server and read from there to improve performance.

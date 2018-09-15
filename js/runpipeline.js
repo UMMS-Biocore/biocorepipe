@@ -114,10 +114,6 @@ function newPipeline() {
     resizeForText.call($inputText, $inputText.attr('placeholder'));
 }
 
-function duplicatePipeline() {
-    dupliPipe = true
-    save()
-}
 
 function delPipeline() {
     var pipeID = $('#pipeline-title').attr('pipelineid');
@@ -1143,7 +1139,7 @@ function insertInputRow(defaultVal, opt, pipeGnum, varName, type, name) {
     });
     var rowID = rowType + 'Ta-' + firGnum;
     if (getProPipeInputs && getProPipeInputs != "") {
-        if (getProPipeInputs.length === 1) {
+        if (getProPipeInputs.length == 1) {
             var filePath = getProPipeInputs[0].name; //value for val type
             var proPipeInputID = getProPipeInputs[0].id;
             var given_name = getProPipeInputs[0].given_name;
@@ -1153,6 +1149,10 @@ function insertInputRow(defaultVal, opt, pipeGnum, varName, type, name) {
                 //input given name is changed, then delete the input from database.
                 var removeInput = getValues({ "p": "removeProjectPipelineInput", id: proPipeInputID });
             }
+        } else if (getProPipeInputs.length > 1) {
+            $.each(getProPipeInputs, function (el) {
+                var removeInputAll = getValues({ "p": "removeProjectPipelineInput", id: getProPipeInputs[el].id });
+            });
         }
     }
     //check if run saved before
@@ -1908,7 +1908,7 @@ function createEdges(first, second) {
                 });
                 var rowID = rowType + 'Ta-' + firGnum;
                 if (getProPipeInputs && getProPipeInputs != "") {
-                    if (getProPipeInputs.length === 1) {
+                    if (getProPipeInputs.length > 0) {
                         var filePath = getProPipeInputs[0].name; //value for val type
                         var proPipeInputID = getProPipeInputs[0].id;
                         var given_name = getProPipeInputs[0].given_name;
@@ -1918,6 +1918,10 @@ function createEdges(first, second) {
                             //input given name is changed, then delete the input from database.
                             var removeInput = getValues({ "p": "removeProjectPipelineInput", id: proPipeInputID });
                         }
+                    } else if (getProPipeInputs.length > 1) {
+                        $.each(getProPipeInputs, function (el) {
+                            var removeInputAll = getValues({ "p": "removeProjectPipelineInput", id: getProPipeInputs[el].id });
+                        });
                     }
                 }
                 //check if run saved before
@@ -3465,7 +3469,8 @@ function readNextLog(proType, proId, type) {
         }
     }
     //trigger saving newxtflow log file
-    var saveLog = getValues({ p: "saveNextflowLog", project_pipeline_id: project_pipeline_id, profileType: proType, profileId: proId });
+    setTimeout(function () { getValues({ p: "saveNextflowLog", project_pipeline_id: project_pipeline_id, profileType: proType, profileId: proId }, true), 100 });
+
 }
 
 function showOutputPath() {
@@ -3727,12 +3732,16 @@ function saveRun() {
     var data = [];
     var runSummary = encodeURIComponent($('#runSum').val());
     var run_name = $('#run-title').val();
+    var newpipelineID = pipeline_id;
     if (dupliProPipe === false) {
         project_pipeline_id = $('#pipeline-title').attr('projectpipelineid');
     } else if (dupliProPipe === true) {
         old_project_pipeline_id = project_pipeline_id;
         project_pipeline_id = '';
         run_name = run_name + '-copy'
+        if (confirmNewRev) {
+            newpipelineID = highestRevPipeId;
+        }
     }
     //checkAmzKeysDiv
     var checkAmzKeysDiv = $("#mRunAmzKeyDiv").css('display');
@@ -3770,7 +3779,7 @@ function saveRun() {
         data.push({ name: "id", value: project_pipeline_id });
         data.push({ name: "name", value: run_name });
         data.push({ name: "project_id", value: project_id });
-        data.push({ name: "pipeline_id", value: pipeline_id });
+        data.push({ name: "pipeline_id", value: newpipelineID });
         data.push({ name: "amazon_cre_id", value: amazon_cre_id });
         data.push({ name: "summary", value: runSummary });
         data.push({ name: "output_dir", value: output_dir });
@@ -3873,9 +3882,32 @@ function getRunStatus(project_pipeline_id) {
 }
 dupliProPipe = false;
 
+function checkNewRevision() {
+    var checkNewRew = getValues({ p: "getPipelineRevision", pipeline_id: pipeline_id });
+    var askNewRev = false;
+    var highestRev = pipeData[0].rev_id;
+    var highestRevPipeId = pipeline_id;
+    if (checkNewRew) {
+        $.each(checkNewRew, function (el) {
+            if (checkNewRew[el].rev_id > highestRev) {
+                askNewRev = true;
+                highestRev = checkNewRew[el].rev_id;
+                highestRevPipeId = checkNewRew[el].id;
+            }
+        });
+    }
+    return [highestRevPipeId, askNewRev]
+}
+
 function duplicateProPipe() {
     dupliProPipe = true;
-    saveRun();
+    confirmNewRev = false;
+    [highestRevPipeId, askNewRev] = checkNewRevision();
+    if (askNewRev === true) {
+        $('#confirmDuplicate').modal("show");
+    } else {
+        saveRun();
+    }
 }
 
 $(document).ready(function () {
@@ -4405,5 +4437,14 @@ $(document).ready(function () {
                 alert("Error: " + errorThrown);
             }
         });
+    });
+
+    $('#confirmDuplicate').on('click', '#duplicateKeepBtn', function (e) {
+        confirmNewRev = false;
+        saveRun();
+    });
+    $('#confirmDuplicate').on('click', '#duplicateNewBtn', function (e) {
+        confirmNewRev = true;
+        saveRun();
     });
 });

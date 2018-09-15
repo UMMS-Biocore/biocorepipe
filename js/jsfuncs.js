@@ -599,12 +599,13 @@ $inputText.each(function () {
     resizeForText.call($this, $this.val())
 });
 
-function getValues(data) {
+function getValues(data, async) {
+    async = async || false; //default false
     var result = null;
     $.ajax({
         url: "ajax/ajaxquery.php",
         data: data,
-        async: false,
+        async: async,
         cache: false,
         type: "POST",
         success: function (data) {
@@ -613,6 +614,7 @@ function getValues(data) {
     });
     return result;
 }
+
 
 function truncateName(name, type) {
     if (type === 'inOut') {

@@ -420,7 +420,6 @@
 
 
 <!--Confirm Modal-->
-
 <div id="confirmModal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -456,6 +455,24 @@
 </div>
 <!--Confirm Modal Ends-->
 
+<!--Confirm Modal-->
+<div id="confirmDuplicate" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="confirmDuplicateTitle">Confirm</h4>
+            </div>
+            <div class="modal-body" id="confirmDuplicateText">New revision of this pipeline is available. If you want to create a new run and keep your revision of pipeline, please click "Keep Existing Revision" button. If you wish to use same input parameters in new revision of pipeline then click "Use New Revision" button.</div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-default" data-dismiss="modal" id="cancelButton">Cancel</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="duplicateKeepBtn">Keep Existing Revision</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="duplicateNewBtn">Use New Revision</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Confirm Modal Ends-->
 
 
 <div id="warnDelete" class="modal fade" tabindex="-1" role="dialog">

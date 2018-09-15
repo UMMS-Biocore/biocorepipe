@@ -28,6 +28,7 @@ if ($p=="saveUser"){
         $id = $ownerIDarr['id'];
 	    $_SESSION['ownerID'] = $id;
     }
+    session_write_close();
 } else if ($p=="impersonUser"){
     $user_id = $_REQUEST['user_id'];
     $admin_id =$_SESSION['ownerID'];
@@ -42,6 +43,7 @@ if ($p=="saveUser"){
     $_SESSION['google_id'] = $google_id;
     $_SESSION['ownerID'] = $user_id;
     $_SESSION['admin_id'] = $admin_id;
+    session_write_close();
     $impersonAr = array('imperson' => 1);
 	$data = json_encode($impersonAr);
     
@@ -58,6 +60,7 @@ if ($p=="saveUser"){
         $_SESSION['name'] = $name;
         $_SESSION['google_id'] = $google_id;
         $_SESSION['ownerID'] = $admin_id;
+        session_write_close();
         $logOutAr = array('logOut' => 1);
 	    $data = json_encode($logOutAr);
     } else {

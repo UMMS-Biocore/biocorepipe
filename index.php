@@ -4,6 +4,7 @@ $ownerID = isset($_SESSION['ownerID']) ? $_SESSION['ownerID'] : "";
 $name = isset($_SESSION['name']) ? $_SESSION['name'] : "";
 if ($ownerID != ''){$login = 1;} 
 else { $login = 0;}
+session_write_close();
 ?>
     <!DOCTYPE html>
     <html>

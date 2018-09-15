@@ -18,6 +18,7 @@
     <?php
 if (!isset($_SESSION) || !is_array($_SESSION)) session_start();
 $ownerID = isset($_SESSION['ownerID']) ? $_SESSION['ownerID'] : "";
+session_write_close();
 if ($ownerID != ''){
 echo '<button type="button" class="btn btn-primary dropdown-toggle" style="float:right; margin-right:10px;" data-toggle="dropdown"><a data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Filter"><span class="glyphicon glyphicon-filter" style="color:white;"></span> </a><span class="caret"></span></button><ul id="filterMenu" class="dropdown-menu dropdown-menu-right filterM"></ul>"';                    } 
 ?>
