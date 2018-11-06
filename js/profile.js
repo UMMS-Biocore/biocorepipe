@@ -161,20 +161,18 @@ $(document).ready(function () {
         }
     });
 
-function hideIgniteColumn() {
-    $('#execJobSetTable').find('th:nth-child(1)').hide();
-    $('#execJobSetTable').find('td:nth-child(1)').hide();
-    $('#execJobSetTable').find('th:nth-child(4)').hide();
-    $('#execJobSetTable').find('td:nth-child(4)').hide();
+//id='#execJobSetTable' or '#execNextSettTable'
+function showHideColumnProfile(id, colList, type) {
+    for (var k = 0; k < colList.length; k++) {
+        if (type == "hide"){
+            $(id).find('th:nth-child('+colList[k]+')').hide();
+            $(id).find('td:nth-child('+colList[k]+')').hide();
+        } else {
+            $(id).find('th:nth-child('+colList[k]+')').show();
+            $(id).find('td:nth-child('+colList[k]+')').show();
+        }
+    }
 }
-
-function showIgniteColumn() {
-    $('#execJobSetTable').find('th:nth-child(1)').show();
-    $('#execJobSetTable').find('td:nth-child(1)').show();
-    $('#execJobSetTable').find('th:nth-child(4)').show();
-    $('#execJobSetTable').find('td:nth-child(4)').show();
-}
-
 
     $(function () {
         $(document).on('change', '#chooseEnv', function () {
@@ -207,9 +205,11 @@ function showIgniteColumn() {
             $('#mExecJob').removeAttr('disabled');
             if (mExecType === "local") {
                 $('#mExecJob').trigger('change');
-                $('#execNextDiv').css('display', 'none');
+                $('#execNextDiv').css('display', 'block');
                 $('#mExecJobDiv').css('display', 'block');
+                showHideColumnProfile('#execNextSettTable',[1,4,5],'hide');
             } else if (mExecType === "sge" || mExecType === "lsf" || mExecType === "slurm") {
+                showHideColumnProfile('#execNextSettTable',[1,4,5],'show');
                 $('#mExecJob').val(mExecType).trigger('change');
                 $('#mExecJob').attr('disabled', "disabled");
                 $('#execNextDiv').css('display', 'block');
@@ -221,16 +221,15 @@ function showIgniteColumn() {
     $(function () {
         $(document).on('change', '#mExecJob', function () {
             var mExecJobType = $('#mExecJob option:selected').val();
-            if (mExecJobType === "local") {
-                $('#execJobSetDiv').css('display', 'none');
-            } else if (mExecJobType === "ignite" || mExecJobType === "sge" || mExecJobType === "lsf" || mExecJobType === "slurm") {
                 if (mExecJobType === "ignite"){
-                    hideIgniteColumn();
-                }else {
-                    showIgniteColumn();
+                    showHideColumnProfile('#execJobSetTable',[1,4,5],'show');
+                    showHideColumnProfile('#execJobSetTable',[1,4],'hide');
+                } else if (mExecJobType === "local"){
+                    showHideColumnProfile('#execJobSetTable',[1,4,5],'hide');
+                } else {
+                    showHideColumnProfile('#execJobSetTable',[1,4,5],'show');
                 }
                 $('#execJobSetDiv').css('display', 'block');
-            }
         })
     });
 
@@ -255,13 +254,29 @@ function showIgniteColumn() {
         var profileName = $('#mEnvName').val();
         var data = formValues.serializeArray(); // convert form to array
         var selEnvType = $('#chooseEnv option:selected').val();
-        if (selEnvType === "cluster" && data[19].value =="ignite"){
+        if (selEnvType === "cluster" && (data[19].value =="ignite" || data[19].value =="local")){
             data[20].value =""; //queue
-            data[23].value =""; //cpu
+            data[23].value =""; //time
         }
-        if (selEnvType === "amazon" && data[20].value =="ignite"){
+        if (selEnvType === "amazon" && (data[20].value =="ignite" || data[20].value =="local")){
             data[21].value = "";//queue
-            data[24].value = "";//cpu
+            data[24].value = "";//time
+        }
+        if (selEnvType === "cluster" && data[19].value =="local"){
+            data[24].value =""; //"job_clu_opt"
+        }
+        if (selEnvType === "amazon" && data[20].value =="local"){
+            data[25].value = "";//"job_clu_opt"
+        }
+        if (selEnvType === "cluster" && data[13].value =="local"){
+            data[14].value = "";//queue
+            data[17].value = "";//time
+            data[18].value = "";//next_clu_opt
+        }
+        if (selEnvType === "amazon" && data[14].value =="local"){
+            data[15].value = "";//queue
+            data[18].value = "";//time
+            data[19].value = "";//next_clu_opt
         }
             
         if (selEnvType.length && profileName !== '') {
@@ -281,7 +296,6 @@ function showIgniteColumn() {
                     data = [];
                 }
             }
-            console.log(data)
             if (data != '') {
                 $.ajax({
                     type: "POST",

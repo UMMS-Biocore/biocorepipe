@@ -1,3 +1,6 @@
+06.11.2018 Version 0.2.35
+Nextflow and process memory and cpu limits are added for local in the profile and run page.
+
 05.11.2018 Version 0.2.34
 Process form fields upgraded to create conditional dropdowns.
 
